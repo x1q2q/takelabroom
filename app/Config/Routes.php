@@ -33,7 +33,7 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Dashboard::index');
+$routes->get('/', 'Home::index');
 $routes->get('/staff', 'Staff::index');
 $routes->get('/staff/user', 'Staff::user');
 $routes->post("/staff/user/getdata", "Staff::getDataUser");
@@ -47,6 +47,8 @@ $routes->get('/matakuliah/detail/(:segment)', 'Matakuliah::getDetailMakul/$1');
 $routes->post("/matakuliah/getdata", "Matakuliah::getDataMakul");
 $routes->post("/matakuliah/doAdd", "Matakuliah::doAddMakul");
 
+// bagian guest
+$routes->get('/home','Home::index');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

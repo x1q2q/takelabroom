@@ -29,7 +29,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="<?= csrf_token() ?>" content="<?= csrf_hash() ?>">
 
-    <title>WEBPTIK V2</title>
+    <title>Admin | TakeLabroom</title>
 
     <meta name="description" content="" />
 
@@ -69,13 +69,13 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
-        <?= $this->include('templates/sidebar'); ?>
+        <?= $this->include('admin/templates/sidebar'); ?>
         <!-- / Menu -->
 
         <!-- Layout container -->
         <div class="layout-page">
         <!-- Navbar -->
-        <?= $this->include('templates/navbar'); ?>
+        <?= $this->include('admin/templates/navbar'); ?>
         <!-- / Navbar -->
 
           <!-- Content wrapper -->
@@ -85,7 +85,7 @@
             <!-- / Content -->
 
             <!-- Footer -->
-            <?= $this->include('templates/footer'); ?>
+            <?= $this->include('admin/templates/footer'); ?>
             <!-- / Footer -->
 
             <div class="content-backdrop fade"></div>

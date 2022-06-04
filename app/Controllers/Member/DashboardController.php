@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Member;
 
-class Dashboard extends BaseController
+use App\Controllers\BaseController;
+
+class DashboardController extends BaseController
 {
     public function index()
     {
-        return view('dashboard');
+        return view('member/dashboard');
     }
     public function card()
     {

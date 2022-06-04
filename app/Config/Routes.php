@@ -17,7 +17,7 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Dashboard');
+$routes->setDefaultController('GuestController');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override(function(){
@@ -25,6 +25,28 @@ $routes->set404Override(function(){
 });
 $routes->setAutoRoute(true);
 
+$routes->get('/','GuestController::index');
+$routes->get('/home','GuestController::index');
+$routes->get('/login','Auth/MemberLoginController::index');
+$routes->get('/dologin','Auth/MemberLoginController::doLogin');
+$routes->get('/admin/login','Auth/AdminLoginController::index');
+$routes->get('/admin/dologin','Auth/AdminLoginController::doLogin');
+$routes->get('/register','Auth/RegistrationController::index');
+$routes->get('/doregister','Auth/RegistrationController::doRegister');
+
+// member area
+$routes->get('/dashboard','Member/DashboardController::index');
+// page-html -> will deleted soon
+$routes->get('/dashboard/card','Member/DashboardController::card');
+$routes->get('/dashboard/form','Member/DashboardController::form');
+$routes->get('/dashboard/input','Member/DashboardController::input');
+$routes->get('/dashboard/modals','Member/DashboardController::modals');
+$routes->get('/dashboard/table','Member/DashboardController::table');
+// end page-html
+
+// admin area
+$routes->get('/admin','Admin/DashboardController::index');
+$routes->get('/admin/dashboard','Admin/DashboardController::index');
 /*
  * --------------------------------------------------------------------
  * Route Definitions
@@ -34,21 +56,7 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->get('/staff', 'Staff::index');
-$routes->get('/staff/user', 'Staff::user');
-$routes->post("/staff/user/getdata", "Staff::getDataUser");
-$routes->post("/staff/user/doAdd", "Staff::doAddUser");
-$routes->post("/staff/user/doUpdate/(:segment)", "Staff::doUpdateUser/$1");
-$routes->get("/staff/add/user/", "Staff::addUser");
-$routes->get("/staff/detail/user/(:segment)", "Staff::detailUser/$1");
-$routes->get("/staff/edit/user/(:segment)", "Staff::editUser/$1");
-$routes->get('/matakuliah', 'Matakuliah::index');
-$routes->get('/matakuliah/detail/(:segment)', 'Matakuliah::getDetailMakul/$1');
-$routes->post("/matakuliah/getdata", "Matakuliah::getDataMakul");
-$routes->post("/matakuliah/doAdd", "Matakuliah::doAddMakul");
 
-// bagian guest
-$routes->get('/home','Home::index');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

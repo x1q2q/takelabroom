@@ -1,4 +1,4 @@
-<?= $this->extend('templates/main'); ?>
+<?= $this->extend('member/templates/main'); ?>
 
 <?= $this->section('content'); ?>
 <div class="container-xxl flex-grow-1 container-p-y">

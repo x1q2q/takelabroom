@@ -1,0 +1,74 @@
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+  <div class="app-brand demo">
+    <a href="<?= base_url('/admin/dashboard'); ?>" class="app-brand-link">
+      <span class="app-brand-logo demo">
+          <i class='bx bxs-user-pin bx-md'></i>
+      </span>
+      <span class="app-brand-text demo menu-text fw-bolder ms-2">Admin</span>
+    </a>
+
+    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+      <i class="bx bx-chevron-left bx-sm align-middle"></i>
+    </a>
+  </div>
+
+  <div class="menu-inner-shadow"></div>
+
+  <ul class="menu-inner py-1">
+    <li class="menu-item active">
+      <a href="<?= base_url('/dashboard'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-stats"></i>
+        <div data-i18n="Analytics">Dashboard</div>
+      </a>
+    </li>
+    <li class="menu-header small text-uppercase">
+      <span class="menu-header-text">Labroom</span>
+    </li>
+    <li class="menu-item">
+      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-desktop"></i>
+        <div data-i18n="Basic">Fasilitas</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-category-alt"></i>
+        <div data-i18n="Basic">Kategori Lab</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="<?= base_url('reservasi/history'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-vector"></i>
+        <div data-i18n="Basic">Data Lab</div>
+      </a>
+    </li>
+
+    <li class="menu-header small text-uppercase">
+      <span class="menu-header-text">General</span>
+    </li>
+    <li class="menu-item">
+      <a href="<?= base_url('reservasi/history'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-notepad"></i>
+        <div data-i18n="Basic">Reservasi</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="<?= base_url('reservasi/history'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-dollar-circle"></i>
+        <div data-i18n="Basic">Reservasi Order</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-group"></i>
+        <div data-i18n="Basic">Data User</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-toggle-right"></i>
+        <div data-i18n="Basic">Pengaturan</div>
+      </a>
+    </li>
+  </ul>
+</aside>

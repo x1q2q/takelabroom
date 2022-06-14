@@ -251,6 +251,6 @@
 <?= $this->endSection('content'); ?>
 
 <?= $this->section('extrascript'); ?>
-    <script src="<?= base_url('assets/vendor/libs/apex-charts/apexcharts.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/dashboards-analytics.js'); ?>"></script>
+    <?= script_tag('assets/vendor/libs/apex-charts/apexcharts.js'); ?>
+    <?= script_tag('assets/js/dashboards-analytics.js'); ?>
 <?= $this->endSection('extrascript'); ?>

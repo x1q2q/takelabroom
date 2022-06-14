@@ -4,7 +4,7 @@
       <span class="app-brand-logo demo">
           <i class='bx bxs-layout bx-md'></i>
       </span>
-      <span class="app-brand-text demo menu-text fw-bolder ms-2">TakeLabroom</span>
+      <span class="app-brand-text demo menu-text fw-bolder ms-2">Member</span>
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -29,7 +29,7 @@
     <li class="menu-item">
       <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-add-to-queue"></i>
-        <div data-i18n="Basic">Tambah Reservasi</div>
+        <div data-i18n="Basic">Ajukan Reservasi</div>
       </a>
     </li>
     <li class="menu-item">

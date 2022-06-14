@@ -10,7 +10,6 @@ $routes = Services::routes();
 if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
     require SYSTEMPATH . 'Config/Routes.php';
 }
-
 /*
  * --------------------------------------------------------------------
  * Router Setup
@@ -25,6 +24,7 @@ $routes->set404Override(function(){
 });
 $routes->setAutoRoute(true);
 
+// auth & others
 $routes->get('/','GuestController::index');
 $routes->get('/home','GuestController::index');
 $routes->get('/login','Auth/MemberLoginController::index');
@@ -35,18 +35,54 @@ $routes->get('/register','Auth/RegistrationController::index');
 $routes->get('/doregister','Auth/RegistrationController::doRegister');
 
 // member area
-$routes->get('/dashboard','Member/DashboardController::index');
-// page-html -> will deleted soon
-$routes->get('/dashboard/card','Member/DashboardController::card');
-$routes->get('/dashboard/form','Member/DashboardController::form');
-$routes->get('/dashboard/input','Member/DashboardController::input');
-$routes->get('/dashboard/modals','Member/DashboardController::modals');
-$routes->get('/dashboard/table','Member/DashboardController::table');
-// end page-html
+$routes->group('member', static function ($routes) {
+    $routes->get('/','Member/DashboardController::index');
+    $routes->get('dashboard','Member/DashboardController::index');
+});
+
 
 // admin area
-$routes->get('/admin','Admin/DashboardController::index');
-$routes->get('/admin/dashboard','Admin/DashboardController::index');
+$routes->group('admin', static function ($routes) {
+    $routes->get('/','Admin/DashboardController::index');
+    $routes->get('dashboard','Admin/DashboardController::index');
+
+    $routes->get('fasilitas','Admin/FacilityController::index');
+    $routes->post('fasilitas/getdata','Admin/FacilityController::getData');
+    $routes->post('fasilitas/insert','Admin/FacilityController::insertData');
+    $routes->get('fasilitas/delete/(:num)','Admin\FacilityController::deleteData/$1');
+    $routes->get('fasilitas/detail/(:num)','Admin\FacilityController::detailData/$1');
+    $routes->post('fasilitas/update/(:num)','Admin\FacilityController::updateData/$1');
+
+    $routes->get('kategori','Admin/CategoryController::index');
+    $routes->post('kategori/getdata','Admin/CategoryController::getData');
+    $routes->post('kategori/insert','Admin/CategoryController::insertData');
+    $routes->get('kategori/delete/(:num)','Admin\CategoryController::deleteData/$1');
+    $routes->get('kategori/detail/(:num)','Admin\CategoryController::detailData/$1');
+    $routes->post('kategori/update/(:num)','Admin\CategoryController::updateData/$1');
+
+    $routes->get('labroom','Admin/LabroomController::index');
+    $routes->post('labroom/getdata','Admin/LabroomController::getData');
+    $routes->post('labroom/insert','Admin/LabroomController::insertData');
+    $routes->get('labroom/delete/(:num)','Admin\LabroomController::deleteData/$1');
+    $routes->get('labroom/detail/(:num)','Admin\LabroomController::detailData/$1');
+    $routes->post('labroom/update/(:num)','Admin\LabroomController::updateData/$1');
+    $routes->get('labroom/getlist/(:any)','Admin\LabroomController::getListData/$1');
+
+    $routes->get('daftar-user','Admin/UserController::index');
+    $routes->post('daftar-user/getdata','Admin/UserController::getData');
+    $routes->get('daftar-user/delete/(:num)','Admin\UserController::deleteData/$1');
+    $routes->get('daftar-user/detail/(:num)','Admin\UserController::detailData/$1');
+
+    $routes->get('reservasi','Admin/ReservasiController::index');
+    $routes->post('reservasi/getdata','Admin/ReservasiController::getData');
+    $routes->get('reservasi/delete/(:num)','Admin\ReservasiController::deleteData/$1');
+    $routes->get('reservasi/detail/(:num)','Admin\ReservasiController::detailData/$1');
+
+    $routes->get('reservasi-order','Admin/OrderController::index');
+    $routes->post('reservasi-order/getdata','Admin/OrderController::getData');
+    $routes->get('reservasi-order/delete/(:num)','Admin\OrderController::deleteData/$1');
+    $routes->get('reservasi-order/detail/(:num)','Admin\OrderController::detailData/$1');
+});
 /*
  * --------------------------------------------------------------------
  * Route Definitions

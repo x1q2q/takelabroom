@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo">
-    <a href="<?= base_url('/admin/dashboard'); ?>" class="app-brand-link">
+    <a href="<?= site_url('/admin/dashboard'); ?>" class="app-brand-link">
       <span class="app-brand-logo demo">
           <i class='bx bxs-user-pin bx-md'></i>
       </span>
@@ -15,8 +15,8 @@
   <div class="menu-inner-shadow"></div>
 
   <ul class="menu-inner py-1">
-    <li class="menu-item active">
-      <a href="<?= base_url('/dashboard'); ?>" class="menu-link">
+    <li class="menu-item <?= (url_is('admin/dashboard*') || url_is('admin')) ? 'active':'' ?>">
+      <a href="<?= site_url('admin/dashboard'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bx-stats"></i>
         <div data-i18n="Analytics">Dashboard</div>
       </a>
@@ -24,20 +24,20 @@
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Labroom</span>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('admin/fasilitas*') ? 'active':'' ?>"">
+      <a href="<?= site_url('admin/fasilitas'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bx-desktop"></i>
         <div data-i18n="Basic">Fasilitas</div>
       </a>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('admin/kategori*') ? 'active':'' ?>"">
+      <a href="<?= site_url('admin/kategori'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-category-alt"></i>
         <div data-i18n="Basic">Kategori Lab</div>
       </a>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('reservasi/history'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('admin/labroom*') ? 'active':'' ?>"">
+      <a href="<?= site_url('admin/labroom'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-vector"></i>
         <div data-i18n="Basic">Data Lab</div>
       </a>
@@ -46,28 +46,28 @@
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">General</span>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('reservasi/history'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('admin/reservasi') ? 'active':'' ?>"">
+      <a href="<?= site_url('admin/reservasi'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-notepad"></i>
         <div data-i18n="Basic">Reservasi</div>
       </a>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('reservasi/history'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('admin/reservasi-order*') ? 'active':'' ?>"">
+      <a href="<?= site_url('admin/reservasi-order'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-dollar-circle"></i>
         <div data-i18n="Basic">Reservasi Order</div>
       </a>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('admin/daftar-user*') ? 'active':'' ?>"">
+      <a href="<?= site_url('admin/daftar-user'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-group"></i>
         <div data-i18n="Basic">Data User</div>
       </a>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
-        <i class="menu-icon tf-icons bx bxs-toggle-right"></i>
-        <div data-i18n="Basic">Pengaturan</div>
+    <li class="menu-item <?= url_is('admin/laporan*') ? 'active':'' ?>"">
+      <a href="<?= site_url('admin/laporan'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
+        <div data-i18n="Basic">Laporan</div>
       </a>
     </li>
   </ul>

@@ -28,7 +28,6 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="<?= csrf_token() ?>" content="<?= csrf_hash() ?>">
-
     <title>Admin | TakeLabroom</title>
 
     <meta name="description" content="" />
@@ -49,12 +48,13 @@
     <link rel="stylesheet" href="<?= base_url('assets/vendor/css/core.css'); ?>" class="template-customizer-core-css" />
     <link rel="stylesheet" href="<?= base_url('assets/vendor/css/theme-default.css'); ?>" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="<?= base_url('assets/css/demo.css'); ?>" />
-
+    <link rel="stylesheet" href="<?= base_url('assets/css/custom.css'); ?>" />
+    
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="<?= base_url('assets/vendor/libs/datatables/datatables.min.css'); ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css'); ?>" />
 
     <!-- Page CSS -->
+    <?= $this->renderSection('extracss'); ?>
 
     <!-- Helpers -->
     <script src="<?= base_url('assets/vendor/js/helpers.js'); ?>"></script>
@@ -111,6 +111,7 @@
 
     <!-- Main JS -->
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/custom.js'); ?>"></script>
 
     <!-- Page JS -->
     <?= $this->renderSection('extrascript'); ?>

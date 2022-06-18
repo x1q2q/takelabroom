@@ -197,7 +197,7 @@
                         render: function (data, type, row, meta) {
                             let labelStatus = (data == 1) ? 'success':'warning';
                             let txtStatus = (data == 1) ? 'Activated':'Not Activated';
-                            return `<span class="badge bg-label-${labelStatus} me-1">${txtStatus}</span>`;
+                            return `<span class="badge bg-label-${labelStatus} me-1">${txtStatus}</span> `;
                         }
                     },
                     {

@@ -27,13 +27,13 @@
       <span class="menu-header-text">Reservasi</span>
     </li>
     <li class="menu-item">
-      <a href="<?= base_url('reservasi/add'); ?>" class="menu-link">
+      <a href="<?= base_url('member/add-reservasi'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-add-to-queue"></i>
         <div data-i18n="Basic">Ajukan Reservasi</div>
       </a>
     </li>
     <li class="menu-item">
-      <a href="<?= base_url('reservasi/history'); ?>" class="menu-link">
+      <a href="<?= base_url('member/history-reservasi'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bx-history"></i>
         <div data-i18n="Basic">History Reservasi</div>
       </a>

@@ -38,6 +38,11 @@ $routes->get('/doregister','Auth/RegistrationController::doRegister');
 $routes->group('member', static function ($routes) {
     $routes->get('/','Member/DashboardController::index');
     $routes->get('dashboard','Member/DashboardController::index');
+
+    $routes->get('add-reservasi','Member/ReservasiController::addReservasi');
+    $routes->get('history-reservasi','Member/ReservasiController::historyReservasi');
+    $routes->post('history-reservasi/getdata','Member/ReservasiController::getData');
+    $routes->get('profile','Member/ProfileController::index');
 });
 
 
@@ -82,6 +87,9 @@ $routes->group('admin', static function ($routes) {
     $routes->post('reservasi-order/getdata','Admin/OrderController::getData');
     $routes->get('reservasi-order/delete/(:num)','Admin\OrderController::deleteData/$1');
     $routes->get('reservasi-order/detail/(:num)','Admin\OrderController::detailData/$1');
+
+    $routes->get('laporan','Admin/LaporanController::index');
+    $routes->post('laporan/getdata','Admin/OrderController::getData');
 });
 /*
  * --------------------------------------------------------------------

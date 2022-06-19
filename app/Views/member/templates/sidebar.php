@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo">
-    <a href="<?= base_url('/dashboard'); ?>" class="app-brand-link">
+    <a href="<?= base_url('/member'); ?>" class="app-brand-link">
       <span class="app-brand-logo demo">
           <i class='bx bxs-layout bx-md'></i>
       </span>

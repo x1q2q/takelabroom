@@ -38,7 +38,7 @@ class Labrooms extends Migration
 			],
 			'status_lab'      => [
 				'type'           => 'ENUM',
-				'constraint'     => ['booked', 'available'],
+				'constraint'     => ['full-booked', 'available'],
 				'default'        => 'available',
 			]
 		]);

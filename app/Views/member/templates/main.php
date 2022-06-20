@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/vendor/css/core.css'); ?>" class="template-customizer-core-css" />
     <link rel="stylesheet" href="<?= base_url('assets/vendor/css/theme-default.css'); ?>" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="<?= base_url('assets/css/demo.css'); ?>" />
+    <link rel="stylesheet" href="<?= base_url('assets/css/custom.css'); ?>" />
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/vendor/libs/datatables/datatables.min.css'); ?>" />

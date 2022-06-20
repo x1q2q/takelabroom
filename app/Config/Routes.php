@@ -40,12 +40,12 @@ $routes->group('member', static function ($routes) {
     $routes->get('/','Member/DashboardController::index');
     $routes->get('dashboard','Member/DashboardController::index');
 
-    $routes->get('add-reservasi','Member/ReservasiController::addReservasi');
-    $routes->get('history-reservasi','Member/ReservasiController::historyReservasi');
-    $routes->post('history-reservasi/getdata','Member/ReservasiController::getData');
-    $routes->get('profile','Member/ProfileController::index');
-    $routes->get('/', 'Member/DashboardController::index');
-    $routes->get('dashboard', 'Member/DashboardController::index');
+    $routes->get('add-reservation','Member/ReservasiController::addReservation');
+    $routes->get('add-reservation/(:segment)','Member\ReservasiController::checkLab/$1');
+    $routes->get('my-reservation','Member/ReservasiController::myReservation');
+    $routes->post('my-reservation/getdata','Member/ReservasiController::getData');
+    $routes->get('my-profile','Member/ProfileController::index');
+    $routes->get('setting-profile','Member/ProfileController::settingProfile');
 });
 
 

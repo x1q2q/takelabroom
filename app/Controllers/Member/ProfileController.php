@@ -8,6 +8,10 @@ class ProfileController extends BaseController
 {
     public function index()
     {
-        return view('member/profile');
+        return view('member/my_profile');
+    }
+    public function settingProfile()
+    {
+        return view('member/setting_profile');
     }
 }

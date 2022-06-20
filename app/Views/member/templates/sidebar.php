@@ -16,7 +16,7 @@
 
   <ul class="menu-inner py-1">
     <!-- Dashboard -->
-    <li class="menu-item active">
+    <li class="menu-item <?= (url_is('member/dashboard*') || url_is('member')) ? 'active':'' ?>">
       <a href="<?= base_url('/dashboard'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bx-stats"></i>
         <div data-i18n="Analytics">Dashboard</div>
@@ -26,26 +26,32 @@
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Reservasi</span>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('member/add-reservasi'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('member/add-reservation*') ? 'active':'' ?>">
+      <a href="<?= base_url('member/add-reservation'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-add-to-queue"></i>
         <div data-i18n="Basic">Ajukan Reservasi</div>
       </a>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('member/history-reservasi'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('member/my-reservation*') ? 'active':'' ?>">
+      <a href="<?= base_url('member/my-reservation'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bx-history"></i>
-        <div data-i18n="Basic">History Reservasi</div>
+        <div data-i18n="Basic">Reservasi Saya</div>
       </a>
     </li>
     
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Profile</span>
     </li>
-    <li class="menu-item">
-      <a href="<?= base_url('profile'); ?>" class="menu-link">
+    <li class="menu-item <?= url_is('member/my-profile*') ? 'active':'' ?>">
+      <a href="<?= base_url('member/my-profile'); ?>" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-user-detail"></i>
-        <div data-i18n="Basic">My Profile</div>
+        <div data-i18n="Basic">Profile Saya</div>
+      </a>
+    </li>
+    <li class="menu-item <?= url_is('member/setting-profile*') ? 'active':'' ?>">
+      <a href="<?= base_url('member/setting-profile'); ?>" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-toggle-left"></i>
+        <div data-i18n="Basic">Profile Setting</div>
       </a>
     </li>
   </ul>

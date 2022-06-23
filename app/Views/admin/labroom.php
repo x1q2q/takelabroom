@@ -218,7 +218,9 @@
                 "defRender":true,
                 "language": {
                     "search": "_INPUT_",
-                    "searchPlaceholder": "Cari di sini..."
+                    "searchPlaceholder": "Cari di sini...",
+                    "emptyTable": "Data labroom masih kosong",
+                    "zeroRecords": "Data labroom kosong"
                 },
                 "dom": '<"wrapper m-2 bg-label-secondary p-1"lf>rt<"wrapper rounded-3 bg-label-dark"<i><"row align-items-center"<""><p>>>',
                 "processing": true,

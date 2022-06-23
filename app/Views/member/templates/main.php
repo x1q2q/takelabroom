@@ -56,7 +56,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css'); ?>" />
 
     <!-- Page CSS -->
-
+    <?= $this->renderSection('extracss'); ?>
     <!-- Helpers -->
     <script src="<?= base_url('assets/vendor/js/helpers.js'); ?>"></script>
 
@@ -112,6 +112,7 @@
 
     <!-- Main JS -->
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/custom.js'); ?>"></script>
 
     <!-- Page JS -->
     <?= $this->renderSection('extrascript'); ?>

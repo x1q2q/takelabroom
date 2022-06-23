@@ -49,7 +49,7 @@ class ReservasiController extends BaseController
     public function detailData($id){
         if ($this->req->isAJAX()) {
             $this->datatable->initDatatables($this->req);
-            $data = $this->datatable->getWhereDetail($id);
+            $data = $this->datatable->getWhereDetail('id_reserv',$id);
             $splitDateStart = explode(' ',$data[0]->time_start);
             $splitDateEnd = explode(' ',$data[0]->time_end);
             $data[0]->time_start  = substr($splitDateStart[1],0,5);

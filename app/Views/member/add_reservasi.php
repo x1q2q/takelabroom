@@ -7,20 +7,20 @@
     <div class="card mx-3">
         <div class="input-group">
             <span class="input-group-text bg-primary">
-                <i class="bx bx-search bx-sm text-white"></i>
-            </span>
-            <input type="text" class="form-control py-2" id="input-cari" placeholder="Cari labroom di sini ..." aria-label="Search..." aria-describedby="basic-addon-search31">
-            <span class="input-group-text bg-primary">
                 <select class="form-select" id="select-category" aria-label="Default select example">
                     <option selected="" value="all">Semua Kategori</option>
                     <?php foreach($category as $val): ?>
                         <option value="<?= $val->id_category?>"> <?= $val->name_category; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </span>
+                        <?php endforeach; ?>
+                    </select>
+                </span>
+            <input type="text" class="form-control py-2" id="input-cari" placeholder="Cari labroom di sini ..." aria-label="Search..." aria-describedby="basic-addon-search31">
+            <button class="input-group-text bg-primary btn-primary">
+                <i class="bx bx-search bx-sm text-white"></i>
+            </button>
         </div>
     </div>
-    <div class="cards">
+    <div class="cards mt-3">
         <?php foreach($category as $val): ?>
             <div class="card card-category">
                 <div class="card-header bg-primary">

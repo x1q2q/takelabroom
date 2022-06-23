@@ -44,7 +44,7 @@
     </li>
     <li class="menu-item <?= url_is('member/my-profile*') ? 'active':'' ?>">
       <a href="<?= base_url('member/my-profile'); ?>" class="menu-link">
-        <i class="menu-icon tf-icons bx bxs-user-detail"></i>
+        <i class="menu-icon tf-icons bx bxs-face"></i>
         <div data-i18n="Basic">Profile Saya</div>
       </a>
     </li>

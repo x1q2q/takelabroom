@@ -43,7 +43,8 @@ $routes->group('member', static function ($routes) {
     $routes->get('add-reservation','Member/ReservasiController::addReservation');
     $routes->get('add-reservation/(:segment)','Member\ReservasiController::checkLab/$1');
     $routes->get('my-reservation','Member/ReservasiController::myReservation');
-    $routes->post('my-reservation/getdata','Member/ReservasiController::getData');
+    $routes->post('my-reservation/getdata/(:any)/(:num)','Member\ReservasiController::getData/$1/$2');
+    $routes->post('my-reservation/insert','Member/ReservasiController::insertData');
     $routes->get('my-profile','Member/ProfileController::index');
     $routes->get('setting-profile','Member/ProfileController::settingProfile');
 });

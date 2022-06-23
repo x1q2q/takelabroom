@@ -28,14 +28,23 @@ class ReservationModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
-    public function initDatatables(RequestInterface $request){
+    public function connectDB(){
         parent::__construct();
         $this->db = db_connect();
+    }
+    public function initDatatables(RequestInterface $request, $joinOnOrder=false){
+        $this->connectDB();
         $this->request = $request;
         $builder = $this->db->table($this->table);
             $builder->join('labrooms', 'labrooms.id_lab = reservations.lab_id');
             $builder->join('users', 'users.id_user = reservations.user_id');
-            $builder->select('*');
+        if($joinOnOrder){
+            $builder->join('orders','orders.code_reserv = reservations.code_reserv','left'); // left join
+            $builder->select('orders.total_payment');
+        }
+            $builder->select('reservations.*');
+            $builder->select('labrooms.*');
+            $builder->select('users.*');
         $this->dt = $builder;
     }
     private function getDatatablesQuery()
@@ -83,8 +92,9 @@ class ReservationModel extends Model
         $tbl_storage = $this->db->table($this->table);
         return $tbl_storage->countAllResults();
     }
-    public function getWhereDetail($id){
-        $query = $this->dt->where('id_reserv', $id);
+    public function getWhereDetail($field,$val){
+        $this->getDatatablesQuery();
+        $query = $this->dt->where($field,$val);
         $data = $query->get()->getResult();
         return $data;
     }

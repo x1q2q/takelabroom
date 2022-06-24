@@ -228,6 +228,7 @@
                 "order": [
                     [0, "desc"]
                 ],
+                "aLengthMenu": [[5, 15, 30],[ 5, 15, 30]],
                 "columns": [
                     {
                         "data": "id_lab",

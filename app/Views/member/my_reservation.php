@@ -18,6 +18,10 @@
         </div>
         <div class="toast-body"></div>
     </div>
+    <div class="alert alert-info mx-2 border border-info" role="alert">
+        <i class="tf-icons bx bx-sm bx-info-circle"></i>
+        Silakan mengajukan reservasi di menu `Ajukan Reservasi`
+    </div>
     <div class="card">
         <div class="card-header bg-secondary nopadding row">
             <div class="col py-3">
@@ -54,15 +58,17 @@
     <?= script_tag('assets/js/ui-modals.js'); ?>
     <?= script_tag('assets/vendor/libs/timepicker/jquery.timepicker.min.js'); ?>
     
-    <?php if(false): ?>
+    <?php if(session()->has('error')): ?>
         <script type="text/javascript">
-            showToast('danger','Peringatan','gagal wa','#toast-alert');
+            var msg = "<?= session("error"); ?>";
+            showToast('danger','Peringatan',msg,'#toast-alert');
         </script>
     <?php endif; ?>
 
-    <?php if(true): ?>
+    <?php if(session()->has('success')): ?>
         <script type="text/javascript">
-            showToast('success','Sukses','berhasil kye','#toast-alert');
+            var msg = "<?= session("success"); ?>";
+            showToast('success','Sukses',msg,'#toast-alert');
         </script>
     <?php endif; ?>
 
@@ -84,6 +90,7 @@
                 "dom": '<"wrapper m-2 bg-label-secondary p-1"lf>rt<"wrapper rounded-3 bg-label-dark"<i><"row align-items-center"<""><p>>>',
                 "processing": true,
                 "serverSide": true,
+                "aLengthMenu": [[5, 15, 30],[ 5, 15, 30]],
                 "order": [
                     [0, "desc"]
                 ],

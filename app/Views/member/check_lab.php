@@ -210,6 +210,7 @@ button.btn-alert{
                 "order": [
                     [0, "desc"]
                 ],
+                "aLengthMenu": [[5, 15, 30],[ 5, 15, 30]],
                 "columns": [
                     {
                         "data": "id_reserv",
@@ -261,7 +262,9 @@ button.btn-alert{
                     "url": "<?php echo site_url('member/my-reservation/getdata/category_id/'.$category['id_category']); ?>",
                     "type": "POST",
                     'data': function(data) {
+                        var dataLabId = "<?= $data_labid; ?>";
                         data.csrf_token_name = tokenHash;
+                        data.lab_id = JSON.parse(dataLabId);
                     }
                 }
             });

@@ -6,7 +6,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">labroom /</span> Kategori </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">labroom /</span> Laporan </h4>
     <div class="bs-toast toast toast-placement-ex top-0 end-0 m-3 sld-down"
         role="alert"
         aria-live="assertive"
@@ -24,13 +24,7 @@
     <div class="card">
     <div class="card-header row justify-content-between">
         <div class="col">
-            <h5 class="mt-2">Data Kategori Lab</h5>
-        </div>
-        <div class="col-auto">
-            <button type="button" class="btn btn-dark rounded-3" onclick="addData()"
-            data-bs-toggle="modal" data-bs-target="#modal-save">
-                Tambah Kategori <i class="bx bx-sm bxs-plus-circle"></i>
-            </button>
+            <h5 class="mt-2">Data Laporan</h5>
         </div>
     </div>
     <div class="table-responsive text-wrap">
@@ -172,9 +166,7 @@
                 "defRender":true,
                 "language": {
                     "search": "_INPUT_",
-                    "searchPlaceholder": "Cari di sini...",
-                    "emptyTable": "Data kategori masih kosong",
-                    "zeroRecords": "Data kategori kosong"
+                    "searchPlaceholder": "Cari di sini..."
                 },
                 "dom": '<"wrapper m-2 bg-label-secondary p-1"lf>rt<"wrapper rounded-3 bg-label-dark"<i><"row align-items-center"<""><p>>>',
                 "processing": true,
@@ -182,7 +174,6 @@
                 "order": [
                     [0, "desc"]
                 ],
-                "aLengthMenu": [[5, 15, 30],[ 5, 15, 30]],
                 "columns": [
                     {
                         "data": "id_category",

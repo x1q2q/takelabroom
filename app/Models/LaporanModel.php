@@ -5,7 +5,7 @@ namespace App\Models;
 use CodeIgniter\Model;
 use CodeIgniter\HTTP\RequestInterface;
 
-class CategoryModel extends Model
+class LaporanModel extends Model
 {
     protected $table            = 'categories';
     protected $primaryKey       = 'id_category';
@@ -76,5 +76,10 @@ class CategoryModel extends Model
     {
         $tbl_storage = $this->db->table($this->table);
         return $tbl_storage->countAllResults();
+    }
+    public function getWhere($field,$id){
+        $query = $this->db->table($this->table)->select($field)->where('id_category',$id);
+        $data = $query->get();
+        return $data->getResult();
     }
 }

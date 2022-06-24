@@ -154,7 +154,7 @@
                     <div class="input-group">
                         <input type="number" id="capacity" class="form-control" 
                         placeholder="Masukkan kapasitas (cth: 50)" name="capacity"/>
-                        <span class="input-group-text">Orang</span>
+                        <span class="input-group-text">Kursi</span>
                     </div>
                     </div>
                 </div>
@@ -218,7 +218,9 @@
                 "defRender":true,
                 "language": {
                     "search": "_INPUT_",
-                    "searchPlaceholder": "Cari di sini..."
+                    "searchPlaceholder": "Cari di sini...",
+                    "emptyTable": "Data labroom masih kosong",
+                    "zeroRecords": "Data labroom kosong"
                 },
                 "dom": '<"wrapper m-2 bg-label-secondary p-1"lf>rt<"wrapper rounded-3 bg-label-dark"<i><"row align-items-center"<""><p>>>',
                 "processing": true,
@@ -226,6 +228,7 @@
                 "order": [
                     [0, "desc"]
                 ],
+                "aLengthMenu": [[5, 15, 30],[ 5, 15, 30]],
                 "columns": [
                     {
                         "data": "id_lab",
@@ -252,8 +255,8 @@
                         'className': "text-center",
                         'orderable': true,
                         render: function (data, type, row, meta) {
-                            let labelStatus = (data == 'booked')? 'warning':'success';
-                            return `<span class="badge bg-label-${labelStatus} me-1">${data}</span>`;
+                            let labelStatus = (data == 'available')? 'success' : 'warning';
+                            return `<span class="badge bg-${labelStatus} me-1">${data} today</span>`;
                         }
                     },
                     {
@@ -262,7 +265,7 @@
                         'orderable': false,
                         render: function (data, type, row, meta) {
                             let labelStatus = (data == 'booked')? 'warning':'success';
-                            return `${data} orang`;
+                            return `${data} kursi`;
                         }
                     },
                     {
@@ -473,7 +476,7 @@
                     $('#form-detail').find('span#name_category').text(data.name_category);
                     $('#form-detail').find('span#name_lab').text(data.name_lab);
                     $('#form-detail').find('span#status').text(data.status_lab);
-                    $('#form-detail').find('span#capacity').text(`${data.capacity} orang`);
+                    $('#form-detail').find('span#capacity').text(`${data.capacity} kursi`);
                     $('#form-detail').find('span#desc_lab').text(descLab);
                     let strHead = '<ul class="list-group">';
                     let strFoot ='</ul>';

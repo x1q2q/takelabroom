@@ -10,22 +10,22 @@ class Categories extends Seeder
     {
         $news_data = [
 			[
-				'name_category' => 'software engineering',
+				'name_category' => 'Software Engineering',
 				'slug'  => 'software-engineering',
 				'thumb_category' => 'software-eng1.jpg',
-                'desc_category' => 'Software Engineering memiliki fasilitas yang lengkap karena...',
+                'desc_category' => 'Lab Software Engineering sering dipakai untuk keperluan tools-tools perangkat lunak.',
 			],
             [
-				'name_category' => 'multimedia studio',
+				'name_category' => 'Multimedia Studio',
 				'slug'  => 'multimedia-studio',
 				'thumb_category' => 'mulmed1.jpg',
-                'desc_category' => 'Multimedia Studio memiliki fasilitas mulmed yang',
+                'desc_category' => 'Lab Multimedia Studio  sering dipakai untuk keperluan meminjam alat-alat multimedia.',
 			],
             [
-				'name_category' => 'computer network and instrumentation',
+				'name_category' => 'Computer Network and Instrumentation',
 				'slug'  => 'computer-network-instrument',
 				'thumb_category' => 'comp-network.jpg',
-                'desc_category' => 'Computer Network Instrumentation memiliki fasilitas berupa salah satunya',
+                'desc_category' => 'Lab Computer Network and Instrumentation sering dipakai untuk keperluan alat-alat Jaringan.',
 			],
 		];
 

@@ -142,7 +142,9 @@
                 "defRender":true,
                 "language": {
                     "search": "_INPUT_",
-                    "searchPlaceholder": "Cari di sini..."
+                    "searchPlaceholder": "Cari di sini...",
+                    "emptyTable": "Data reservasi order masih kosong",
+                    "zeroRecords": "Data reservasi order kosong"
                 },
                 "dom": '<"wrapper m-2 bg-label-secondary p-1"lf>rt<"wrapper rounded-3 bg-label-dark"<i><"row align-items-center"<""><p>>>',
                 "processing": true,
@@ -150,6 +152,7 @@
                 "order": [
                     [0, "desc"]
                 ],
+                "aLengthMenu": [[5, 15, 30],[ 5, 15, 30]],
                 "columns": [
                     {
                         "data": "id_order",

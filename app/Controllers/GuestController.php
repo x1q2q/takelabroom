@@ -12,4 +12,8 @@ class GuestController extends BaseController
     {
         return view('guest/labroom');
     }
+    public function contact()
+    {
+        return view('guest/contact');
+    }
 }

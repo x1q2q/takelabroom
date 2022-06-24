@@ -28,6 +28,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'GuestController::index');
 $routes->get('/home', 'GuestController::index');
 $routes->get('/labroom', 'GuestController::labroom');
+$routes->get('/contact', 'GuestController::contact');
 $routes->get('/login', 'Auth/MemberLoginController::index');
 $routes->get('/dologin', 'Auth/MemberLoginController::doLogin');
 $routes->get('/admin/login', 'Auth/AdminLoginController::index');

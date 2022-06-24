@@ -5,8 +5,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="#feature">Home</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="<?= base_url('labroom'); ?>">Labroom</a></li>
-                <li class="nav-item"><a class="nav-link" aria-current="page" href="#marketing">Testimonial</a></li>
-                <li class="nav-item"><a class="nav-link" aria-current="page" href="contact.html#contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="<?= base_url('contact'); ?>">Contact</a></li>
             </ul>
             <div class="d-flex ms-lg-4">
                 <a class="btn btn-secondary-outline" href="#!">Sign In</a>

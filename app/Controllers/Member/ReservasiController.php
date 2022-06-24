@@ -19,6 +19,7 @@ class ReservasiController extends BaseController
     public $facilityModel;
     public $req;
     public $attribute;
+    public $userid;
     public function __construct()
     {
         $this->datatable = new ReservationModel();
@@ -27,6 +28,7 @@ class ReservasiController extends BaseController
         $this->codeFacModel = new CodeFacilityModel();
         $this->facilityModel = new FacilityModel();
         $this->req = Services::request();
+        $this->userid = 1;
         helper('html');   
     }
     public function addReservation(){
@@ -38,6 +40,10 @@ class ReservasiController extends BaseController
             $joinOnOrder = ($field == 'user_id') ? true:false; // to add left join with table orders
             $this->datatable->initDatatables($this->req, $joinOnOrder);
             $data = $this->datatable->getWhereDetail($field,$id);
+            $labid = [];
+            if($field == 'category_id'){
+                $labid = $this->req->getPost('lab_id');
+            }
             $newData = [];
             foreach ($data as $list) {
                 $splitDateStart = explode(' ',$list->time_start);
@@ -50,10 +56,15 @@ class ReservasiController extends BaseController
                 $row->date_booking = $splitDateStart[0];
                 $newData[] = $row;
             }
+            $arrFiltering = [
+                'field' => $field,
+                'value' => $id,
+                'lab_id' => $labid
+            ];
             $output = [
                 'draw' => $this->req->getPost('draw'),
-                'recordsTotal' => count($newData),
-                'recordsFiltered' => count($newData),
+                'recordsTotal' => $this->datatable->countAll($arrFiltering),
+                'recordsFiltered' => $this->datatable->countFiltered($arrFiltering),
                 'data' => $newData
             ];
 
@@ -82,8 +93,14 @@ class ReservasiController extends BaseController
             $row->label_status = ($list->status_lab == 'available') ? 'success' : 'warning';
             $labroom[] = $row;
         }
+        $queryCategory = $this->labroomModel->where('category_id',$category['id_category'])
+            ->get()->getResultArray();
+        $arrLabId = array_map (function($value){
+            return (int)$value['id_lab'];
+            }, $queryCategory);
         $data['labroom'] = $labroom;
-        return view('member/check_lab',$data);;
+        $data['data_labid'] = json_encode($arrLabId);
+        return view('member/check_lab',$data);
     }
     public function setAttribute(){
         $this->attribute = [];
@@ -104,13 +121,14 @@ class ReservasiController extends BaseController
     }
     public function insertData(){
         $validation = \Config\Services::validation();
+        $session = \Config\Services::session();
         $this->setAttribute(true);// set additional to true so image is a must
         $validation->setRules($this->attribute);
         $isDataValid = $validation->withRequest($this->req)->run();
         if($isDataValid){
             $reservation = $this->datatable;
-            $userId = 1;
-            $codeReserv = 'RESV'.$userId.'.'.strtoupper(uniqid());
+            $userId = $this->userid;
+            $codeReserv = 'RESV'.$userId.'.'.substr(strtoupper(uniqid()),-10);
             $tglPakai = $this->request->getPost('tgl_pakai');
             $waktuMulai = $this->request->getPost('time_start');
             $waktuAkhir = $this->request->getPost('time_end');
@@ -147,6 +165,7 @@ class ReservasiController extends BaseController
             }else{ // if true
                 $reservation->insert($values);
                 // set session flash data success goes here
+                $session->setFlashdata('success', 'Berhasil reservasi lab untuk rentang waktu '.$waktuMulai.'-'.$waktuAkhir);
                 $result = ['status' => 200, 'data' => $values,'message' => site_url('member/my-reservation')];
             }
         }else{
@@ -155,7 +174,7 @@ class ReservasiController extends BaseController
         return json_encode($result);
     }
     public function myReservation(){
-        $data['userid'] = 1;
+        $data['userid'] = $this->userid;
         return view('member/my_reservation',$data);
     }
 

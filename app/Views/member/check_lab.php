@@ -222,20 +222,20 @@ button.btn-alert{
                     {
                         'data': 'name_lab',
                         'className': "text-center",
-                        'orderable': false,
+                        'orderable': true,
                     },
                     {
                         'data': 'full_name',
                         'className': "text-center",
-                        'orderable': false,
+                        'orderable': true,
                         render: function (data, type, row, meta) {
                             return `${data}<br/>(${row.type_user})`;
                         }
                     },
                     {
-                        'data': 'range_time',
+                        'data': 'time_start',
                         'className': "text-center",
-                        'orderable': false,
+                        'orderable': true,
                         render: function (data, type, row, meta) {
                             return `(${row.time_start} - ${row.time_end})<br/> ${row.date_booking}`;
                         }

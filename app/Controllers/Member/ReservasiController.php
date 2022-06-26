@@ -20,6 +20,7 @@ class ReservasiController extends BaseController
     public $req;
     public $attribute;
     public $userid;
+    public $typeuser;
     public function __construct()
     {
         $this->datatable = new ReservationModel();
@@ -28,7 +29,8 @@ class ReservasiController extends BaseController
         $this->codeFacModel = new CodeFacilityModel();
         $this->facilityModel = new FacilityModel();
         $this->req = Services::request();
-        $this->userid = 1;
+        $this->userid = 3;
+        $this->typeuser = 'non-civitas';
         helper('html');   
     }
     public function addReservation(){
@@ -51,9 +53,12 @@ class ReservasiController extends BaseController
                 
                 $row = [];
                 $row = $list;
+                $isNeedPayment = (!empty($list->total_payment)) ? true : false;
                 $row->time_start = substr($splitDateStart[1],0,5);
                 $row->time_end = substr($splitDateEnd[1],0,5);
                 $row->date_booking = $splitDateStart[0];
+                $row->status = ($isNeedPayment) ? $list->status_order: $list->status_reserv;
+                $row->is_order = ($isNeedPayment) ? 1:0;
                 $newData[] = $row;
             }
             $arrFiltering = [
@@ -74,6 +79,7 @@ class ReservasiController extends BaseController
     public function checkLab($slug){
         $category = $this->categoryModel->where('slug',$slug)->first();
         $data['category'] = $category;
+        $data['type_user'] = $this->typeuser;
         $query = $this->labroomModel->where('category_id',$category["id_category"])->get()->getResult();
         $labroom = [];
         foreach ($query as $list) {
@@ -120,6 +126,9 @@ class ReservasiController extends BaseController
         ];
     }
     public function insertData(){
+        $ruleRightTime = array('min' => '07:00', 'max' => '21:00');
+        $ruleMinute = array('min' => 30, 'max' => 300);
+        $ruleDay = array('min' => 1, 'max' => 14); // 1 hari / (2 minggu / 14hari)
         $validation = \Config\Services::validation();
         $session = \Config\Services::session();
         $this->setAttribute(true);// set additional to true so image is a must
@@ -144,10 +153,21 @@ class ReservasiController extends BaseController
             ];
             // validation check for ketersediaan lab goes here
 
-            $isNotAvailable = false; // $query->hasInTime()
-            $isNotInRightTime = false; // not in 07:00 - 21:00
-            $isNotInRightMinMax = false; // if > 1 week and < 24hour from inserted at
-            $isNotRightPositionTime = false; // if time_start > time_end / time_end < time_start 
+            $isNotAvailable = false; 
+            // $query->hasInTime()
+           
+            $isNotInRightTime = ($waktuMulai < $ruleRightTime['min'] || $waktuAkhir > $ruleRightTime['max']);
+            // not in 07:00 - 21:00
+            
+            $isNotInRightMinMaxHour = $this->checkMinMaxDay($tglPakai, $waktuMulai, $ruleDay); 
+            // if > 1 week or < 24hour from inserted at
+            
+            $isNotRightPositionTime = ($waktuMulai >= $waktuAkhir); 
+            // if time_start >= time_end
+            
+            $isNotInMinMaxMinute = $this->checkMinMaxMinute($waktuMulai, $waktuAkhir, $ruleMinute);
+            // if < 30 menit or > 300 menit
+
             if($isNotAvailable){ // jika tidak available (karena jam itu penuh)
                 $result = ['status' => 500, 'data' => [], 
                 'message' => 'Ruang Lab untuk jam '.$waktuMulai.'-'.$waktuAkhir
@@ -155,13 +175,16 @@ class ReservasiController extends BaseController
             }else if($isNotInRightTime){ // jka tidak pada waktu yang benar
                 $result = ['status' => 500, 'data' => [], 
                 'message' => 'Anda hanya bisa mengajukan reservasi lab antara jam 07.00 - 21.00'];
-            }else if($isNotInRightMinMax){ // jika tidak benar pada value benar min max peminjaman 
+            }else if($isNotInRightMinMaxHour){ // jika tidak benar pada value benar min max peminjaman 
                 $result = ['status' => 500, 'data' => [], 
-                'message' => 'Reservasi tidak boleh lebih 2 minggu
-                    dan tidak kurang 24 jam dari waktu sekarang'];
+                'message' => 'Reservasi tidak boleh kurang 24 jam
+                    dan tidak lebih 2 minggu dari waktu sekarang'];
             }else if($isNotRightPositionTime){ // jika tidak benar pada value benar min max peminjaman 
                 $result = ['status' => 500, 'data' => [], 
                 'message' => 'Posisi antara waktu mulai & waktu selesai masih salah. Silakan tukar atau pilih waktu lain'];
+            }else if($isNotInMinMaxMinute){ // jika tidak benar pada value benar min max peminjaman 
+                $result = ['status' => 500, 'data' => [], 
+                'message' => 'Peminjaman hanya diperbolehkan minimal 30 menit dan maksimal 300 menit'];
             }else{ // if true
                 $reservation->insert($values);
                 // set session flash data success goes here
@@ -177,5 +200,35 @@ class ReservasiController extends BaseController
         $data['userid'] = $this->userid;
         return view('member/my_reservation',$data);
     }
-
+    public function checkMinMaxDay($tgl, $waktu, $rule){
+        $datetime = new \DateTime("now", new \DateTimeZone( "Asia/Jakarta" ));
+        $tglPakai = $tgl.' '.$waktu;
+        $now = $datetime->format('m/d/Y H:i');
+        $tglStart =  new \DateTime($now);
+        $tglEnd = new \DateTime($tglPakai);
+        $interval = $tglEnd->diff($tglStart);
+        $intJam = (int)$interval->d;
+        return ($intJam < $rule['min'] || $intJam > $rule['max']);
+    }
+    public function checkMinMaxMinute($waktuMulai, $waktuAkhir, $rule){
+        $diffTime = ((strtotime($waktuAkhir) - strtotime($waktuMulai)) / 60);
+        return ($diffTime < $rule['min'] || $diffTime > $rule['max']);
+    }
+    public function changeStatus(){
+        if ($this->req->isAJAX()) {
+            $id = $this->request->getPost('id_reserv');
+            $toStatus = $this->request->getPost('status');
+            $reservasi = $this->datatable;
+            $values = [
+                'status_reserv' => $toStatus
+            ];
+            if($reservasi->update($id, $values)){
+                $result = ['status' => 200, 'data' => [],'message' => 'Reservasi berhasil diganti status menjadi '.$toStatus];
+            }else{
+                $result = ['status' => 500, 'data' => [],'message' => 'Reservasi gagal diganti status'];
+            }
+            return json_encode($result);
+        }
+    }
+    
 }

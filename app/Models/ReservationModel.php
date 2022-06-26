@@ -13,10 +13,8 @@ class ReservationModel extends Model
     protected $allowedFields    = ['lab_id','user_id','code_reserv',
     'time_start','time_end','status_reserv'];
 
-    protected $column_order = ['id_reserv', 'lab_id','user_id','code_reserv',
-    'time_start','time_end'];
-    protected $column_search = ['code_reserv',
-    'time_start','time_end','status_reserv'];
+    protected $column_order = ['id_reserv', 'lab_id','user_id','code_reserv','time_start'];
+    protected $column_search = ['time_start','time_end','status_reserv'];
     protected $order = ['id_reserv' => 'DESC'];
     protected $request;
     protected $db;
@@ -41,8 +39,12 @@ class ReservationModel extends Model
         if($joinOnOrder){
             $builder->join('orders','orders.code_reserv = reservations.code_reserv','left'); // left join
             $builder->select('orders.total_payment, orders.status_order, orders.thumb_order');
+            array_push($this->column_search,'reservations.code_reserv');
+        }else{
+            array_push($this->column_search,'code_reserv');
         }
-            $builder->select('reservations.*, labrooms.*, users.*');
+            $strSelect = 'reservations.*, labrooms.*, users.username, users.full_name,users.type_user';
+            $builder->select($strSelect);
         $this->dt = $builder;
     }
     private function getDatatablesQuery()

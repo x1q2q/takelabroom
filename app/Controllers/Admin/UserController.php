@@ -19,7 +19,7 @@ class UserController extends BaseController
     }
     public function index()
     {
-        return view('admin/user');
+        return view('admin/member');
     }
     public function getData(){
         $this->datatable->initDatatables($this->request);

@@ -19,7 +19,7 @@ class LaporanController extends BaseController
     }
     public function index()
     {
-        return view('admin/laporan');
+        return view('admin/reservation_report');
     }
     public function getData(){
         if ($this->req->isAJAX()) {

@@ -6,7 +6,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">labroom /</span> Laporan </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">reservasi /</span> Laporan Reservasi </h4>
     <div class="bs-toast toast toast-placement-ex top-0 end-0 m-3 sld-down"
         role="alert"
         aria-live="assertive"
@@ -24,7 +24,7 @@
     <div class="card">
     <div class="card-header row justify-content-between">
         <div class="col">
-            <h5 class="mt-2">Data Laporan</h5>
+            <h5 class="mt-2">Laporan Reservasi</h5>
         </div>
     </div>
     <div class="table-responsive text-wrap">
@@ -89,63 +89,6 @@
         </div>
     </div>
 </div>
-<?= $this->include('admin/templates/modal_delete'); ?>
-
-<!-- modal save -->
-<div class="modal fade" id="modal-save" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog sld-up" role="document">
-    <form action="" method="POST" id="form-save" class="modal-content" 
-        tipe="" enctype="multipart/form-data">
-        <input type="hidden" id="id_category"/>
-            <div class="modal-header border-bottom">
-                <h5 class="modal-title"></h5>
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                ></button>
-            </div>
-            <div class="modal-body p-4 pb-0">
-                <div class="row">
-                    <div class="col-12 mb-3">
-                    <label for="name_category" class="form-label">Nama Kategori</label>
-                    <input type="text" class="form-control" name="name_category" id="name_category" 
-                    placeholder="Masukkan nama kategori (cth: lab soft.eng)"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 mb-3">
-                    <label for="desc_category" class="form-label">Deskripsi</label>
-                    <textarea class="form-control" rows="3" placeholder="Masukkan deskripsi kategori"
-                        name="desc_category" id="desc_category"></textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <label for="thumb_category" class="form-label">Thumbnail</label>
-                        <div class="custom-file border-bottom p-2" id="thumb_category">
-                            <input type="file" name="thumb_category" hidden class="form-control" accept=".png,.jpg,.jpeg" id="category-file">
-                            <input type="text" name="category_file_name" value="" class="form-control" hidden id="category-file-name" >
-                            <label class="btn-secondary btn" for="category-file" style="padding: 4px 10px">
-                            <span class="tf-icons bx bxs-image-add"></span>
-                                Pilih </label>
-                            <label id="category-file-name-label" for="category-file">Tidak ada gambar yang dipilih</label>
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-footer py-4 px-0">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    Close
-                </button>
-                <button type="submit" class="btn btn-success" id="btn-save">Simpan 
-                    <span class="tf-icons bx bxs-check-circle"></span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style type="text/css">
 </style>
 <?= $this->endSection('content'); ?>
@@ -221,7 +164,7 @@
                     },
                 ],
                 "ajax": {
-                    "url": "<?php echo site_url('admin/kategori/getdata') ?>",
+                    "url": "<?php echo site_url('admin/lab-category/getdata') ?>",
                     "type": "POST",
                     'data': function(data) {
                         data.csrf_token_name = tokenHash;
@@ -237,7 +180,7 @@
 
             $('#form-save').submit(function(e){
                 e.preventDefault();
-                let siteUrl = "<?= site_url('admin/kategori/'); ?>";
+                let siteUrl = "<?= site_url('admin/lab-category/'); ?>";
                 let formData = new FormData(this);
                 let idCategory = $('#form-save').find('#id_category').val();
                 let urlPost =  ($(this).attr('tipe') == 'add') ? 
@@ -345,7 +288,7 @@
         function editData(id){
             $('#form-save .modal-title').text("Edit Data");
             $('#form-save').attr('tipe','edit');
-            let urlDetail = '<?= site_url('admin/kategori/detail/:id'); ?>';
+            let urlDetail = '<?= site_url('admin/lab-category/detail/:id'); ?>';
             $.ajax({
                 type:'GET',
                 url: urlDetail.replace(':id',id),
@@ -370,7 +313,7 @@
             });
         }
         function detailData(id){
-            let urlDetail = '<?= site_url('admin/kategori/detail/:id'); ?>';
+            let urlDetail = '<?= site_url('admin/lab-category/detail/:id'); ?>';
             $.ajax({
                 type:'GET',
                 url: urlDetail.replace(':id',id),
@@ -388,7 +331,7 @@
         }
 
         function hapusData(id){
-            let urlDelete = "<?= site_url('admin/kategori/delete/:id'); ?>";
+            let urlDelete = "<?= site_url('admin/lab-category/delete/:id'); ?>";
             $("#confirm-delete").modal('show');
             $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
         }

@@ -6,7 +6,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">labroom /</span> Fasilitas </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">umum /</span> Data Fasilitas </h4>
     <div class="bs-toast toast toast-placement-ex top-0 end-0 m-3 sld-down"
         role="alert"
         aria-live="assertive"
@@ -151,7 +151,7 @@
                             <label id="facility-file-name-label" for="facility-file">Tidak ada gambar yang dipilih</label>
                         </div>
                     </div>
-            </div>
+                </div>
             <div class="modal-footer py-4 px-0">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
@@ -253,7 +253,7 @@
                     },
                 ],
                 "ajax": {
-                    "url": "<?php echo site_url('admin/fasilitas/getdata') ?>",
+                    "url": "<?php echo site_url('admin/list-facilities/getdata') ?>",
                     "type": "POST",
                     'data': function(data) {
                         data.csrf_token_name = tokenHash;
@@ -269,7 +269,7 @@
 
             $('#form-save').submit(function(e){
                 e.preventDefault();
-                let siteUrl = "<?= site_url('admin/fasilitas/'); ?>";
+                let siteUrl = "<?= site_url('admin/list-facilities/'); ?>";
                 let formData = new FormData(this);
                 let idFacility = $('#form-save').find('#id_facility').val();
                 let urlPost =  ($(this).attr('tipe') == 'add') ? 
@@ -376,7 +376,7 @@
         function editData(id){
             $('#form-save .modal-title').text("Edit Data");
             $('#form-save').attr('tipe','edit');
-            let urlDetail = '<?= site_url('admin/fasilitas/detail/:id'); ?>';
+            let urlDetail = '<?= site_url('admin/list-facilities/detail/:id'); ?>';
             $.ajax({
                 type:'GET',
                 url: urlDetail.replace(':id',id),
@@ -402,7 +402,7 @@
             });
         }
         function detailData(id){
-            let urlDetail = '<?= site_url('admin/fasilitas/detail/:id'); ?>';
+            let urlDetail = '<?= site_url('admin/list-facilities/detail/:id'); ?>';
             $.ajax({
                 type:'GET',
                 url: urlDetail.replace(':id',id),
@@ -420,7 +420,7 @@
         }
 
         function hapusData(id){
-            let urlDelete = "<?= site_url('admin/fasilitas/delete/:id'); ?>";
+            let urlDelete = "<?= site_url('admin/list-facilities/delete/:id'); ?>";
             $("#confirm-delete").modal('show');
             $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
         }

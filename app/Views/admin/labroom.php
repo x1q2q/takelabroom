@@ -8,7 +8,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">labroom /</span> Data Lab </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">umum /</span> Data Labroom </h4>
     <div class="bs-toast toast toast-placement-ex top-0 end-0 m-3 sld-down"
         role="alert"
         aria-live="assertive"
@@ -26,7 +26,7 @@
     <div class="card">
     <div class="card-header row justify-content-between">
         <div class="col">
-            <h5 class="mt-2">Data Lab</h5>
+            <h5 class="mt-2">Data Labroom</h5>
         </div>
         <div class="col-auto">
             <button type="button" class="btn btn-dark rounded-3" onclick="addData()"
@@ -304,7 +304,7 @@
                     },
                 ],
                 "ajax": {
-                    "url": "<?php echo site_url('admin/labroom/getdata') ?>",
+                    "url": "<?php echo site_url('admin/list-labrooms/getdata') ?>",
                     "type": "POST",
                     'data': function(data) {
                         data.csrf_token_name = tokenHash;
@@ -320,7 +320,7 @@
 
             $('#form-save').submit(function(e){
                 e.preventDefault();
-                let siteUrl = "<?= site_url('admin/labroom'); ?>";
+                let siteUrl = "<?= site_url('admin/list-labrooms'); ?>";
                 let formData = new FormData(this);
                 let idLab = $('#form-save').find('#id_lab').val();
                 let urlPost =  ($(this).attr('tipe') == 'add') ? 
@@ -387,7 +387,7 @@
 
         function addCategoryList(itemSelected=''){
             let category_data = [];
-            let urlGetList = "<?= site_url('admin/labroom/getlist/categories'); ?>";
+            let urlGetList = "<?= site_url('admin/list-labrooms/getlist/categories'); ?>";
             $('#category_data').html('');
             $('#category_data').append('');
             $.ajax({
@@ -411,7 +411,7 @@
         }
         function addFacilityList(itemSelected = []){
             let facility_data = [];
-            let urlGetList = "<?= site_url('admin/labroom/getlist/facilities'); ?>";
+            let urlGetList = "<?= site_url('admin/list-labrooms/getlist/facilities'); ?>";
             $('#facility_data').html('');
             $('#facility_data').append('');
             $.ajax({
@@ -443,7 +443,7 @@
         function editData(id){
             $('#form-save .modal-title').text("Edit Data");
             $('#form-save').attr('tipe','edit');
-            let urlDetail = '<?= site_url('admin/labroom/detail/:id'); ?>';
+            let urlDetail = '<?= site_url('admin/list-labrooms/detail/:id'); ?>';
             $.ajax({
                 type:'GET',
                 url: urlDetail.replace(':id',id),
@@ -466,7 +466,7 @@
             });
         }
         function detailData(id){
-            let urlDetail = '<?= site_url('admin/labroom/detail/:id'); ?>';
+            let urlDetail = '<?= site_url('admin/list-labrooms/detail/:id'); ?>';
             $.ajax({
                 type:'GET',
                 url: urlDetail.replace(':id',id),
@@ -502,7 +502,7 @@
         }
 
         function hapusData(id){
-            let urlDelete = "<?= site_url('admin/labroom/delete/:id'); ?>";
+            let urlDelete = "<?= site_url('admin/list-labrooms/delete/:id'); ?>";
             $("#confirm-delete").modal('show');
             $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
         }

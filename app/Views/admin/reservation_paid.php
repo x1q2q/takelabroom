@@ -6,7 +6,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">general /</span> Reservasi Order </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">reservasi /</span> Reservasi Berbayar </h4>
     <div class="bs-toast toast toast-placement-ex top-0 end-0 m-3 sld-down"
         role="alert"
         aria-live="assertive"
@@ -24,7 +24,7 @@
     <div class="card">
     <div class="card-header row justify-content-between">
         <div class="col">
-            <h5 class="mt-2">Data Reservasi Order</h5>
+            <h5 class="mt-2">Reservasi Berbayar</h5>
         </div>
     </div>
     <div class="table-responsive text-wrap">
@@ -33,8 +33,8 @@
             <tr>
             <th>No.</th>
             <th>Kode Pinjam</th>
+            <th style="width:15%">Ruang Lab</th>
             <th>Peminjam</th>
-            <th>Ruang Lab</th>
             <th>Status Order</th>
             <th>Tot. Bayar</th>
             <th>Aksi</th>
@@ -121,6 +121,59 @@
         </div>
     </div>
 </div>
+<!-- modal info -->
+<div class="modal fade" id="modal-info" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog sld-up modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header border-bottom">
+            <h5 class="modal-title"></h5>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            ></button>
+        </div>
+        <div class="modal-body p-4"> 
+            <div id="form-detail">
+                <div class="form-group row">
+                    <span id="info"></span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal-chstatus -->
+<div class="modal fade" id="modal-chstatus" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog sld-up modal-dialog-centered" role="document">
+    <form action="" method="POST" id="form-chstatus" class="modal-content" 
+        tipe="" enctype="multipart/form-data">
+        <input type="hidden" id="code_reserv"/>
+            <div class="modal-header border-bottom">
+                <h5 class="modal-title"></h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body p-3 pb-0">
+                <div id="text-info"></div>
+                <div id="form-group"></div>
+
+                <div class="modal-footer py-4 px-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-success" id="btn-save"></button>
+                </div>
+            </div>
+    </form>
+    </div>
+</div>
 <?= $this->include('admin/templates/modal_delete'); ?>
 <style type="text/css">
 </style>
@@ -143,8 +196,8 @@
                 "language": {
                     "search": "_INPUT_",
                     "searchPlaceholder": "Cari di sini...",
-                    "emptyTable": "Data reservasi order masih kosong",
-                    "zeroRecords": "Data reservasi order kosong"
+                    "emptyTable": "Data reservasi berbayar masih kosong",
+                    "zeroRecords": "Data reservasi berbayar kosong"
                 },
                 "dom": '<"wrapper m-2 bg-label-secondary p-1"lf>rt<"wrapper rounded-3 bg-label-dark"<i><"row align-items-center"<""><p>>>',
                 "processing": true,
@@ -167,6 +220,11 @@
                         'orderable': false,
                     },
                     {
+                        'data': 'name_lab',
+                        'className': "text-center",
+                        'orderable': false,
+                    },
+                    {
                         'data': 'full_name',
                         'className': "text-center",
                         'orderable': false,
@@ -175,28 +233,30 @@
                         }
                     },
                     {
-                        'data': 'name_lab',
-                        'className': "text-center",
-                        'orderable': false,
-                    },
-                    {
                         'data': 'status_order',
                         'className': "text-center",
                         'orderable': false,
                         render: function (data, type, row, meta) {
-                            let labelStatus = (data == 'cancelled') ? 'danger' : (data == 'paided') 
-                                ? 'primary': (data == 'confirmed') ? 'success' : 'warning' ;
-                            let label = `<span class="badge bg-label-${labelStatus} me-1">${data}</span>`;
-
-                            let btnStatus = (data == 'paided') ? 'primary' : 'success';
-                            let btnTxt = (data == 'paided') ? 'Lihat Bukti' : 'Verifikasi';
-                            let btn = `<button onclick="changeStts('${data}','${row.id_reserv}')" 
-                                type="button" class="btn mt-1 btn-sm
-                                btn-${btnStatus}" title="ganti status">${btnTxt}
-                                </button>`;
-
-                            let btnChangeStts = (data == 'paided' || data == 'confirmed') ? btn : '';
-                            return label + '<br/>' + btnChangeStts;
+                            let label = '';
+                            let btn = '';
+                            if(data == 'pending'){
+                                label = `<span class="badge bg-label-warning">pending</span>`;
+                                btn = `<button onclick="showStatus('${data}','${row.code_reserv}')"
+                                    type="button" data-bs-toggle="modal" data-bs-target="#modal-info" 
+                                    class="btn btn-sm btn-success mt-1">Konfirmasi</button>`;
+                            }else if(data == 'paided'){
+                                label = `<span class="badge bg-label-success">paided</span>`;
+                                btn = `<button class="btn btn-sm btn-info mt-1" 
+                                onclick="changeStatus('${row.code_reserv}','${data}','${row.id_order}','${row.thumb_order}')"
+                                type="button" data-bs-toggle="modal" data-bs-target="#modal-chstatus">Check Bukti</button>`;
+                            }else if(data == 'confirmed'){
+                                label = `<span class="badge bg-label-success">${data}</span>`;
+                            }else{
+                                let labelStatus = (data == 'cancelled') ? 'danger' : (data == 'finished')  
+                                    ? 'success' : 'secondary' ;
+                                label = `<span class="badge bg-label-${labelStatus} me-1">${data}</span>`;
+                            }
+                            return label + '<br/>' + btn;
                         }
                     },
                     {
@@ -224,7 +284,7 @@
                     },
                 ],
                 "ajax": {
-                    "url": "<?php echo site_url('admin/reservasi-order/getdata') ?>",
+                    "url": "<?php echo site_url('admin/paid-reservations/getdata') ?>",
                     "type": "POST",
                     'data': function(data) {
                         data.csrf_token_name = tokenHash;
@@ -258,10 +318,36 @@
                     }
                 });
             });
+
+            $('#form-chstatus').submit(function(e){
+                e.preventDefault();
+                let siteUrl = "<?= site_url('admin/paid-reservations/change-status'); ?>";
+                let formData = new FormData(this);
+                $.ajax({
+                    type: $(this).attr('method'),
+                    url: siteUrl,
+                    data:formData,
+                    processData:false,
+                    contentType:false,
+                    success: function(response){ 
+                        var resp = JSON.parse(response);
+                        if(parseInt(resp.status) == 200){
+                            $('#modal-chstatus').modal('hide');
+                            orderTable.draw();
+                            showToast('success','Sukses',resp.message,'#toast-alert');
+                        }else{
+                            showToast('warning','Peringatan',resp.message,'#toast-alert');
+                        }
+                    },error: function(){
+                        $('#modal-chstatus').modal('hide');
+                        showToast('danger','Peringatan','Gagal! Database server error','#toast-alert');
+                    }
+                });
+            });
         }); 
 
         function detailData(id){
-            let urlDetail = '<?= site_url('admin/reservasi-order/detail/:id'); ?>';
+            let urlDetail = '<?= site_url('admin/paid-reservations/detail/:id'); ?>';
             $.ajax({
                 type:'GET',
                 url: urlDetail.replace(':id',id),
@@ -297,9 +383,34 @@
         }
 
         function hapusData(id){
-            let urlDelete = "<?= site_url('admin/reservasi-order/delete/:id'); ?>";
+            let urlDelete = "<?= site_url('admin/paid-reservations/delete/:id'); ?>";
             $("#confirm-delete").modal('show');
             $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
+        }
+        function showStatus(status,codereserv){
+            $('#modal-info').find('.modal-title').html(`Informasi Status
+                <span class="badge bg-label-warning">${status}</span>`);
+            $('#modal-info #form-detail').find('span#info').html(
+                `<i>Untuk mengkonfirmasi reservasi berbayar ini, anda perlu menunggu member upload bukti pembayaran
+                    terlebih dahulu :)</i>`);
+        }
+        function changeStatus(codereserv,status,idorder,imgPath=''){
+            if(status == 'paided'){
+                $('#modal-chstatus').find('.modal-title').html(`Konfirmasi Order`);
+                $('#modal-chstatus .modal-footer').find('button#btn-save').html(
+                    `Ya, Konfirmasi <span class="tf-icons bx bxs-check-circle"></span>`);
+                $('#modal-chstatus .modal-body').find('#text-info').html(
+                    `<div><b>Bukti Pembayaran: </b></div>
+                    <img class="img-fluid rounded mb-3" style="max-width:300px" 
+                    src="${urlPathThumb}/${imgPath}" alt="bukti pembayaran">
+                    <p>Yakin untuk mengkonfirmasi reservasi berbayar <b>${codereserv}</b> (?) </p>`);
+                $('#modal-chstatus .modal-body').find('#form-group').html(
+                    `<div class="row">
+                        <input type='hidden' name="status" value="confirmed">
+                        <input type='hidden' name="id_order" value="${idorder}">
+                        <input type='hidden' name="code_reserv" value="${codereserv}">
+                    </div>`);    
+            }     
         }
     </script>
 <?= $this->endSection('extrascript'); ?>

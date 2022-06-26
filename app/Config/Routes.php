@@ -45,55 +45,61 @@ $routes->group('member', static function ($routes) {
     $routes->get('my-reservation','Member/ReservasiController::myReservation');
     $routes->post('my-reservation/getdata/(:any)/(:num)','Member\ReservasiController::getData/$1/$2');
     $routes->post('my-reservation/insert','Member/ReservasiController::insertData');
+    $routes->post('my-reservations/change-status', 'Member\ReservasiController::changeStatus');
+    $routes->post('my-reservations/upload-bukti', 'Admin\OrderController::uploadBukti');
+
     $routes->get('my-profile','Member/ProfileController::index');
-    $routes->get('setting-profile','Member/ProfileController::settingProfile');
 });
 
 
 // admin area
 $routes->group('admin', static function ($routes) {
     $routes->get('/', 'Admin/DashboardController::index');
-    $routes->get('dashboard', 'Admin/DashboardController::index');
+    $routes->get('infographics', 'Admin/DashboardController::index');
 
-    $routes->get('fasilitas', 'Admin/FacilityController::index');
-    $routes->post('fasilitas/getdata', 'Admin/FacilityController::getData');
-    $routes->post('fasilitas/insert', 'Admin/FacilityController::insertData');
-    $routes->get('fasilitas/delete/(:num)', 'Admin\FacilityController::deleteData/$1');
-    $routes->get('fasilitas/detail/(:num)', 'Admin\FacilityController::detailData/$1');
-    $routes->post('fasilitas/update/(:num)', 'Admin\FacilityController::updateData/$1');
+    $routes->get('list-facilities', 'Admin/FacilityController::index');
+    $routes->post('list-facilities/getdata', 'Admin/FacilityController::getData');
+    $routes->post('list-facilities/insert', 'Admin/FacilityController::insertData');
+    $routes->get('list-facilities/delete/(:num)', 'Admin\FacilityController::deleteData/$1');
+    $routes->get('list-facilities/detail/(:num)', 'Admin\FacilityController::detailData/$1');
+    $routes->post('list-facilities/update/(:num)', 'Admin\FacilityController::updateData/$1');
 
-    $routes->get('kategori', 'Admin/CategoryController::index');
-    $routes->post('kategori/getdata', 'Admin/CategoryController::getData');
-    $routes->post('kategori/insert', 'Admin/CategoryController::insertData');
-    $routes->get('kategori/delete/(:num)', 'Admin\CategoryController::deleteData/$1');
-    $routes->get('kategori/detail/(:num)', 'Admin\CategoryController::detailData/$1');
-    $routes->post('kategori/update/(:num)', 'Admin\CategoryController::updateData/$1');
+    $routes->get('lab-category', 'Admin/CategoryController::index');
+    $routes->post('lab-category/getdata', 'Admin/CategoryController::getData');
+    $routes->post('lab-category/insert', 'Admin/CategoryController::insertData');
+    $routes->get('lab-category/delete/(:num)', 'Admin\CategoryController::deleteData/$1');
+    $routes->get('lab-category/detail/(:num)', 'Admin\CategoryController::detailData/$1');
+    $routes->post('lab-category/update/(:num)', 'Admin\CategoryController::updateData/$1');
 
-    $routes->get('labroom', 'Admin/LabroomController::index');
-    $routes->post('labroom/getdata', 'Admin/LabroomController::getData');
-    $routes->post('labroom/insert', 'Admin/LabroomController::insertData');
-    $routes->get('labroom/delete/(:num)', 'Admin\LabroomController::deleteData/$1');
-    $routes->get('labroom/detail/(:num)', 'Admin\LabroomController::detailData/$1');
-    $routes->post('labroom/update/(:num)', 'Admin\LabroomController::updateData/$1');
-    $routes->get('labroom/getlist/(:any)', 'Admin\LabroomController::getListData/$1');
+    $routes->get('list-labrooms', 'Admin/LabroomController::index');
+    $routes->post('list-labrooms/getdata', 'Admin/LabroomController::getData');
+    $routes->post('list-labrooms/insert', 'Admin/LabroomController::insertData');
+    $routes->get('list-labrooms/delete/(:num)', 'Admin\LabroomController::deleteData/$1');
+    $routes->get('list-labrooms/detail/(:num)', 'Admin\LabroomController::detailData/$1');
+    $routes->post('list-labrooms/update/(:num)', 'Admin\LabroomController::updateData/$1');
+    $routes->get('list-labrooms/getlist/(:any)', 'Admin\LabroomController::getListData/$1');
 
-    $routes->get('daftar-user', 'Admin/UserController::index');
-    $routes->post('daftar-user/getdata', 'Admin/UserController::getData');
-    $routes->get('daftar-user/delete/(:num)', 'Admin\UserController::deleteData/$1');
-    $routes->get('daftar-user/detail/(:num)', 'Admin\UserController::detailData/$1');
+    $routes->get('list-members', 'Admin/UserController::index');
+    $routes->post('list-members/getdata', 'Admin/UserController::getData');
+    $routes->get('list-members/delete/(:num)', 'Admin\UserController::deleteData/$1');
+    $routes->get('list-members/detail/(:num)', 'Admin\UserController::detailData/$1');
 
-    $routes->get('reservasi', 'Admin/ReservasiController::index');
-    $routes->post('reservasi/getdata', 'Admin/ReservasiController::getData');
-    $routes->get('reservasi/delete/(:num)', 'Admin\ReservasiController::deleteData/$1');
-    $routes->get('reservasi/detail/(:num)', 'Admin\ReservasiController::detailData/$1');
+    $routes->get('all-reservations', 'Admin/ReservasiController::index');
+    $routes->post('all-reservations/getdata', 'Admin/ReservasiController::getData');
+    $routes->get('all-reservations/delete/(:num)', 'Admin\ReservasiController::deleteData/$1');
+    $routes->get('all-reservations/detail/(:num)', 'Admin\ReservasiController::detailData/$1');
+    $routes->post('all-reservations/change-status', 'Admin\ReservasiController::changeStatus');
 
-    $routes->get('reservasi-order','Admin/OrderController::index');
-    $routes->post('reservasi-order/getdata','Admin/OrderController::getData');
-    $routes->get('reservasi-order/delete/(:num)','Admin\OrderController::deleteData/$1');
-    $routes->get('reservasi-order/detail/(:num)','Admin\OrderController::detailData/$1');
+    $routes->get('paid-reservations','Admin/OrderController::index');
+    $routes->post('paid-reservations/getdata','Admin/OrderController::getData');
+    $routes->get('paid-reservations/delete/(:num)','Admin\OrderController::deleteData/$1');
+    $routes->get('paid-reservations/detail/(:num)','Admin\OrderController::detailData/$1');
+    $routes->post('paid-reservations/change-status', 'Admin\OrderController::changeStatus');
 
-    $routes->get('laporan','Admin/LaporanController::index');
-    $routes->post('laporan/getdata','Admin/OrderController::getData');
+    $routes->get('schedule-reservation','Admin/ReservasiController::scheduleReserv');
+
+    $routes->get('report-reservation','Admin/LaporanController::index');
+    $routes->post('report-reservation/getdata','Admin/OrderController::getData');
 });
 /*
  * --------------------------------------------------------------------

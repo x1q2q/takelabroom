@@ -6,7 +6,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">general /</span> Reservasi </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">umum /</span> Data Member </h4>
     <div class="bs-toast toast toast-placement-ex top-0 end-0 m-3 sld-down"
         role="alert"
         aria-live="assertive"
@@ -24,21 +24,20 @@
     <div class="card">
     <div class="card-header row justify-content-between">
         <div class="col">
-            <h5 class="mt-2">Data Reservasi</h5>
+            <h5 class="mt-2">Data Member</h5>
         </div>
     </div>
     <div class="table-responsive text-wrap">
-        <table class="table table-striped table-responsive" id="datatable-reserv">
+        <table class="table table-striped table-responsive" id="datatable-user">
         <thead>
             <tr>
             <th>No.</th>
-            <th>Kode Pinjam</th>
-            <th>Ruang Lab</th>
-            <th>Peminjam</th>
-            <th>Rentang Waktu</th>
-            <th>Status</th>
-            <th>Tgl Pinjam</th>
-            <th>Aksi</th>
+            <th>NIM <br/>(email)</th>
+            <th style="width:20%;">Nama <br/>(username)</th>
+            <th style="width: 10%;">Tipe</th>
+            <th style="width: 10%;">Status</th>
+            <th>Thumbnail</th>
+            <th style="width: 20%;">Aksi</th>
             </tr>
         </thead>
         <tbody class="table-border-bottom-0"></tbody>
@@ -63,27 +62,45 @@
         <div class="modal-body p-4"> 
             <div id="form-detail">
                 <div class="form-group row">
-                    <label class="col-sm-4">Kode Pinjam</label>
+                    <label class="col-sm-4">NIM</label>
                     <div class="col-sm-8">
-                        <span id="code_reserv"></span>
+                        <span id="nim"></span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Peminjam</label>
+                    <label class="col-sm-4">Username</label>
                     <div class="col-sm-8">
-                        <span id="peminjam"></span>
+                        <span id="username"></span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Ruang Lab</label>
+                    <label class="col-sm-4">E-mail</label>
                     <div class="col-sm-8">
-                        <span id="name_lab"></span>
+                        <span id="email"></span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Rentang Waktu</label>
+                    <label class="col-sm-4">Nama Lengkap</label>
                     <div class="col-sm-8">
-                        <span id="range_time"></span>
+                        <span id="full_name"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4">Tipe User</label>
+                    <div class="col-sm-8">
+                        <span id="type_user"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4">Jenis Kelamin</label>
+                    <div class="col-sm-8">
+                        <span id="gender"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4">No. Telpon</label>
+                    <div class="col-sm-8">
+                        <span id="notelp"></span>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -93,17 +110,18 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Perlu pembayaran</label>
-                    <div class="col-sm-8">
-                        <span id="need_order_confirmation"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-4">Tanggal Pinjam</label>
+                    <label class="col-sm-4">Tanggal Registrasi</label>
                     <div class="col-sm-8">
                         <span id="created_at"></span>
                     </div>
                 </div>
+                <div class="form-group row">	
+                    <label class="col-sm-4">Thumbnail</label>	
+                    <div class="col-sm-8">	
+                        <div id="thumb_user">
+                        </div>	
+                    </div>
+                </div>	
             </div>
         </div>
         </div>
@@ -126,13 +144,13 @@
                     'X-CSRF-TOKEN': tokenHash
                 }
             });
-            var reservTable = $('#datatable-reserv').DataTable({
+            var userTable = $('#datatable-user').DataTable({
                 "defRender":true,
                 "language": {
                     "search": "_INPUT_",
                     "searchPlaceholder": "Cari di sini...",
-                    "emptyTable": "Data reservasi masih kosong",
-                    "zeroRecords": "Data reservasi kosong"
+                    "emptyTable": "Data member masih kosong",
+                    "zeroRecords": "Data member kosong"
                 },
                 "dom": '<"wrapper m-2 bg-label-secondary p-1"lf>rt<"wrapper rounded-3 bg-label-dark"<i><"row align-items-center"<""><p>>>',
                 "processing": true,
@@ -143,92 +161,85 @@
                 "aLengthMenu": [[5, 15, 30],[ 5, 15, 30]],
                 "columns": [
                     {
-                        "data": "id_reserv",
-                        'className':'text-center',
+                        "data": "id_user",
+                        'className':'order-no',
                         render: function (data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
                     {
-                        "data": "code_reserv",
-                        'className':'text-center',
+                        'data': 'nim',
+                        'className': "text-left",
+                        'orderable': true,
                         render: function (data, type, row, meta) {
-                            return `<b>${data}</b>`;
+                            return `${data}<br/>(${row.email})`;
                         }
-                    },
-                    {
-                        'data': 'name_lab',
-                        'className': "text-center",
-                        'orderable': false,
                     },
                     {
                         'data': 'full_name',
-                        'className': "text-center",
-                        'orderable': false,
-                        render: function (data, type, row, meta) {
-                            return `${data}<br/>(${row.type_user})`;
-                        }
-                    },
-                    {
-                        'data': 'range_time',
-                        'className': "text-center",
-                        'orderable': false,
-                        render: function (data, type, row, meta) {
-                            return `(${row.time_start} - ${row.time_end})<br/> ${row.date_booking}`;
-                        }
-                    },
-                    {
-                        'data': 'status_reserv',
-                        'className': "text-center",
-                        'orderable': false,
-                        render: function (data, type, row, meta) {
-                            let labelStatus = (data == 'cancelled') ? 'danger' : (data == 'finished') 
-                                ? 'primary': (data == 'verified') ? 'success' : 'warning' ;
-                            let label = `<span class="badge bg-label-${labelStatus} me-1">${data}</span>`;
-
-                            let btnStatus = (data == 'pending') ? 'success' : 'primary';
-                            let btnTxt = (data == 'pending') ? 'Verifikasi' : 'Selesai';
-                            let btn = `<button onclick="changeStts('${data}','${row.id_reserv}')" 
-                                type="button" class="btn mt-1 btn-sm
-                                btn-${btnStatus}" title="ganti status">${btnTxt}
-                                </button>`;
-
-                            return label + '<br/>' + btn;
-                        }
-                    },
-                    {
-                        'data': 'created_at',
                         'className': "text-left",
-                        'orderable': false,
+                        'orderable': true,
+                        render: function (data, type, row, meta) {
+                            return `${data}<br/>(${row.username})`;
+                        }
                     },
                     {
-                        'data': 'id_reserv',
+                        'data': 'type_user',
+                        'className': "text-center",
+                        'orderable': true,
+                        render: function (data, type, row, meta) {
+                            let labelStatus = (data == 'civitas') ? 'primary':'secondary';
+                            let txtStatus = (data == 'civitas') ? 'Civitas':'Non-Civitas';
+                            return `<span class="badge rounded-pill bg-label-${labelStatus} me-1">${txtStatus}</span>`;
+                        }
+                    },
+                    {
+                        'data': 'is_activated',
+                        'className': "text-center",
+                        'orderable': false,
+                        render: function (data, type, row, meta) {
+                            let labelStatus = (data == 1) ? 'success':'warning';
+                            let txtStatus = (data == 1) ? 'Activated':'Not Activated';
+                            return `<span class="badge bg-label-${labelStatus} me-1">${txtStatus}</span> `;
+                        }
+                    },
+                    {
+                        'data': 'thumb_user',
+                        'className': "text-center",
+                        'orderable': false,
+                        render: function (data, type, row, meta) {
+                            return `<img src="${urlPathThumb+'/'+data}" class="img-fluid img-thumb rounded img-avatar">`;
+                        }
+                    },
+                    {
+                        'data': 'id_user',
                         'className':"text-center",
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return `<div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="detailData(${data})"><i class="bx bxs-detail me-1"></i> Detail</a>
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="hapusData(${data})"><i class="bx bx-trash me-1"></i> Delete</a>
-                            </div>
-                            </div>`;
+                            return `<button onclick="detailData('${data}')" type="button" class="btn rounded-pill
+                             btn-icon btn-primary" title="detail data">
+                              <span class="tf-icons bx bxs-detail"></span>
+                            </button>
+                            <button onclick="hapusData('${data}')" type="button" class="btn rounded-pill btn-icon 
+                            btn-danger" title="hapus data">
+                              <span class="tf-icons bx bx-trash"></span>
+                            </button>`;
                         }
                     },
                 ],
                 "ajax": {
-                    "url": "<?php echo site_url('admin/reservasi/getdata') ?>",
+                    "url": "<?php echo site_url('admin/list-members/getdata') ?>",
                     "type": "POST",
                     'data': function(data) {
                         data.csrf_token_name = tokenHash;
                     }
                 }
             });
-            reservTable.on('draw', function () {
-                var total_records = reservTable.rows().count();
-                var page_length = reservTable.page.info().length;
+            userTable.on('draw', function () {
+                var total_records = userTable.rows().count();
+                var page_length = userTable.page.info().length;
                 var total_pages = Math.ceil(total_records / page_length);
-                var current_page = reservTable.page.info().page+1;
+                var current_page = userTable.page.info().page+1;
             });
 
             $('#form-delete').submit(function(e){
@@ -240,7 +251,7 @@
                         var resp = JSON.parse(response);
                         if(parseInt(resp.status) == 200){
                             $('#confirm-delete').modal('hide');
-                            reservTable.draw();
+                            userTable.draw();
                             showToast('warning','Peringatan',resp.message,'#toast-alert');
                         }else{
                             showToast('danger','Peringatan',resp.message,'#toast-alert');
@@ -252,25 +263,25 @@
                 });
             });
         }); 
-
         function detailData(id){
-            let urlDetail = '<?= site_url('admin/reservasi/detail/:id'); ?>';
+            let urlDetail = '<?= site_url('admin/list-members/detail/:id'); ?>';
             $.ajax({
                 type:'GET',
                 url: urlDetail.replace(':id',id),
                 success:function(response){
                     var data = JSON.parse(response);
-                    var peminjam = `${data.full_name} (${data.type_user})`;
-                    var range_time = `${data.date_booking} (${data.time_start} - ${data.time_end})`;
-                    var status = data.status_reserv;
-                    var need_order_confirm = (data.type_user == 'civitas') ? 'Tidak' : 'Ya';
-                    $('#form-detail').find('span#code_reserv').text(data.code_reserv);
-                    $('#form-detail').find('span#name_lab').text(data.name_lab);
-                    $('#form-detail').find('span#peminjam').text(peminjam);
-                    $('#form-detail').find('span#range_time').text(range_time);
+                    var status = (data.is_activated == 1) ? 'Activated':'Not Activated';
+                    $('#form-detail').find('span#nim').text(data.nim);
+                    $('#form-detail').find('span#username').text(data.username);
+                    $('#form-detail').find('span#email').text(data.email);
+                    $('#form-detail').find('span#full_name').text(data.full_name);
+                    $('#form-detail').find('span#type_user').text(data.type_user);
+                    $('#form-detail').find('span#gender').text(data.gender);
+                    $('#form-detail').find('span#notelp').text(data.notelp);
                     $('#form-detail').find('span#status').text(status);
-                    $('#form-detail').find('span#need_order_confirmation').text(need_order_confirm);
                     $('#form-detail').find('span#created_at').text(data.created_at);
+                    $('#form-detail').find('#thumb_user').html(
+                        `<img class="img-fluid rounded" src="${urlPathThumb}/${data.thumb_user}" alt="">`);
 
                     $('#modal-detail').modal('show');
                 }
@@ -278,7 +289,7 @@
         }
 
         function hapusData(id){
-            let urlDelete = "<?= site_url('admin/reservasi/delete/:id'); ?>";
+            let urlDelete = "<?= site_url('admin/list-members/delete/:id'); ?>";
             $("#confirm-delete").modal('show');
             $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
         }

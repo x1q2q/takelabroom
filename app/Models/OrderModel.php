@@ -10,7 +10,7 @@ class OrderModel extends Model
     protected $table            = 'orders';
     protected $primaryKey       = 'id_order';
     protected $useAutoIncrement = true;
-    protected $allowedFields    = ['reserv_id','status_order','total_payment'];
+    protected $allowedFields    = ['reserv_id','status_order','total_payment','thumb_order'];
 
     protected $column_order = ['id_order','total_payment','status_order'];
     protected $column_search = ['status_order','total_payment'];
@@ -30,7 +30,8 @@ class OrderModel extends Model
             $builder->join('reservations','reservations.code_reserv = orders.code_reserv');
             $builder->join('labrooms', 'labrooms.id_lab = reservations.lab_id');
             $builder->join('users', 'users.id_user = reservations.user_id');
-            $builder->select('*');
+            $strSelect = 'reservations.*, labrooms.*, users.username, users.full_name,users.type_user, orders.*';
+            $builder->select($strSelect);
         $this->dt = $builder;
     }
     private function getDatatablesQuery()

@@ -18,7 +18,7 @@ class ReservasiController extends BaseController
     }
     public function index()
     {
-        return view('admin/reservation');
+        return view('admin/reservation_all');
     }
     public function getData(){        
         if ($this->req->isAJAX()) {
@@ -65,6 +65,25 @@ class ReservasiController extends BaseController
                 $result = ['status' => 200, 'message' => 'Data reservasi berhasil dihapus'];
             }else{
                 $result = ['status' => 500, 'message' => 'Data reservasi gagal dihapus'];
+            }
+            return json_encode($result);
+        }
+    }
+    public function scheduleReserv(){
+        return view('admin/reservation_schedule');
+    }
+    public function changeStatus(){
+        if ($this->req->isAJAX()) {
+            $id = $this->request->getPost('id_reserv');
+            $toStatus = $this->request->getPost('status');
+            $reservasi = $this->datatable;
+            $values = [
+                'status_reserv' => $toStatus
+            ];
+            if($reservasi->update($id, $values)){
+                $result = ['status' => 200, 'data' => [],'message' => 'Reservasi berhasil diganti status menjadi '.$toStatus];
+            }else{
+                $result = ['status' => 500, 'data' => [],'message' => 'Reservasi gagal diganti status'];
             }
             return json_encode($result);
         }

@@ -8,6 +8,7 @@ use App\Models\CategoryModel;
 use App\Models\LabroomModel;
 use App\Models\CodeFacilityModel;
 use App\Models\FacilityModel;
+use App\Models\UserModel;
 use Config\Services;
 
 class ReservasiController extends BaseController
@@ -17,10 +18,10 @@ class ReservasiController extends BaseController
     public $labroomModel;
     public $codeFacModel;
     public $facilityModel;
+    public $userModel;
     public $req;
     public $attribute;
     public $userid;
-    public $typeuser;
     public function __construct()
     {
         $this->datatable = new ReservationModel();
@@ -28,9 +29,9 @@ class ReservasiController extends BaseController
         $this->labroomModel = new LabroomModel();
         $this->codeFacModel = new CodeFacilityModel();
         $this->facilityModel = new FacilityModel();
+        $this->userModel = new UserModel();
         $this->req = Services::request();
         $this->userid = 3;
-        $this->typeuser = 'non-civitas';
         helper('html');   
     }
     public function addReservation(){
@@ -78,8 +79,9 @@ class ReservasiController extends BaseController
     }
     public function checkLab($slug){
         $category = $this->categoryModel->where('slug',$slug)->first();
+        $userprofile = $this->userModel->where('id_user',$this->userid)->first();
         $data['category'] = $category;
-        $data['type_user'] = $this->typeuser;
+        $data['type_user'] = $userprofile['type_user'];
         $query = $this->labroomModel->where('category_id',$category["id_category"])->get()->getResult();
         $labroom = [];
         foreach ($query as $list) {
@@ -88,14 +90,19 @@ class ReservasiController extends BaseController
             $dataIdFacility = array_map (function($value){
                 return (int)$value['facility_id'];
                 }, $queryCodeFac); // return id facilitiy []
-                
             $facility = $this->facilityModel->getListFacility($dataIdFacility);
+            $dataPriceFacility = array_map (function($value){
+                return (int)$value->price;
+                }, $facility); // return price facility []
+
             $dtFacility = array_map (function($value){
                 return $value->name_facility;
                 }, $facility); // return list name facility
             $row = [];
             $row = $list;
             $row->list_facility = join(', ',$dtFacility);
+            $row->harga_lab =  array_sum($dataPriceFacility);
+            $row->harga_total = array_sum($dataPriceFacility) * 30;
             $row->label_status = ($list->status_lab == 'available') ? 'success' : 'warning';
             $labroom[] = $row;
         }
@@ -153,8 +160,9 @@ class ReservasiController extends BaseController
             ];
             // validation check for ketersediaan lab goes here
 
-            $isNotAvailable = false; 
+            $isNotAvailable = false;
             // $query->hasInTime()
+
            
             $isNotInRightTime = ($waktuMulai < $ruleRightTime['min'] || $waktuAkhir > $ruleRightTime['max']);
             // not in 07:00 - 21:00
@@ -207,7 +215,7 @@ class ReservasiController extends BaseController
         $tglStart =  new \DateTime($now);
         $tglEnd = new \DateTime($tglPakai);
         $interval = $tglEnd->diff($tglStart);
-        $intJam = (int)$interval->d;
+        $intJam = (int)$interval->d; // for day
         return ($intJam < $rule['min'] || $intJam > $rule['max']);
     }
     public function checkMinMaxMinute($waktuMulai, $waktuAkhir, $rule){
@@ -223,9 +231,11 @@ class ReservasiController extends BaseController
                 'status_reserv' => $toStatus
             ];
             if($reservasi->update($id, $values)){
-                $result = ['status' => 200, 'data' => [],'message' => 'Reservasi berhasil diganti status menjadi '.$toStatus];
+                $result = ['status' => 200, 'data' => [],'message' => 
+                    'Reservasi berhasil diganti status menjadi '.$toStatus];
             }else{
-                $result = ['status' => 500, 'data' => [],'message' => 'Reservasi gagal diganti status'];
+                $result = ['status' => 500, 'data' => [],'message' => 
+                    'Reservasi gagal diganti status'];
             }
             return json_encode($result);
         }

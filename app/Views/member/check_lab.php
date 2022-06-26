@@ -40,8 +40,13 @@
                     <span class="badge rounded-pill bg-secondary">
                         <?= $val->capacity; ?> kursi
                     </span>
-                    <span class="badge rounded-pill bg-<?= $val->label_status; ?>">
-                    <?= $val->status_lab; ?> today</span>
+                    <span class="badge rounded-pill bg-info">
+                        <?php if($type_user == 'civitas'){ ?>
+                            Rp.0 
+                        <?php }else if($type_user == 'non-civitas'){ ?>
+                            Rp. <?= number_format($val->harga_total, 0, ",", ".") .' / 30 menit'; ?>
+                        <?php } ?>
+                    </span>
                     <p class="card-text my-2"><?= $val->desc_lab; ?></p>
                     <div class="fasilitas">
                        <small>Fasilitas : <?= $val->list_facility; ?></small>
@@ -49,8 +54,9 @@
                 </div>
                 <div class="card-footer py-3 border-top">
                     <button data-bs-toggle="modal" data-bs-target="#modal-reservasi" 
-                    onclick="chooseLabroom('<?= $val->id_lab; ?>','<?= $val->name_lab; ?>')" class="btn btn-dark">
-                        Pilih  Labroom <i class="tf-icons bx bxs-plus-circle"></i> 
+                    onclick="chooseLabroom('<?= $val->id_lab; ?>','<?= $val->name_lab; ?>','<?= $type_user?>')" 
+                    class="btn btn-dark"> Pilih  Labroom 
+                    <i class="tf-icons bx bxs-plus-circle"></i> 
                     </button>
                 </div>
             </div>
@@ -111,7 +117,7 @@
                     <input type="date" class="form-control" id="tgl_pakai" 
                     name="tgl_pakai">
                 </div>
-                <div class="row mb-3 nopadding">
+                <div class="row nopadding">
                     <div class="col-6">
                         <label for="time_start" class="form-label">Waktu Mulai</label>
                         <input class="form-control timepicker" id="time_start" 
@@ -123,8 +129,26 @@
                         name="time_end" placeholder="21:00">
                     </div>
                 </div>
+                <div class="pt-3 px-3 mt-3" id="payment" style="display: none;">
+                    <div class="order-payment">
+                        <div class="m-1 row nopadding">
+                            <label for="code" class="col text-left">Harga Sewa</label>
+                            <div class="col-auto text-right">
+                                <span id="harga-sewa">
+                                Rp. <?= number_format($val->harga_lab, 0, ",", "."); ?> / menit</span>
+                            </div>
+                        </div>
+                        <div class="m-1 row nopadding border-top">
+                            <label for="code" class="col text-left">Total Harga Sewa</label>
+                            <div class="col-auto text-right">
+                                (<span>Rp. <?= number_format($val->harga_lab, 0, ",", "."); ?> </span> 
+                                x <span id="interval-menit">0</span> menit) = <span id="total-payment">Rp.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
-            <div class="modal-footer py-4 px-0">
+            <div class="modal-footer py-4 px-2">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
@@ -163,6 +187,14 @@
     border-radius: 6px;
     height: 50%;
     padding:2px 6px;
+}
+.order-payment{
+    border:2px dashed #ffab00;
+    border-radius: 6px;
+    background:#f2f2f2;
+}
+.order-payment .row{
+    padding:6px 5px!important;
 }
 .fasilitas small{
     color: #696cff;
@@ -325,9 +357,13 @@ button.btn-alert{
         $("#modal-reservasi").on('hidden.bs.modal', function (e) {
             $('#form-save').trigger('reset');
         });
-        function chooseLabroom(id,labName){
+        function chooseLabroom(id,labName,tipeUser){
             $('#form-save').find('#id_lab').val(id);
-            $('#form-save').find('input[name="name_lab"]').val(labName);
+            $('#form-save').find('input[name="name_lab"]').val(`${labName}`);
+            if(tipeUser == 'non-civitas'){
+                $('#form-save #payment').show();
+                // $('#form-save').find('#total-payment').html(``);
+            }
         }
     </script>
 <?= $this->endSection('extrascript'); ?>

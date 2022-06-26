@@ -42,7 +42,6 @@
             <th>No.</th>
             <th style="width: 15%;">Kategori</th>
             <th style="width: 15%;">Nama Lab</th>
-            <th>Status</th>
             <th>Kapasitas</th>
             <th style="width: 20%;">Fasilitas</th>
             <th>Riwayat</br> Pemakaian</th>
@@ -80,12 +79,6 @@
                     <label for="code" class="col-sm-4">Nama Lab</label>
                     <div class="col-sm-8">
                         <span id="name_lab"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="code" class="col-sm-4">Status</label>
-                    <div class="col-sm-8">
-                        <span id="status"></span>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -251,18 +244,9 @@
                         'orderable': true,
                     },
                     {
-                        'data': 'status_lab',
-                        'className': "text-center",
-                        'orderable': true,
-                        render: function (data, type, row, meta) {
-                            let labelStatus = (data == 'available')? 'success' : 'warning';
-                            return `<span class="badge bg-${labelStatus} me-1">${data} today</span>`;
-                        }
-                    },
-                    {
                         'data': 'capacity',
                         'className': "text-center",
-                        'orderable': false,
+                        'orderable': true,
                         render: function (data, type, row, meta) {
                             let labelStatus = (data == 'booked')? 'warning':'success';
                             return `${data} kursi`;
@@ -452,7 +436,6 @@
                     $('#form-save').find('#id_lab').val(data.id_lab);
                     $('#form-save').find('input#name_category').val(data.name_category);
                     $('#form-save').find('input#name_lab').val(data.name_lab);
-                    $('#form-save').find('input#status').val(data.status_lab);
                     $('#form-save').find('input#capacity').val(data.capacity);
                     $('#form-save').find('textarea#desc_lab').val(data.desc_lab);
                     let listIdFacility = data.list_facility.map(el => {

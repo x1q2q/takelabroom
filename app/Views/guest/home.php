@@ -76,7 +76,7 @@
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="member-assets/img/manager/tick.png" width="35" alt="tick" />
                     <h3 class="fw-medium mb-0 text-secondary">High specification computer </h3>
                 </div>
-                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="sintara.html" role="button">Get started</a></div>
+                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="<?= base_url('lab1'); ?>" role="button">Get started</a></div>
             </div>
             <div class="col-lg-6"><img class="img-fluid" src="member-assets/img/validation/validation1.png" alt="" /></div>
         </div>
@@ -110,7 +110,7 @@
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="member-assets/img/manager/tick.png" width="35" alt="tick" />
                     <h3 class="fw-medium mb-0 text-secondary">International License Laboratory</h3>
                 </div>
-                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="sludge.html" role="button">Get started</a></div>
+                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="<?= base_url('lab2'); ?>" role="button">Get started</a></div>
             </div>
         </div>
     </div>
@@ -139,7 +139,7 @@
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="member-assets/img/manager/tick.png" width="35" alt="tick" />
                     <h3 class="fw-medium mb-0 text-secondary">High specification computer </h3>
                 </div>
-                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="astra.html" role="button">Get started</a></div>
+                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="<?= base_url('lab3'); ?>" role="button">Get started</a></div>
             </div>
             <div class="col-lg-6"><img class="img-fluid" src="member-assets/img/marketer/marketer1.png" alt="" /></div>
         </div>

@@ -29,6 +29,9 @@ $routes->get('/', 'GuestController::index');
 $routes->get('/home', 'GuestController::index');
 $routes->get('/labroom', 'GuestController::labroom');
 $routes->get('/contact', 'GuestController::contact');
+$routes->get('/lab1', 'GuestController::lab1');
+$routes->get('/lab2', 'GuestController::lab2');
+$routes->get('/lab3', 'GuestController::lab3');
 $routes->get('/login', 'Auth/MemberLoginController::index');
 $routes->get('/dologin', 'Auth/MemberLoginController::doLogin');
 $routes->get('/admin/login', 'Auth/AdminLoginController::index');
@@ -38,18 +41,18 @@ $routes->get('/doregister', 'Auth/RegistrationController::doRegister');
 
 // member area
 $routes->group('member', static function ($routes) {
-    $routes->get('/','Member/DashboardController::index');
-    $routes->get('dashboard','Member/DashboardController::index');
+    $routes->get('/', 'Member/DashboardController::index');
+    $routes->get('dashboard', 'Member/DashboardController::index');
 
-    $routes->get('add-reservation','Member/ReservasiController::addReservation');
-    $routes->get('add-reservation/(:segment)','Member\ReservasiController::checkLab/$1');
-    $routes->get('my-reservation','Member/ReservasiController::myReservation');
-    $routes->post('my-reservation/getdata/(:any)/(:num)','Member\ReservasiController::getData/$1/$2');
-    $routes->post('my-reservation/insert','Member/ReservasiController::insertData');
+    $routes->get('add-reservation', 'Member/ReservasiController::addReservation');
+    $routes->get('add-reservation/(:segment)', 'Member\ReservasiController::checkLab/$1');
+    $routes->get('my-reservation', 'Member/ReservasiController::myReservation');
+    $routes->post('my-reservation/getdata/(:any)/(:num)', 'Member\ReservasiController::getData/$1/$2');
+    $routes->post('my-reservation/insert', 'Member/ReservasiController::insertData');
     $routes->post('my-reservations/change-status', 'Member\ReservasiController::changeStatus');
     $routes->post('my-reservations/upload-bukti', 'Admin\OrderController::uploadBukti');
 
-    $routes->get('my-profile','Member/ProfileController::index');
+    $routes->get('my-profile', 'Member/ProfileController::index');
 });
 
 
@@ -91,16 +94,16 @@ $routes->group('admin', static function ($routes) {
     $routes->get('all-reservations/detail/(:num)', 'Admin\ReservasiController::detailData/$1');
     $routes->post('all-reservations/change-status', 'Admin\ReservasiController::changeStatus');
 
-    $routes->get('paid-reservations','Admin/OrderController::index');
-    $routes->post('paid-reservations/getdata','Admin/OrderController::getData');
-    $routes->get('paid-reservations/delete/(:num)','Admin\OrderController::deleteData/$1');
-    $routes->get('paid-reservations/detail/(:num)','Admin\OrderController::detailData/$1');
+    $routes->get('paid-reservations', 'Admin/OrderController::index');
+    $routes->post('paid-reservations/getdata', 'Admin/OrderController::getData');
+    $routes->get('paid-reservations/delete/(:num)', 'Admin\OrderController::deleteData/$1');
+    $routes->get('paid-reservations/detail/(:num)', 'Admin\OrderController::detailData/$1');
     $routes->post('paid-reservations/change-status', 'Admin\OrderController::changeStatus');
 
-    $routes->get('schedule-reservation','Admin/ReservasiController::scheduleReserv');
+    $routes->get('schedule-reservation', 'Admin/ReservasiController::scheduleReserv');
 
-    $routes->get('report-reservation','Admin/LaporanController::index');
-    $routes->post('report-reservation/getdata','Admin/OrderController::getData');
+    $routes->get('report-reservation', 'Admin/LaporanController::index');
+    $routes->post('report-reservation/getdata', 'Admin/OrderController::getData');
 });
 /*
  * --------------------------------------------------------------------

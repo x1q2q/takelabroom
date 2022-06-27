@@ -9,6 +9,7 @@ use App\Models\LabroomModel;
 use App\Models\CodeFacilityModel;
 use App\Models\FacilityModel;
 use App\Models\UserModel;
+use App\Models\OrderModel;
 use Config\Services;
 
 class ReservasiController extends BaseController
@@ -19,6 +20,7 @@ class ReservasiController extends BaseController
     public $codeFacModel;
     public $facilityModel;
     public $userModel;
+    public $orderModel;
     public $req;
     public $attribute;
     public $userid;
@@ -30,6 +32,7 @@ class ReservasiController extends BaseController
         $this->codeFacModel = new CodeFacilityModel();
         $this->facilityModel = new FacilityModel();
         $this->userModel = new UserModel();
+        $this->orderModel = new OrderModel();
         $this->req = Services::request();
         $this->userid = 3;
         helper('html');   
@@ -60,7 +63,8 @@ class ReservasiController extends BaseController
                 $row->time_start = substr($splitDateStart[1], 0, 5);
                 $row->time_end = substr($splitDateEnd[1], 0, 5);
                 $row->date_booking = $splitDateStart[0];
-                $row->status = ($isNeedPayment) ? $list->status_order : $list->status_reserv;
+                $row->status = ($isNeedPayment) ? (($list->status_order != 'confirmed') 
+                    ? $list->status_order : $list->status_reserv): $list->status_reserv;
                 $row->is_order = ($isNeedPayment) ? 1 : 0;
                 $newData[] = $row;
             }
@@ -105,7 +109,6 @@ class ReservasiController extends BaseController
             $row->list_facility = join(', ',$dtFacility);
             $row->harga_lab =  array_sum($dataPriceFacility);
             $row->harga_total = array_sum($dataPriceFacility) * 30;
-            $row->label_status = ($list->status_lab == 'available') ? 'success' : 'warning';
             $labroom[] = $row;
         }
         $queryCategory = $this->labroomModel->where('category_id', $category['id_category'])
@@ -130,12 +133,14 @@ class ReservasiController extends BaseController
                 'errors' => ['required' => '{field} tidak boleh kosong']
             ],
             'time_start' => [
-                'label' => 'Waktu Mulai', 'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong']
+                'label' => 'Waktu Mulai', 'rules' => 'required|regex_match[[0-9][0-9]:[0-9][0-9]]',
+                'errors' => ['required' => '{field} tidak boleh kosong',
+                            'regex_match' => 'Pola {field} harus sesuai dengan yang ada di list']
             ],
             'time_end' => [
-                'label' => 'Waktu Selesai', 'rules' => 'required',
-                'errors' => ['required' => '{field} tidak boleh kosong']
+                'label' => 'Waktu Selesai', 'rules' => 'required|regex_match[[0-9][0-9]:[0-9][0-9]]',
+                'errors' => ['required' => '{field} tidak boleh kosong',
+                            'regex_match' => 'Pola {field} harus sesuai dengan yang ada di list']
             ],
         ];
     }
@@ -152,6 +157,8 @@ class ReservasiController extends BaseController
         if ($isDataValid) {
             $reservation = $this->datatable;
             $userId = $this->userid;
+            $userprofile = $this->userModel->where('id_user',$userId)->first();
+            $type_user = $userprofile['type_user'];
             $codeReserv = 'RESV' . $userId . '.' . substr(strtoupper(uniqid()), -10);
             $tglPakai = $this->request->getPost('tgl_pakai');
             $waktuMulai = $this->request->getPost('time_start');
@@ -204,7 +211,7 @@ class ReservasiController extends BaseController
             } else if ($isNotRightPositionTime) { // jika tidak benar pada value benar min max peminjaman 
                 $result = [
                     'status' => 500, 'data' => [],
-                    'message' => 'Posisi antara waktu mulai & waktu selesai masih salah. Silakan tukar atau pilih waktu lain'
+                    'message' => 'Waktu Mulai harus lebih kecil(awal) dari Waktu Selesai. Silakan tukar atau pilih waktu lain'
                 ];
             } else if ($isNotInMinMaxMinute) { // jika tidak benar pada value benar min max peminjaman 
                 $result = [
@@ -212,10 +219,20 @@ class ReservasiController extends BaseController
                     'message' => 'Peminjaman hanya diperbolehkan minimal 30 menit dan maksimal 300 menit'
                 ];
             } else { // if true
-                $reservation->insert($values);
-                // set session flash data success goes here
+                $reservation->save($values);
                 $session->setFlashdata('success', 'Berhasil reservasi lab untuk rentang waktu ' . $waktuMulai . '-' . $waktuAkhir);
                 $result = ['status' => 200, 'data' => $values, 'message' => site_url('member/my-reservation')];
+                if($type_user == 'non-civitas'){
+                    $orderModel = $this->orderModel;
+                    $payment = $this->request->getPost('total_payment');
+                    $valOrder = [
+                        'code_reserv'   => $codeReserv,
+                        'status_order'  => 'pending',
+                        'total_payment' => $payment,
+                        'thumb_order'   => ''
+                    ];
+                    $orderModel->save($valOrder);
+                }
             }
         } else {
             $result = ['status' => 500, 'data' => $validation->getErrors(), 'message' => 'Gagal mengajukan reservasi'];
@@ -253,6 +270,15 @@ class ReservasiController extends BaseController
                 'status_reserv' => $toStatus
             ];
             if($reservasi->update($id, $values)){
+                if($toStatus == 'cancelled'){
+                    $order = $this->orderModel;
+                    $codeReserv = $this->request->getPost('code_reserv');
+                    $orderData = $order->where('code_reserv',$codeReserv)->first();
+                    if($orderData != null){
+                        $valOrder = ['status_order' => 'cancelled'];
+                        $order->update($orderData['id_order'],$valOrder);
+                    }
+                }
                 $result = ['status' => 200, 'data' => [],'message' => 
                     'Reservasi berhasil diganti status menjadi '.$toStatus];
             }else{
@@ -260,6 +286,18 @@ class ReservasiController extends BaseController
                     'Reservasi gagal diganti status'];
             }
             return json_encode($result);
+        }
+    }
+    public function detailData($id){
+        if ($this->req->isAJAX()) {
+            $this->datatable->initDatatables($this->req,true);
+            $data = $this->datatable->getWhereDetail('id_reserv',$id);
+            $splitDateStart = explode(' ',$data[0]->time_start);
+            $splitDateEnd = explode(' ',$data[0]->time_end);
+            $data[0]->time_start  = substr($splitDateStart[1],0,5);
+            $data[0]->time_end  = substr($splitDateEnd[1],0,5);
+            $data[0]->date_booking = $splitDateStart[0];
+            return json_encode($data[0]);
         }
     }
 }

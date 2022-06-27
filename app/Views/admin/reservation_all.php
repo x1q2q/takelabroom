@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Status</label>
+                    <label class="col-sm-4">Status Peminjaman</label>
                     <div class="col-sm-8">
                         <span id="status"></span>
                     </div>

@@ -12,9 +12,15 @@ class Orders extends Seeder
             [
                 'code_reserv' => 'RESV.20221905',
                 'status_order' => 'pending',
-                'total_payment' => 960000, // already calculated
-                'thumb_order' => 'konfirm-bukti1.jpg',
+                'total_payment' => 372000, // already calculated
+                'thumb_order' => '',
 			],
+            [
+                'code_reserv' => 'RESV.20229830',
+                'status_order' => 'paided',
+                'total_payment' => 360000, // already calculated
+                'thumb_order' => 'konfirm-bukti1.jpg',
+			]
 		];
 
 		foreach($news_data as $data){

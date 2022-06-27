@@ -94,6 +94,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="code" class="col-sm-4">Jumlah Fasilitas</label>
+                    <div class="col-sm-8">
+                        <span id="jml_fasilitas"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="code" class="col-sm-4">Daftar Fasilitas</label>
                     <div class="col-sm-8" id="list_facility">
                     </div>
@@ -458,7 +464,7 @@
                     var descLab = (!checkIsNotEmptyNullValue(data.desc_lab)) ? '-':data.desc_lab;
                     $('#form-detail').find('span#name_category').text(data.name_category);
                     $('#form-detail').find('span#name_lab').text(data.name_lab);
-                    $('#form-detail').find('span#status').text(data.status_lab);
+                    $('#form-detail').find('span#jml_fasilitas').text(`${data.total_facility} item`);
                     $('#form-detail').find('span#capacity').text(`${data.capacity} kursi`);
                     $('#form-detail').find('span#desc_lab').text(descLab);
                     let strHead = '<ul class="list-group">';

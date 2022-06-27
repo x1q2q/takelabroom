@@ -93,13 +93,13 @@ class OrderController extends BaseController
                 ]
             ]
         ];
-        $id = $this->req->getPost('id_order');
         $codeReserv = $this->req->getPost('code_reserv');
-
+        $order = $this->datatable;
+        $orderData = $order->where('code_reserv',$codeReserv)->first();
+        $id = $orderData['id_order'];
         $validation->setRules($attribute);
         $isDataValid = $validation->withRequest($this->req)->run();
         if($isDataValid){
-            $order = $this->datatable;
             if($file = $this->request->getFile('thumb_bukti')) {
                 if ($file->isValid() && ! $file->hasMoved()) {    
                    $newName = 'img_order_'.$file->getRandomName(); // for file name   

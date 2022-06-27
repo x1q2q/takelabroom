@@ -51,6 +51,7 @@ $routes->group('member', static function ($routes) {
     $routes->post('my-reservation/insert', 'Member/ReservasiController::insertData');
     $routes->post('my-reservations/change-status', 'Member\ReservasiController::changeStatus');
     $routes->post('my-reservations/upload-bukti', 'Admin\OrderController::uploadBukti');
+    $routes->get('my-reservations/detail/(:num)', 'Member\ReservasiController::detailData/$1');
 
     $routes->get('my-profile', 'Member/ProfileController::index');
 });

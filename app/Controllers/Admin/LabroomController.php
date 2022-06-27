@@ -97,6 +97,7 @@ class LabroomController extends BaseController
                 
             $facility = $this->facilityModel->getListFacility($dataIdFacility);
             $data[0]->list_facility = $facility;
+            $data[0]->total_facility = count($dataIdFacility);
             $newData = $data[0];
             return json_encode($newData);
         }

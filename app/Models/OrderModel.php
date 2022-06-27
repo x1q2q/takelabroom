@@ -10,7 +10,7 @@ class OrderModel extends Model
     protected $table            = 'orders';
     protected $primaryKey       = 'id_order';
     protected $useAutoIncrement = true;
-    protected $allowedFields    = ['reserv_id','status_order','total_payment','thumb_order'];
+    protected $allowedFields    = ['code_reserv','status_order','total_payment','thumb_order'];
 
     protected $column_order = ['id_order','total_payment','status_order'];
     protected $column_search = ['status_order','total_payment'];
@@ -26,6 +26,7 @@ class OrderModel extends Model
         parent::__construct();
         $this->db = db_connect();
         $this->request = $request;
+        array_push($this->column_search,'orders.code_reserv');
         $builder = $this->db->table($this->table);
             $builder->join('reservations','reservations.code_reserv = orders.code_reserv');
             $builder->join('labrooms', 'labrooms.id_lab = reservations.lab_id');

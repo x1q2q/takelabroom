@@ -11,10 +11,10 @@ class LabroomModel extends Model
     protected $primaryKey       = 'id_lab';
     protected $useAutoIncrement = true;
     protected $allowedFields    = ['category_id','name_lab',
-    'code_facility','desc_lab','capacity','status_lab'];
+    'code_facility','desc_lab','capacity'];
 
     protected $column_order = ['id_lab','category_id','name_lab','desc_lab'];
-    protected $column_search = ['category_id','name_lab','desc_lab','status_lab', 'capacity'];
+    protected $column_search = ['category_id','name_lab','desc_lab', 'capacity'];
     protected $order = ['id_lab' => 'DESC'];
     protected $request;
     protected $db;

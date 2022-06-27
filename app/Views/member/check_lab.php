@@ -40,8 +40,13 @@
                     <span class="badge rounded-pill bg-secondary">
                         <?= $val->capacity; ?> kursi
                     </span>
-                    <span class="badge rounded-pill bg-<?= $val->label_status; ?>">
-                    <?= $val->status_lab; ?> today</span>
+                    <span class="badge rounded-pill bg-info">
+                        <?php if($type_user == 'civitas'){ ?>
+                            Rp.0 
+                        <?php }else if($type_user == 'non-civitas'){ ?>
+                            Rp. <?= number_format($val->harga_total, 0, ",", ".") .' / 30 menit'; ?>
+                        <?php } ?>
+                    </span>
                     <p class="card-text my-2"><?= $val->desc_lab; ?></p>
                     <div class="fasilitas">
                        <small>Fasilitas : <?= $val->list_facility; ?></small>
@@ -49,8 +54,10 @@
                 </div>
                 <div class="card-footer py-3 border-top">
                     <button data-bs-toggle="modal" data-bs-target="#modal-reservasi" 
-                    onclick="chooseLabroom('<?= $val->id_lab; ?>','<?= $val->name_lab; ?>')" class="btn btn-dark">
-                        Pilih  Labroom <i class="tf-icons bx bxs-plus-circle"></i> 
+                    onclick="chooseLabroom('<?= $val->id_lab; ?>','<?= $val->name_lab; ?>',
+                    '<?= $type_user?>','<?= $val->harga_lab; ?>')" 
+                    class="btn btn-dark"> Pilih  Labroom 
+                    <i class="tf-icons bx bxs-plus-circle"></i> 
                     </button>
                 </div>
             </div>
@@ -88,6 +95,8 @@
     <form action="" method="POST" id="form-save" class="modal-content" 
         tipe="" enctype="multipart/form-data">
         <input type="hidden" id="id_lab" name="id_lab"/>
+        <input type="hidden" id="harga_sewa" name="harga_sewa"/>
+        <input type="hidden" id="total_payment" name="total_payment"/>
             <div class="modal-header border-bottom">
                 <h5 class="modal-title">Pengajuan Reservasi <?= $category["name_category"]; ?></h5>
                 <button
@@ -111,20 +120,38 @@
                     <input type="date" class="form-control" id="tgl_pakai" 
                     name="tgl_pakai">
                 </div>
-                <div class="row mb-3 nopadding">
+                <div class="row nopadding">
                     <div class="col-6">
                         <label for="time_start" class="form-label">Waktu Mulai</label>
-                        <input class="form-control timepicker" id="time_start" 
+                        <input type="text" class="form-control timepicker" id="time_start" 
                         name="time_start" placeholder="07:00">
                     </div>
                     <div class="col-6">
                         <label for="time_end" class="form-label">Waktu Selesai</label>
-                        <input class="form-control timepicker" id="time_end" 
+                        <input type="text" class="form-control timepicker" id="time_end" 
                         name="time_end" placeholder="21:00">
                     </div>
                 </div>
+                <div class="pt-3 px-3 mt-3 border-top" id="payment" style="display: none;">
+                    <label class="form-label">Rincian Harga Sewa</label>
+                    <div class="order-payment">
+                        <div class="m-1 row nopadding">
+                            <label for="code" class="col text-left">Harga Sewa</label>
+                            <div class="col-auto text-right">
+                                <span class="harga-sewa">Rp.0</span> / menit
+                            </div>
+                        </div>
+                        <div class="m-1 row nopadding border-top">
+                            <label for="code" class="col text-left">Total Harga Sewa</label>
+                            <div class="col-auto text-right">
+                                (<span class="harga-sewa">Rp.0</span> 
+                                x <span id="interval-menit">0</span> menit) = <span id="total-payment">Rp.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
-            <div class="modal-footer py-4 px-0">
+            <div class="modal-footer py-4 px-2">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
@@ -164,6 +191,14 @@
     height: 50%;
     padding:2px 6px;
 }
+.order-payment{
+    border:2px dashed #ffab00;
+    border-radius: 6px;
+    background:#f2f2f2;
+}
+.order-payment .row{
+    padding:6px 5px!important;
+}
 .fasilitas small{
     color: #696cff;
 }
@@ -179,6 +214,7 @@ button.btn-alert{
     <?= script_tag('assets/vendor/libs/datatables/datatables.min.js'); ?>
     <?= script_tag('assets/js/ui-modals.js'); ?>
     <?= script_tag('assets/vendor/libs/timepicker/jquery.timepicker.min.js'); ?>
+    <?= script_tag('assets/vendor/libs/moment/moment.min.js'); ?>
     <script type="text/javascript">
         var tokenHash = $('meta[name="<?= csrf_token() ?>"]').attr('content');
         $(document).ready(function() {
@@ -187,7 +223,7 @@ button.btn-alert{
                     'X-CSRF-TOKEN': tokenHash
                 }
             });
-
+        
             $('input.timepicker').timepicker({
                 zindex:1090,
                 timeFormat: 'HH:mm',
@@ -195,7 +231,8 @@ button.btn-alert{
                 maxTime: new Date(0, 0, 0, 21, 0, 0),
                 startTime: new Date(0, 0, 0, 7, 0, 0),
                 interval: 10,
-                scrollbar:true
+                scrollbar:true,
+                change: calcPaymentTotal
             });
             var reservTable = $('#datatable-reserv').DataTable({
                 "defRender":true,
@@ -325,9 +362,46 @@ button.btn-alert{
         $("#modal-reservasi").on('hidden.bs.modal', function (e) {
             $('#form-save').trigger('reset');
         });
-        function chooseLabroom(id,labName){
+        function chooseLabroom(id,labName,tipeUser,hargaLab){
+            resetNotifAndMore();
             $('#form-save').find('#id_lab').val(id);
-            $('#form-save').find('input[name="name_lab"]').val(labName);
+            $('#form-save').find('input[name="name_lab"]').val(`${labName}`);
+            $('#form-save').find('input#harga_sewa').val(hargaLab);
+            $('#form-save').find('.harga-sewa').html(`${formatRupiah(hargaLab)}`);
+            if(tipeUser == 'non-civitas'){
+                $('#form-save #payment').show();
+            }
+        }
+        function calcPaymentTotal(){
+            var patternJam = /[0-9][0-9]:[0-9][0-9]-[0-9][0-9]:[0-9][0-9]/g;
+            var waktuMulai = $('#form-save').find('#time_start').val();
+            var waktuAkhir = $('#form-save').find('#time_end').val();
+            if (checkIsNotEmptyNullValue(waktuMulai) 
+                && checkIsNotEmptyNullValue(waktuAkhir)) {
+                let waktu = waktuMulai+'-'+waktuAkhir; 
+                if(patternJam.test(waktu)){
+                    var startTime = moment(waktuMulai,"HH:mm");
+                    var endTime = moment(waktuAkhir,"HH:mm");
+                    var duration = moment.duration(endTime.diff(startTime));  
+                    var intervalMenit = duration.asMinutes();
+                    if(intervalMenit > 0){
+                        var hargaSewa = $('#form-save').find('input#harga_sewa').val();
+                        var hargaTotal = parseInt(hargaSewa) * intervalMenit; 
+                        $('#form-save').find('#interval-menit').html(`${intervalMenit}`);
+                        $('#form-save').find('#total-payment').html(`${formatRupiah(hargaTotal)}`);
+                        $('#form-save').find('input[name="total_payment"]').val(hargaTotal);
+                    }else{
+                        $('#form-save').find('#interval-menit').html(`0`);
+                        $('#form-save').find('#total-payment').html(`Rp.0`);
+                        $('#form-save').find('input[name="total_payment"]').val(0);
+                    }
+                }
+            }
+        }
+        function resetNotifAndMore(){
+            $('form#form-save .modal-body').find('#notif-alert').empty();
+            $('#form-save').find('#interval-menit').html(`0`);
+            $('#form-save').find('#total-payment').html(`Rp.0`);
         }
     </script>
 <?= $this->endSection('extrascript'); ?>

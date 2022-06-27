@@ -35,11 +35,6 @@ class Labrooms extends Migration
             'desc_lab' => [
 				'type' => 'text',
 				'null' => true,
-			],
-			'status_lab'      => [
-				'type'           => 'ENUM',
-				'constraint'     => ['full-booked', 'available'],
-				'default'        => 'available',
 			]
 		]);
         $this->forge->addPrimaryKey('id_lab');

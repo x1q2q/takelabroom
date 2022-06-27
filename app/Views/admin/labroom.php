@@ -42,7 +42,6 @@
             <th>No.</th>
             <th style="width: 15%;">Kategori</th>
             <th style="width: 15%;">Nama Lab</th>
-            <th>Status</th>
             <th>Kapasitas</th>
             <th style="width: 20%;">Fasilitas</th>
             <th>Riwayat</br> Pemakaian</th>
@@ -83,12 +82,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="code" class="col-sm-4">Status</label>
-                    <div class="col-sm-8">
-                        <span id="status"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="code" class="col-sm-4">Kapasitas</label>
                     <div class="col-sm-8">
                         <span id="capacity"></span>
@@ -98,6 +91,12 @@
                     <label for="parent" class="col-sm-4">Deskripsi</label>
                     <div class="col-sm-8">
                         <span id="desc_lab"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="code" class="col-sm-4">Jumlah Fasilitas</label>
+                    <div class="col-sm-8">
+                        <span id="jml_fasilitas"></span>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -251,18 +250,9 @@
                         'orderable': true,
                     },
                     {
-                        'data': 'status_lab',
-                        'className': "text-center",
-                        'orderable': true,
-                        render: function (data, type, row, meta) {
-                            let labelStatus = (data == 'available')? 'success' : 'warning';
-                            return `<span class="badge bg-${labelStatus} me-1">${data} today</span>`;
-                        }
-                    },
-                    {
                         'data': 'capacity',
                         'className': "text-center",
-                        'orderable': false,
+                        'orderable': true,
                         render: function (data, type, row, meta) {
                             let labelStatus = (data == 'booked')? 'warning':'success';
                             return `${data} kursi`;
@@ -452,7 +442,6 @@
                     $('#form-save').find('#id_lab').val(data.id_lab);
                     $('#form-save').find('input#name_category').val(data.name_category);
                     $('#form-save').find('input#name_lab').val(data.name_lab);
-                    $('#form-save').find('input#status').val(data.status_lab);
                     $('#form-save').find('input#capacity').val(data.capacity);
                     $('#form-save').find('textarea#desc_lab').val(data.desc_lab);
                     let listIdFacility = data.list_facility.map(el => {
@@ -475,7 +464,7 @@
                     var descLab = (!checkIsNotEmptyNullValue(data.desc_lab)) ? '-':data.desc_lab;
                     $('#form-detail').find('span#name_category').text(data.name_category);
                     $('#form-detail').find('span#name_lab').text(data.name_lab);
-                    $('#form-detail').find('span#status').text(data.status_lab);
+                    $('#form-detail').find('span#jml_fasilitas').text(`${data.total_facility} item`);
                     $('#form-detail').find('span#capacity').text(`${data.capacity} kursi`);
                     $('#form-detail').find('span#desc_lab').text(descLab);
                     let strHead = '<ul class="list-group">';

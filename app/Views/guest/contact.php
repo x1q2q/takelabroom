@@ -5,8 +5,8 @@
         <div class="row align-items-center">
             <div class="col-md-8 text-md-start text-center py-6">
                 <h1 class="mb-4 fs-9 fw-bold">S Labs</h1>
-                <p class="mb-6 lead text-secondary">Laboratories used for scientific research vary in form due to the different requirements for specialists in different fields of science and engineering. An animation lab may contain computers and advanced animation tools, while a chemistry lab may have full chemistry equipment. and computer laboratories can have above-average computers to support learning. S labs use laboratories to make it easier for the community and help add new knowledge without having to spend a lot of money.</p>
-                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="index.html" role="button">Get started</a></div>
+                <p class="mb-6 lead text-secondary">Laboratorium yang digunakan untuk penelitian ilmiah bervariasi dalam bentuk karena persyaratan yang berbeda untuk spesialis di berbagai bidang sains dan teknik. Laboratorium animasi mungkin berisi komputer dan alat animasi canggih, sementara lab kimia mungkin memiliki peralatan kimia lengkap. dan laboratorium komputer dapat memiliki komputer di atas rata-rata untuk mendukung pembelajaran. S lab menggunakan laboratorium untuk memudahkan masyarakat dan membantu menambah pengetahuan baru tanpa harus mengeluarkan banyak biaya.</p>
+                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="index.html" role="button">Mulai</a></div>
             </div>
             <div class="col-md-4 text-end">
                 <center><img class="pt-7 pt-md-0 img-fluid" src="https://i0.wp.com/uns.ac.id/id/wp-content/uploads/logo-uns-biru.png?fit=528%2C526&ssl=1" width="75%" alt="" /></center>
@@ -23,7 +23,7 @@
             </div>
             <div class="col-lg-4">
                 <br>
-                <h4>Call and Whatsapp</h4><br>
+                <h4>Telpon dan Whatsapp</h4><br>
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="member-assets/img/manager/tick.png" width="25" alt="tick" />
                     <a class="link-900 text-secondary text-decoration-none" href="https://wa.me/08123655411">08123655411 (Major)</a>
                 </div>
@@ -67,7 +67,7 @@
             </div>
             <div class="col-lg-4">
                 <br>
-                <h4>Location</h4><br>
+                <h4>Lokasi</h4><br>
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="member-assets/img/manager/tick.png" width="25" alt="tick" />
                     <h5 class="fw-medium mb-0 text-secondary">Jl. Ir. Sutami No.36, Kentingan, <br />Kec. Jebres, Kota Surakarta, <br />Jawa Tengah 57126</h5>
                 </div>

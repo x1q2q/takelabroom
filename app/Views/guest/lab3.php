@@ -6,8 +6,8 @@
         <div class="row align-items-center">
             <div class="col-md-6 text-md-start text-center py-6">
                 <h1 class="mb-4 fs-9 fw-bold">Astra</h1>
-                <p class="mb-6 lead text-secondary">Computing is not about computers any more. <br class="d-none d-xl-block" />It is about living.</p>
-                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="#manager" role="button">Get started</a></div>
+                <p class="mb-6 lead text-secondary">Komputasi bukan lagi tentang komputer. <br class="d-none d-xl-block" />Ini tentang hidup.</p>
+                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="#manager" role="button">Mulai</a></div>
             </div>
             <div class="col-md-6 text-end"><img class="pt-7 pt-md-0 img-fluid" src="<?= base_url('member-assets'); ?>/img/astra/astra.png" alt="" /></div>
         </div>
@@ -25,13 +25,13 @@
                 <center><img class="img-fluid" src="<?= base_url('member-assets'); ?>/img/astra/c1.png" width="65%" alt="" /></center>
             </div>
             <div class="col-lg-6">
-                <h5 class="text-secondary">Easier decision making for</h5>
-                <p class="fs-7 fw-bold mb-2">Product In Labs</p>
+                <h5 class="text-secondary">Fitur 1</h5>
+                <p class="fs-7 fw-bold mb-2">Produk dalam Laboratorium</p>
                 <p class="mb-4 fw-medium text-secondary">
-                    This laboratory accommodates 20 to 30 students in one class, has tools such as
+                    Laboratorium ini menampung 20 hingga 30 siswa dalam satu kelas, memiliki alat-alat seperti:
                 </p>
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="<?= base_url('member-assets'); ?>/img/manager/tick.png" width="35" alt="tick" />
-                    <h3 class="fw-medium mb-0 text-secondary">30 Highend Computer</h3>
+                    <h3 class="fw-medium mb-0 text-secondary">30 Komputer High End</h3>
                 </div>
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="<?= base_url('member-assets'); ?>/img/manager/tick.png" width="35" alt="tick" />
                     <h3 class="fw-medium mb-0 text-secondary">30 Headphone Razer Kraken</h3>
@@ -63,10 +63,10 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <h5 class="text-secondary">Easier decision making for</h5>
-                <p class="fs-7 fw-bold mb-2">Specifications Computer</p>
+                <h5 class="text-secondary">Fitur 2</h5>
+                <p class="fs-7 fw-bold mb-2">Specifikasi Komputer</p>
                 <p class="mb-4 fw-medium text-secondary">
-                    This Computer laboratory has some great specification such as
+                    Laboratorium Komputer ini memiliki beberapa spesifikasi hebat seperti:
                 </p>
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="<?= base_url('member-assets'); ?>/img/manager/tick.png" width="35" alt="tick" />
                     <h3 class="fw-medium mb-0 text-secondary">Intel i7-9700k</h3>

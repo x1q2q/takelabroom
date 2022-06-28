@@ -11,7 +11,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card"><a class="navbar-brand" href="<?= base_url('lab1'); ?>"><img class="card-img-top" src="member-assets/img/marketing/marketing04.jpg" alt="" />
                         <div class="card-body ps-0">
-                            <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="home">Hasan</a>|<span class="ms-1">19 May 2022</span></p>
+                            <a class="fw-bold text-decoration-none me-1" href="home">Software Engineering</a>|<span class="ms-1">Since 2009</span>
                             <h3 class="fw-bold">Sintara</h3>
                         </div>
                 </div>
@@ -19,7 +19,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card"><a class="navbar-brand" href="<?= base_url('lab2'); ?>"><img class="card-img-top" src="member-assets/img/marketing/marketing05.jpg" alt="" />
                         <div class="card-body ps-0">
-                            <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="#">Abdullah</a>|<span class="ms-1">11 May 2022</span></p>
+                            <a class="fw-bold text-decoration-none me-1" href="#">Computer Network and Instrumentation</a>|<span class="ms-1">Since 2011</span>
                             <h3 class="fw-bold">Sludge</h3>
                         </div>
                 </div>
@@ -27,7 +27,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card"><a class="navbar-brand" href="<?= base_url('lab3'); ?>"><img class="card-img-top" src="member-assets/img/marketing/marketing06.jpg" alt="" />
                         <div class="card-body ps-0">
-                            <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="#">Ibnu</a>|<span class="ms-1">03 May 2022</span></p>
+                            <a class="fw-bold text-decoration-none me-1" href="#">Multimedia Studio</a>|<span class="ms-1">Since 2012</span>
                             <h3 class="fw-bold">Astra</h3>
                         </div>
                 </div>

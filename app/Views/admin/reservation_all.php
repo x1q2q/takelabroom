@@ -183,7 +183,7 @@
                 "defRender":true,
                 "language": {
                     "search": "_INPUT_",
-                    "searchPlaceholder": "Cari di sini...",
+                    "searchPlaceholder": "Cari kode pinjam ...",
                     "emptyTable": "Data reservasi masih kosong",
                     "zeroRecords": "Data reservasi kosong"
                 },
@@ -247,7 +247,7 @@
                                     Verifikasi</button>`;
                             }else if(data == 'verified'){
                                 label = `<span class="badge bg-label-success">${data}</span>`;
-                                btn = `<button onclick="changeStatus('${row.code_reserv}','${row.id_reserv}')"
+                                btn = `<button onclick="changeStatus('selesaikan','${row.code_reserv}','${row.id_reserv}')"
                                     type="button" data-bs-toggle="modal" data-bs-target="#modal-chstatus" 
                                     class="btn btn-sm btn-primary mt-1">Selesaikan</button>`;
                             }else{
@@ -268,11 +268,19 @@
                         'className':"text-center",
                         'orderable': false,
                         render: function(data, type, row, meta) {
+                            var btnCancel = (row.status_reserv == 'pending') ? 
+                                `<a class="dropdown-item" href="javascript:void(0);"
+                                    data-bs-toggle="modal" data-bs-target="#modal-chstatus"  
+                                    onclick="changeStatus('cancel','${row.code_reserv}','${data}')">
+                                    <i class="bx bxs-minus-circle me-1"></i> Cancel</a>` : 
+                                `<a class="dropdown-item disabled">
+                                    <i class="bx bxs-minus-circle me-1"></i> Cancel</a>`;
                             return `<div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="javascript:void(0);" onclick="detailData(${data})"><i class="bx bxs-detail me-1"></i> Detail</a>
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="hapusData(${data})"><i class="bx bx-trash me-1"></i> Delete</a>
+                                ${btnCancel}
+                                <a class="dropdown-item" href="javascript:void(0);" onclick="hapusData(${data})"><i class="bx bx-trash me-1"></i> Hapus</a>
                             </div>
                             </div>`;
                         }
@@ -392,18 +400,34 @@
                 );
             }
         }
-        function changeStatus(codereserv,idreserv){
-            $('#modal-chstatus').find('.modal-title').html(`Selesaikan Reservasi`);
-            $('#modal-chstatus .modal-footer').find('button#btn-save').html(
-                `Ya, Selesaikan <span class="tf-icons bx bxs-check-circle"></span>`);
-            $('#modal-chstatus .modal-body').find('#text-info').html(
-                `<p>Yakin untuk menyelesaikan reservasi <b>${codereserv}</b> (?) </p>
-                <i>*menyelesaikan reservasi akan mengubah status reservasi menjadi 'finished'</i>`);
-            $('#modal-chstatus .modal-body').find('#form-group').html(
-                `<div class="row">
-                    <input type='hidden' name="status" value="finished">
-                    <input type='hidden' name="id_reserv" value="${idreserv}">
-                </div>`);            
+        function changeStatus(tipe,codereserv,idreserv){
+            if(tipe == 'cancel'){
+                $('#modal-chstatus').find('.modal-title').html(`Batalkan Reservasi`);
+                $('#modal-chstatus .modal-footer').find('button#btn-save').html(
+                    `Ya, Batalkan <span class="tf-icons bx bxs-minus-circle"></span>`);
+                $('#modal-chstatus .modal-body').find('#text-info').html(
+                    `<p>Yakin untuk membatalakan reservasi <b>${codereserv}</b> (?) </p>
+                    <i>*membatalkan reservasi akan mengubah status reservasi menjadi 'cancelled'</i>`);
+                $('#modal-chstatus .modal-body').find('#form-group').html(
+                    `<div class="row">
+                        <input type='hidden' name="status" value="cancelled">
+                        <input type='hidden' name="id_reserv" value="${idreserv}">
+                        <input type='hidden' name="code_reserv" value="${codereserv}">
+                    </div>`
+                );
+            }else{
+                $('#modal-chstatus').find('.modal-title').html(`Selesaikan Reservasi`);
+                $('#modal-chstatus .modal-footer').find('button#btn-save').html(
+                    `Ya, Selesaikan <span class="tf-icons bx bxs-check-circle"></span>`);
+                $('#modal-chstatus .modal-body').find('#text-info').html(
+                    `<p>Yakin untuk menyelesaikan reservasi <b>${codereserv}</b> (?) </p>
+                    <i>*menyelesaikan reservasi akan mengubah status reservasi menjadi 'finished'</i>`);
+                $('#modal-chstatus .modal-body').find('#form-group').html(
+                    `<div class="row">
+                        <input type='hidden' name="status" value="finished">
+                        <input type='hidden' name="id_reserv" value="${idreserv}">
+                    </div>`);
+            }            
         }
     </script>
 <?= $this->endSection('extrascript'); ?>

@@ -2,6 +2,19 @@
 
 <?= $this->section('content'); ?>
 <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="bs-toast toast toast-placement-ex top-0 start-50 m-3 sld-down"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      data-delay="2000"
+      id="toast-alert">
+      <div class="toast-header">
+          <i class="bx bx-bell me-2"></i>
+          <div class="me-auto fw-semibold toast-title"></div>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body"></div>
+  </div>
     <div class="row">
     <div class="col-lg-8 mb-4 order-0">
         <div class="card">
@@ -253,4 +266,17 @@
 <?= $this->section('extrascript'); ?>
     <?= script_tag('assets/vendor/libs/apex-charts/apexcharts.js'); ?>
     <?= script_tag('assets/js/dashboards-analytics.js'); ?>
+    <?php if(session()->has('error')): ?>
+        <script type="text/javascript">
+            var msg = "<?= session("error"); ?>";
+            showToast('danger','Peringatan',msg,'#toast-alert');
+        </script>
+    <?php endif; ?>
+
+    <?php if(session()->has('success')): ?>
+        <script type="text/javascript">
+            var msg = "<?= session("success"); ?>";
+            showToast('success','Sukses',msg,'#toast-alert');
+        </script>
+    <?php endif; ?>
 <?= $this->endSection('extrascript'); ?>

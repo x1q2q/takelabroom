@@ -34,13 +34,8 @@ class ReservasiController extends BaseController
         $this->userModel = new UserModel();
         $this->orderModel = new OrderModel();
         $this->req = Services::request();
-        $this->userid = 3;
-        helper('html');   
-    }
-    public function addReservation()
-    {
-        $data['category'] = $this->categoryModel->get()->getResult();
-        return view('member/add_reservasi', $data);
+        $this->userid = session()->get('id_user');
+        helper('html');
     }
     public function getData($field, $id)
     {
@@ -83,12 +78,7 @@ class ReservasiController extends BaseController
             return json_encode($output);
         }
     }
-    public function checkLab($slug){
-        $category = $this->categoryModel->where('slug',$slug)->first();
-        $userprofile = $this->userModel->where('id_user',$this->userid)->first();
-        $data['category'] = $category;
-        $data['type_user'] = $userprofile['type_user'];
-        $query = $this->labroomModel->where('category_id',$category["id_category"])->get()->getResult();
+    public function makeLabroomData($query){
         $labroom = [];
         foreach ($query as $list) {
             $queryCodeFac = $this->codeFacModel->where('code_facility', $list->code_facility)
@@ -111,13 +101,47 @@ class ReservasiController extends BaseController
             $row->harga_total = array_sum($dataPriceFacility) * 30;
             $labroom[] = $row;
         }
-        $queryCategory = $this->labroomModel->where('category_id', $category['id_category'])
-            ->get()->getResultArray();
+        return $labroom;
+    }
+    public function addReservation()
+    {
+        $data['category'] = $this->categoryModel->get()->getResult();
+        $inpQuery = $this->request->getGet('q');
+        $selCategory = $this->request->getGet('category');
+        $data['pencarian'] = [ 'keyword'   => $inpQuery,'category'  => $selCategory];
+        $userprofile = $this->userModel->where('id_user',$this->userid)->first();
+
+        $labroom = [];
+        $data['userProfile'] = $userprofile;
+        if(!empty($inpQuery)){
+            $this->labroomModel->initDatatables($this->req);
+            $query = $this->labroomModel->searchLab($selCategory, $inpQuery);
+            $labroom = $this->makeLabroomData($query);
+            
+            $arrLabId = array_map(function ($value) {
+                return (int)$value->id_lab;
+            }, $query);
+            $data['data_labid'] = json_encode($arrLabId);
+            $data['type_user'] = $userprofile['type_user'];
+        }
+        $data['labroom'] = $labroom;
+        $data['category'] = $this->categoryModel->get()->getResult();
+        return view('member/add_reservasi', $data);
+    }
+    public function checkLab($slug){
+        $category = $this->categoryModel->where('slug',$slug)->first();
+        $userprofile = $this->userModel->where('id_user',$this->userid)->first();
+        $data['category'] = $category;
+        $data['type_user'] = $userprofile['type_user'];
+        $query = $this->labroomModel->where('category_id',$category["id_category"])->get()->getResult();
+        $labroom = $this->makeLabroomData($query);
+
         $arrLabId = array_map(function ($value) {
-            return (int)$value['id_lab'];
-        }, $queryCategory);
+            return (int)$value->id_lab;
+        }, $query);
         $data['labroom'] = $labroom;
         $data['data_labid'] = json_encode($arrLabId);
+        $data['userProfile'] = $this->userModel->where('id_user',$this->userid)->first();
         return view('member/check_lab', $data);
     }
     public function setAttribute()
@@ -149,8 +173,8 @@ class ReservasiController extends BaseController
         $ruleRightTime = array('min' => '07:00', 'max' => '21:00');
         $ruleMinute = array('min' => 30, 'max' => 300);
         $ruleDay = array('min' => 1, 'max' => 14); // 1 hari / (2 minggu / 14hari)
+        
         $validation = \Config\Services::validation();
-        $session = \Config\Services::session();
         $this->setAttribute(true); // set additional to true so image is a must
         $validation->setRules($this->attribute);
         $isDataValid = $validation->withRequest($this->req)->run();
@@ -160,68 +184,66 @@ class ReservasiController extends BaseController
             $userprofile = $this->userModel->where('id_user',$userId)->first();
             $type_user = $userprofile['type_user'];
             $codeReserv = 'RESV' . $userId . '.' . substr(strtoupper(uniqid()), -10);
+            $labId = $this->request->getPost('id_lab');
             $tglPakai = $this->request->getPost('tgl_pakai');
             $waktuMulai = $this->request->getPost('time_start');
             $waktuAkhir = $this->request->getPost('time_end');
             $timeStart = $tglPakai . ' ' . $waktuMulai . ':00';
             $timeEnd = $tglPakai . ' ' . $waktuAkhir . ':00';
-            $values = [
-                "lab_id"        => $this->request->getPost('id_lab'),
-                "user_id"       => $userId,
-                "code_reserv"   => $codeReserv,
-                "time_start"    => date('Y-m-d H:i:s', strtotime($timeStart)),
-                "time_end"      => date('Y-m-d H:i:s', strtotime($timeEnd)),
-                "status_reserv" => "pending",
-            ];
-            // validation check for ketersediaan lab goes here
-
-            $isNotAvailable = false;
-            // $query->hasInTime()
-
            
-            $isNotInRightTime = ($waktuMulai < $ruleRightTime['min'] || $waktuAkhir > $ruleRightTime['max']);
-            // not in 07:00 - 21:00
-
-            $isNotInRightMinMaxHour = $this->checkMinMaxDay($tglPakai, $waktuMulai, $ruleDay);
-            // if > 1 week or < 24hour from inserted at
-
+            // validation check for ketersediaan lab goes here
             $isNotRightPositionTime = ($waktuMulai >= $waktuAkhir);
             // if time_start >= time_end
 
+            $isNotInRightTime = ($waktuMulai < $ruleRightTime['min'] || $waktuAkhir > $ruleRightTime['max']);
+            // not in 07:00 - 21:00
+
+            $isNotInRightMinMaxDay = $this->checkMinMaxDay($tglPakai, $waktuMulai, $ruleDay);
+            // if > 1 week or < 24hour from inserted at
+            
+            $isNotAvailable = $this->checkCollisionReserv($timeStart,$timeEnd,$labId);
+            // $query->hasInTime()
+            
             $isNotInMinMaxMinute = $this->checkMinMaxMinute($waktuMulai, $waktuAkhir, $ruleMinute);
             // if < 30 menit or > 300 menit
-
-            if ($isNotAvailable) { // jika tidak available (karena jam itu penuh)
+            
+            if ($isNotRightPositionTime) { // jika tidak benar pada value benar min max peminjaman 
                 $result = [
                     'status' => 500, 'data' => [],
-                    'message' => 'Ruang Lab untuk jam ' . $waktuMulai . '-' . $waktuAkhir
-                        . ' sudah ada yang memesan. Silakan pilih waktu di luar jam tersebut'
+                    'message' => 'Waktu Mulai harus lebih kecil(awal) dari Waktu Selesai. Silakan tukar atau pilih waktu lain'
                 ];
             } else if ($isNotInRightTime) { // jka tidak pada waktu yang benar
                 $result = [
                     'status' => 500, 'data' => [],
                     'message' => 'Anda hanya bisa mengajukan reservasi lab antara jam 07.00 - 21.00'
                 ];
-            } else if ($isNotInRightMinMaxHour) { // jika tidak benar pada value benar min max peminjaman 
+            } else if ($isNotInRightMinMaxDay) { // jika tidak benar pada value benar min max peminjaman 
                 $result = [
                     'status' => 500, 'data' => [],
                     'message' => 'Reservasi tidak boleh kurang 24 jam
                     dan tidak lebih 2 minggu dari waktu sekarang'
-                ];
-            } else if ($isNotRightPositionTime) { // jika tidak benar pada value benar min max peminjaman 
-                $result = [
-                    'status' => 500, 'data' => [],
-                    'message' => 'Waktu Mulai harus lebih kecil(awal) dari Waktu Selesai. Silakan tukar atau pilih waktu lain'
                 ];
             } else if ($isNotInMinMaxMinute) { // jika tidak benar pada value benar min max peminjaman 
                 $result = [
                     'status' => 500, 'data' => [],
                     'message' => 'Peminjaman hanya diperbolehkan minimal 30 menit dan maksimal 300 menit'
                 ];
-            } else { // if true
+            } else if ($isNotAvailable) { // jika tidak available (karena jam itu penuh)
+                $result = [
+                    'status' => 500, 'data' => [],
+                    'message' => 'Ruang Lab untuk tanggal '.$tglPakai.' antara jam ' . $waktuMulai . '-' . $waktuAkhir
+                    . ' sudah ada yang memesan. Silakan pilih waktu di luar jam tersebut'
+                ];
+            } else { // if 
+                $values = [
+                    "lab_id"        => $labId,
+                    "user_id"       => $userId,
+                    "code_reserv"   => $codeReserv,
+                    "time_start"    => date('Y-m-d H:i:s', strtotime($timeStart)),
+                    "time_end"      => date('Y-m-d H:i:s', strtotime($timeEnd)),
+                    "status_reserv" => "pending",
+                ];
                 $reservation->save($values);
-                $session->setFlashdata('success', 'Berhasil reservasi lab untuk rentang waktu ' . $waktuMulai . '-' . $waktuAkhir);
-                $result = ['status' => 200, 'data' => $values, 'message' => site_url('member/my-reservation')];
                 if($type_user == 'non-civitas'){
                     $orderModel = $this->orderModel;
                     $payment = $this->request->getPost('total_payment');
@@ -233,6 +255,10 @@ class ReservasiController extends BaseController
                     ];
                     $orderModel->save($valOrder);
                 }
+                $session = \Config\Services::session();
+                $session->setFlashdata('success', 
+                    'Berhasil reservasi lab untuk rentang waktu ' . $waktuMulai . '-' . $waktuAkhir);
+                $result = ['status' => 200, 'data' => $values, 'message' => site_url('member/my-reservation')];
             }
         } else {
             $result = ['status' => 500, 'data' => $validation->getErrors(), 'message' => 'Gagal mengajukan reservasi'];
@@ -242,6 +268,7 @@ class ReservasiController extends BaseController
     public function myReservation()
     {
         $data['userid'] = $this->userid;
+        $data['userProfile'] = $this->userModel->where('id_user',$this->userid)->first();
         return view('member/my_reservation', $data);
     }
     public function checkMinMaxDay($tgl, $waktu, $rule)
@@ -253,12 +280,29 @@ class ReservasiController extends BaseController
         $tglEnd = new \DateTime($tglPakai);
         $interval = $tglEnd->diff($tglStart);
         $intJam = (int)$interval->d; // for day
-        return ($intJam < $rule['min'] || $intJam > $rule['max']);
+        return ($intJam < $rule['min'] || $intJam > $rule['max'] || $tglEnd < $tglStart);
     }
     public function checkMinMaxMinute($waktuMulai, $waktuAkhir, $rule)
     {
         $diffTime = ((strtotime($waktuAkhir) - strtotime($waktuMulai)) / 60);
         return ($diffTime < $rule['min'] || $diffTime > $rule['max']);
+    }
+    public function checkCollisionReserv($timeStart,$timeEnd,$labId){
+        $db = \Config\Database::connect();
+        $getQuery = "SELECT * FROM reservations 
+            WHERE ((:timeStart: between time_start AND time_end) 
+            OR (:timeEnd: between time_start AND time_end)) 
+            AND (status_reserv=:status1: OR status_reserv=:status2:)
+            AND (lab_id=:lab:)";
+        $result = $db->query($getQuery,[
+            'timeStart' => $timeStart,
+            'timeEnd'   => $timeEnd,
+            'lab'       => $labId,
+            'status1'   => 'pending',
+            'status2'   => 'verified'
+        ])->getResultArray();
+        // jika ada reservasi yang ada pada tabel maka dia result true untuk bahwa terdapat collision / tumbrukan
+        return (count($result) > 0); 
     }
     public function changeStatus()
     {
@@ -298,6 +342,32 @@ class ReservasiController extends BaseController
             $data[0]->time_end  = substr($splitDateEnd[1],0,5);
             $data[0]->date_booking = $splitDateStart[0];
             return json_encode($data[0]);
+        }
+    }
+    public function getSchedule(){
+        if ($this->req->isAJAX()) {
+            $this->datatable->initDatatables($this->req);
+            $data = $this->datatable->getDatatables();
+            $datetime = new \DateTime("now", new \DateTimeZone("Asia/Jakarta"));
+            $now = $datetime->format('Y-m-d H:i:s');
+            $tglNow =  new \DateTime($now);
+
+            $newData  = array_map (function($value){                
+                    return [
+                        'title' => $value->name_lab,
+                        'start' => $value->time_start,
+                        'url'   => site_url('member/my-reservations/detail/').$value->id_reserv,
+                        'status'=> $value->status_reserv
+                    ];
+            }, $data);
+            $result = [];
+            foreach($newData as $val){
+                $tglVal = new \DateTime($val['start']);
+                if($tglVal > $tglNow){
+                    array_push($result,$val);
+                }
+            }
+            return json_encode($result);
         }
     }
 }

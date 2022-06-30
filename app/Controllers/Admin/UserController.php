@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use App\Models\AdminModel;
 use Config\Services;
 
 class UserController extends BaseController
@@ -11,15 +12,20 @@ class UserController extends BaseController
     public $datatable;
     public $req;
     public $attribute;
+    public $adminid;
+    public $adminModel;
     public function __construct()
     {
         $this->datatable = new UserModel();
         $this->req = Services::request();
+        $this->adminid = session()->get('id_admin'); 
+        $this->adminModel = new AdminModel();
         helper('html');
     }
     public function index()
     {
-        return view('admin/member');
+        $data['adminProfile'] = $this->adminModel->where('id_admin',$this->adminid)->first();
+        return view('admin/member', $data);
     }
     public function getData(){
         $this->datatable->initDatatables($this->request);

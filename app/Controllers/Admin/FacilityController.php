@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\FacilityModel;
+use App\Models\AdminModel;
 use Config\Services;
 
 class FacilityController extends BaseController
@@ -11,15 +12,20 @@ class FacilityController extends BaseController
     public $datatable;
     public $req;
     public $attribute;
+    public $adminid;
+    public $adminModel;
     public function __construct()
     {
         $this->datatable = new FacilityModel();
         $this->req = Services::request();
+        $this->adminid = session()->get('id_admin'); 
+        $this->adminModel = new AdminModel();
+        helper('html');
     }
     public function index()
     {
-        helper('html');
-        return view('admin/facility');
+        $data['adminProfile'] = $this->adminModel->where('id_admin',$this->adminid)->first();
+        return view('admin/facility', $data);
     }
     public function getData(){
         if($this->req->isAJAX()){

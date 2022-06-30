@@ -23,8 +23,8 @@ function resetToast(elem,tipe){ // to reset before the class
     $(elem).removeClass('bg-'+element);
   });
 }
-function resetValidationError(){
-  $('#form-save').each(function(){
+function resetValidationError(element='#form-save'){
+  $(element).each(function(){
       $(this).find('.invalid-feedback').remove();
       $(this).find('.form-control,.custom-file').removeClass('is-invalid');
   });

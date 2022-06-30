@@ -82,4 +82,16 @@ class LabroomModel extends Model
         $data = $query->get()->getResult();
         return $data;
     }
+    public function searchLab($category, $q){
+        $this->dt->groupStart();
+        $this->dt->like('name_lab', $q);
+        $this->dt->orLike('desc_lab', $q);
+        $this->dt->orLike('capacity', $q);
+        $this->dt->groupEnd();
+        if($category != 'all' && !empty($category)){
+            $this->dt->where('category_id',$category);
+        }
+        $query = $this->dt->get();
+        return $query->getResult();
+    }
 }

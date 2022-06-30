@@ -17,7 +17,7 @@ class Reservations extends Seeder
 			[
                 'lab_id' => 4,
                 'user_id' => 3,
-                'code_reserv' => 'RESV.20229830',
+                'code_reserv' => 'RESV3.20229830',
                 'time_start' => date('Y-m-d H:i:s', strtotime($timeStart)),
                 'time_end' => date('Y-m-d H:i:s', strtotime($timeEnd)),
                 'status_reserv' => 'verified'
@@ -25,7 +25,7 @@ class Reservations extends Seeder
             [
                 'lab_id' => 2,
                 'user_id' => 2,
-                'code_reserv' => 'RESV.20221905',
+                'code_reserv' => 'RESV2.20221905',
                 'time_start' => date('Y-m-d H:i:s', strtotime($timeStart2)),
                 'time_end' => date('Y-m-d H:i:s', strtotime($timeEnd2)),
                 'status_reserv' => 'pending'

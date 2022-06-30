@@ -208,7 +208,9 @@
                         'className': "text-center",
                         'orderable': false,
                         render: function (data, type, row, meta) {
-                            return `<img src="${urlPathThumb+'/'+data}" class="img-fluid img-thumb rounded img-avatar">`;
+                            var urlImgBased = "<?= base_url('assets/img/avatars/user1.jpg'); ?>";
+                            let imgShow = (checkIsNotEmptyNullValue(data)) ? urlPathThumb+'/'+data : urlImgBased;
+                            return `<img src="${imgShow}" class="img-fluid img-thumb rounded img-avatar">`;
                         }
                     },
                     {

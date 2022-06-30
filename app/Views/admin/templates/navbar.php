@@ -22,7 +22,8 @@
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
             <div class="avatar avatar-online">
-                <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                <img src="<?= site_url('assets/img/avatars/admin1.png'); ?>" alt="user-avatar" 
+                        class="d-block rounded-circle img-fluid">
             </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -30,12 +31,13 @@
                 <a class="dropdown-item" href="#">
                 <div class="d-flex">
                     <div class="flex-shrink-0 me-3">
-                    <div class="avatar avatar-online">
-                        <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                    <div class="avatar avatar-md">
+                        <img src="<?= site_url('assets/img/avatars/admin1.png'); ?>" alt="user-avatar" 
+                        class="d-block rounded-circle img-fluid">
                     </div>
                     </div>
                     <div class="flex-grow-1">
-                    <span class="fw-semibold d-block">John Doe</span>
+                    <span class="fw-semibold d-block"><?= $adminProfile['username'] ?></span>
                     <small class="text-muted">Admin</small>
                     </div>
                 </div>
@@ -51,9 +53,9 @@
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="auth-login-basic.html">
-                <i class="bx bx-power-off me-2"></i>
-                <span class="align-middle">Log Out</span>
+                <a class="dropdown-item" href="<?= site_url('admin/logout'); ?>">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span class="align-middle">Log Out</span>
                 </a>
             </li>
             </ul>

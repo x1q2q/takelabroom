@@ -195,7 +195,7 @@
                 "defRender":true,
                 "language": {
                     "search": "_INPUT_",
-                    "searchPlaceholder": "Cari di sini...",
+                    "searchPlaceholder": "Cari kode pinjam ...",
                     "emptyTable": "Data reservasi berbayar masih kosong",
                     "zeroRecords": "Data reservasi berbayar kosong"
                 },
@@ -272,12 +272,19 @@
                         'className':"text-center",
                         'orderable': false,
                         render: function(data, type, row, meta) {
+                            var btnCancel = (row.status_order == 'pending') ? 
+                                `<a class="dropdown-item" href="javascript:void(0);" 
+                                    data-bs-toggle="modal" data-bs-target="#modal-chstatus"  
+                                    onclick="changeStatus('${row.code_reserv}','cancel','${data}')">
+                                    <i class="bx bxs-minus-circle me-1"></i> Cancel</a>` : 
+                                `<a class="dropdown-item disabled">
+                                    <i class="bx bxs-minus-circle me-1"></i> Cancel</a>`;
                             return `<div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="javascript:void(0);"><i class="bx bxs-printer me-1"></i> Cetak invoice</a>
                                 <a class="dropdown-item" href="javascript:void(0);" onclick="detailData(${data})"><i class="bx bxs-detail me-1"></i> Detail</a>
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="hapusData(${data})"><i class="bx bx-trash me-1"></i> Delete</a>
+                                ${btnCancel}
                             </div>
                             </div>`;
                         }
@@ -296,27 +303,6 @@
                 var page_length = orderTable.page.info().length;
                 var total_pages = Math.ceil(total_records / page_length);
                 var current_page = orderTable.page.info().page+1;
-            });
-            
-            $('#form-delete').submit(function(e){
-                e.preventDefault();
-                $.ajax({
-                    type: $(this).attr('method'),
-                    url: $(this).attr('action'),
-                    success: function(response){ 
-                        var resp = JSON.parse(response);
-                        if(parseInt(resp.status) == 200){
-                            $('#confirm-delete').modal('hide');
-                            orderTable.draw();
-                            showToast('warning','Peringatan',resp.message,'#toast-alert');
-                        }else{
-                            showToast('danger','Peringatan',resp.message,'#toast-alert');
-                        }
-                    },error: function(){
-                        $('#confirm-delete').modal('hide');
-                        showToast('danger','Peringatan','Gagal! Database server error','#toast-alert');
-                    }
-                });
             });
 
             $('#form-chstatus').submit(function(e){
@@ -410,7 +396,20 @@
                         <input type='hidden' name="id_order" value="${idorder}">
                         <input type='hidden' name="code_reserv" value="${codereserv}">
                     </div>`);    
-            }     
+            }else{
+                $('#modal-chstatus').find('.modal-title').html(`Batalkan Reservasi`);
+                $('#modal-chstatus .modal-footer').find('button#btn-save').html(
+                    `Ya, Batalkan <span class="tf-icons bx bxs-minus-circle"></span>`);
+                $('#modal-chstatus .modal-body').find('#text-info').html(
+                    `<p>Yakin untuk membatalakan reservasi <b>${codereserv}</b> (?) </p>
+                    <i>*membatalkan reservasi akan mengubah status reservasi menjadi 'cancelled'</i>`);
+                $('#modal-chstatus .modal-body').find('#form-group').html(
+                    `<div class="row">
+                        <input type='hidden' name="status" value="cancelled">
+                        <input type='hidden' name="code_reserv" value="${codereserv}">
+                    </div>`
+                );
+            }
         }
     </script>
 <?= $this->endSection('extrascript'); ?>

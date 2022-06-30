@@ -5,22 +5,28 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\OrderModel;
 use Config\Services;
+use App\Models\AdminModel;
 
 class OrderController extends BaseController
 {
     public $datatable;
     public $req;
     public $db;
+    public $adminid;
+    public $adminModel;
     public function __construct()
     {
         $this->datatable = new OrderMOdel();
         $this->req = Services::request();
         $this->db = \Config\Database::connect();
+        $this->adminid = session()->get('id_admin'); 
+        $this->adminModel = new AdminModel();
         helper('html');
     }
     public function index()
     {
-        return view('admin/reservation_paid');
+        $data['adminProfile'] = $this->adminModel->where('id_admin',$this->adminid)->first();
+        return view('admin/reservation_paid', $data);
     }
     public function getData(){
         
@@ -72,7 +78,9 @@ class OrderController extends BaseController
 
             if($dbOrder->update($values,$where)){
                 $dbReserv = $this->db->table('reservations');
-                $dbReserv->update(['status_reserv' => 'verified'],$where);
+                $valStatusReserv = ($toStatus == 'cancelled') ? 'cancelled': 'verified';
+                $setReserv = ['status_reserv' => $valStatusReserv];
+                $dbReserv->update($setReserv,$where);
                 $result = ['status' => 200, 'data' => [],'message' => 'Reservasi berbayar berhasil diganti status menjadi '.$toStatus];
             }else{
                 $result = ['status' => 500, 'data' => [],'message' => 'Reservasi gagal diganti status'];

@@ -26,7 +26,8 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="<?= csrf_token() ?>" content="<?= csrf_hash() ?>">
     <?= $this->renderSection('extrahead'); ?>
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/favicon/favicon.ico'); ?>" />
@@ -46,6 +47,7 @@
 
     <!-- Page -->
     <link rel="stylesheet" href="<?= base_url('assets/vendor/css/pages/page-auth.css'); ?>" />
+    <link rel="stylesheet" href="<?= base_url('assets/css/custom.css'); ?>" />
     <!-- Helpers -->
     <script src="<?= base_url('assets/vendor/js/helpers.js'); ?>"></script>
 
@@ -68,5 +70,8 @@
 
     <!-- Main JS -->
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/custom.js'); ?>"></script>
+
+    <?= $this->renderSection('extrascript'); ?>
   </body>
 </html>

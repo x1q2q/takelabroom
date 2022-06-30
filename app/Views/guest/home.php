@@ -6,7 +6,7 @@
             <div class="col-md-6 text-md-start text-center py-6">
                 <h1 class="mb-4 fs-9 fw-bold">UNS Laboratorium</h1>
                 <p class="mb-6 lead text-secondary">Semua yang diperlukan ada disini<br class="d-none d-xl-block" />reservasi dan amankan laboratoriummu<br class="d-none d-xl-block" /></p>
-                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="#!" role="button">Masuk</a></div>
+                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="<?= base_url('member/login'); ?>" role="button">Masuk</a></div>
             </div>
             <div class="col-md-6 text-end">
                 <center><img class="pt-7 pt-md-0 img-fluid" src="<?= base_url('member-assets'); ?>/img/hero/hero-img1.png" alt="" /></center>
@@ -46,7 +46,7 @@
                 <br>
             </div>
         </div>
-        <div class="text-center"><a class="btn btn-warning" href="#!" role="button">DAFTAR SEKARANG</a></div>
+        <div class="text-center"><a class="btn btn-warning" href="<?= base_url('member/register'); ?>" role="button">DAFTAR SEKARANG</a></div>
     </div>
     <!-- end of .container-->
 
@@ -166,7 +166,7 @@
             <div class="col-lg-6 text-center">
                 <h1 class="fw-bold mb-4 fs-7">Butuh Laboratorium ?</h1>
                 <p class="mb-5 text-info fw-medium">Apakah Anda memerlukan bantuan untuk proyek Anda: Workshop, konsepsi, pembuatan prototipe, animasi?</p>
-                <button class="btn btn-warning btn-md">Pesan Laboratorium</button>
+                <div class="text-center"><a class="btn btn-warning" href="<?= base_url('member/login'); ?>" role="button">Pesan Laboratorium</a></div>
             </div>
         </div>
     </div>

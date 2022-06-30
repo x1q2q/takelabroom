@@ -25,7 +25,7 @@
                 <form class="mb-3">
                     <input class="form-control" type="email" placeholder="Enter your phone Number" aria-label="phone" />
                 </form>
-                <button class="btn btn-warning fw-medium py-1">Sign up Now</button>
+                <button class="btn btn-warning fw-medium py-1" href="<?= base_url('member/register'); ?>">Sign up Now</button>
             </div>
         </div>
     </div>

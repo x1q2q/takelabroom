@@ -6,7 +6,7 @@
             <div class="col-md-8 text-md-start text-center py-6">
                 <h1 class="mb-4 fs-9 fw-bold">S Labs</h1>
                 <p class="mb-6 lead text-secondary">Laboratorium yang digunakan untuk penelitian ilmiah bervariasi dalam bentuk karena persyaratan yang berbeda untuk spesialis di berbagai bidang sains dan teknik. Laboratorium animasi mungkin berisi komputer dan alat animasi canggih, sementara lab kimia mungkin memiliki peralatan kimia lengkap. dan laboratorium komputer dapat memiliki komputer di atas rata-rata untuk mendukung pembelajaran. S lab menggunakan laboratorium untuk memudahkan masyarakat dan membantu menambah pengetahuan baru tanpa harus mengeluarkan banyak biaya.</p>
-                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="index.html" role="button">Mulai</a></div>
+                <div><a class="btn btn-warning" href="<?= base_url('member/register'); ?>" role="button">DAFTAR</a></div>
             </div>
             <div class="col-md-4 text-end">
                 <center><img class="pt-7 pt-md-0 img-fluid" src="https://i0.wp.com/uns.ac.id/id/wp-content/uploads/logo-uns-biru.png?fit=528%2C526&ssl=1" width="75%" alt="" /></center>

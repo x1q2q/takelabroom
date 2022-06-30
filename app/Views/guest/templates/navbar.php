@@ -8,8 +8,8 @@
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="<?= base_url('contact'); ?>">Kontak</a></li>
             </ul>
             <div class="d-flex ms-lg-4">
-                <a class="btn btn-secondary-outline" href="#!">Masuk</a>
-                <a class="btn btn-primary ms-3" href="#!">Daftar</a>
+                <a class="btn btn-secondary-outline" href="<?= base_url('member/login'); ?>">Masuk</a>
+                <a class="btn btn-primary ms-3" href="<?= base_url('member/register'); ?>">Daftar</a>
             </div>
         </div>
     </div>

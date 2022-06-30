@@ -7,6 +7,7 @@ use App\Models\LabroomModel;
 use App\Models\CodeFacilityModel;
 use App\Models\FacilityModel;
 use App\Models\CategoryModel;
+use App\Models\AdminModel;
 use Config\Services;
 
 class LabroomController extends BaseController
@@ -16,17 +17,22 @@ class LabroomController extends BaseController
     public $datatable;
     public $codeFacModel;
     public $facilityModel;
+    public $adminid;
+    public $adminModel;
     public function __construct()
     {
         $this->datatable = new LabroomModel();
         $this->codeFacModel = new CodeFacilityModel();
         $this->facilityModel = new FacilityModel();
+        $this->adminid = session()->get('id_admin'); 
+        $this->adminModel = new AdminModel();
         $this->req = Services::request();
         helper('html');
     }
     public function index()
     {
-        return view('admin/labroom');
+        $data['adminProfile'] = $this->adminModel->where('id_admin',$this->adminid)->first();;
+        return view('admin/labroom', $data);
     }
     public function getData(){        
         $this->datatable->initDatatables($this->req);

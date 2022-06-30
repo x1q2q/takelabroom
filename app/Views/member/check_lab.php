@@ -53,8 +53,7 @@
                     </div>
                 </div>
                 <div class="card-footer py-3 border-top">
-                    <button data-bs-toggle="modal" data-bs-target="#modal-reservasi" 
-                    onclick="chooseLabroom('<?= $val->id_lab; ?>','<?= $val->name_lab; ?>',
+                    <button onclick="chooseLabroom('<?= $val->id_lab; ?>','<?= $val->name_lab; ?>',
                     '<?= $type_user?>','<?= $val->harga_lab; ?>')" 
                     class="btn btn-dark"> Pilih  Labroom 
                     <i class="tf-icons bx bxs-plus-circle"></i> 
@@ -330,8 +329,9 @@ button.btn-alert{
                         var data = resp.data;
                         if(parseInt(resp.status) == 200){
                             $('#modal-reservasi').modal('hide');
-                            reservTable.draw();
-                            window.location.href=resp.message;
+                            setTimeout(() => {
+                                window.location.href=resp.message;
+                            }, 500);
                         }else{
                             if(data.length == 0){
                                 $('form#form-save .modal-body').find('#notif-alert').html(
@@ -364,13 +364,14 @@ button.btn-alert{
         });
         function chooseLabroom(id,labName,tipeUser,hargaLab){
             resetNotifAndMore();
+            if(tipeUser == 'non-civitas'){
+                $('#form-save #payment').show();
+            }
             $('#form-save').find('#id_lab').val(id);
             $('#form-save').find('input[name="name_lab"]').val(`${labName}`);
             $('#form-save').find('input#harga_sewa').val(hargaLab);
             $('#form-save').find('.harga-sewa').html(`${formatRupiah(hargaLab)}`);
-            if(tipeUser == 'non-civitas'){
-                $('#form-save #payment').show();
-            }
+            $('#modal-reservasi').modal('show');
         }
         function calcPaymentTotal(){
             var patternJam = /[0-9][0-9]:[0-9][0-9]-[0-9][0-9]:[0-9][0-9]/g;

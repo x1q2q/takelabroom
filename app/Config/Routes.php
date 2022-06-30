@@ -32,16 +32,18 @@ $routes->get('/contact', 'GuestController::contact');
 $routes->get('/lab1', 'GuestController::lab1');
 $routes->get('/lab2', 'GuestController::lab2');
 $routes->get('/lab3', 'GuestController::lab3');
-$routes->get('/login', 'Auth/MemberLoginController::index');
-$routes->get('/dologin', 'Auth/MemberLoginController::doLogin');
+$routes->get('/member/login', 'Auth/MemberLoginController::index');
+$routes->post('/member/dologin', 'Auth/MemberLoginController::doLogin');
 $routes->get('/admin/login', 'Auth/AdminLoginController::index');
-$routes->get('/admin/dologin', 'Auth/AdminLoginController::doLogin');
-$routes->get('/register', 'Auth/RegistrationController::index');
-$routes->get('/doregister', 'Auth/RegistrationController::doRegister');
+$routes->post('/admin/dologin', 'Auth/AdminLoginController::doLogin');
+$routes->get('/member/register', 'Auth/RegistrationController::index');
+$routes->post('/member/doregister', 'Auth/RegistrationController::doRegister');
+$routes->get('/member/forgot-password', 'Auth/RegistrationController::forgotPassword');
 
 // member area
-$routes->group('member', static function ($routes) {
+$routes->group('member', ['filter' => 'authMember'], static function ($routes) {
     $routes->get('/', 'Member/DashboardController::index');
+    $routes->get('logout', 'Auth/MemberLoginController::logout');
     $routes->get('dashboard', 'Member/DashboardController::index');
 
     $routes->get('add-reservation', 'Member/ReservasiController::addReservation');
@@ -52,14 +54,17 @@ $routes->group('member', static function ($routes) {
     $routes->post('my-reservations/change-status', 'Member\ReservasiController::changeStatus');
     $routes->post('my-reservations/upload-bukti', 'Admin\OrderController::uploadBukti');
     $routes->get('my-reservations/detail/(:num)', 'Member\ReservasiController::detailData/$1');
-
+    $routes->get('my-reservation/getschedule', 'Member\ReservasiController::getSchedule');
+    
     $routes->get('my-profile', 'Member/ProfileController::index');
+    $routes->post('my-profile/update', 'Member\ProfileController::updateProfile');
 });
 
 
 // admin area
-$routes->group('admin', static function ($routes) {
+$routes->group('admin', ['filter' => 'authAdmin'], static function ($routes) {
     $routes->get('/', 'Admin/DashboardController::index');
+    $routes->get('logout', 'Auth/AdminLoginController::logout');
     $routes->get('infographics', 'Admin/DashboardController::index');
 
     $routes->get('list-facilities', 'Admin/FacilityController::index');
@@ -102,6 +107,7 @@ $routes->group('admin', static function ($routes) {
     $routes->post('paid-reservations/change-status', 'Admin\OrderController::changeStatus');
 
     $routes->get('schedule-reservation', 'Admin/ReservasiController::scheduleReserv');
+    $routes->get('schedule-reservation/getschedule', 'Admin/ReservasiController::getSchedule');
 
     $routes->get('report-reservation', 'Admin/LaporanController::index');
     $routes->post('report-reservation/getdata', 'Admin/OrderController::getData');

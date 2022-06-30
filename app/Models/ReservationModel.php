@@ -34,7 +34,7 @@ class ReservationModel extends Model
         $this->connectDB();
         $this->request = $request;
         $builder = $this->db->table($this->table);
-            $builder->join('labrooms', 'labrooms.id_lab = reservations.lab_id');
+        $builder->join('labrooms', 'labrooms.id_lab = reservations.lab_id');
             $builder->join('users', 'users.id_user = reservations.user_id');
         if($joinOnOrder){
             $builder->join('orders','orders.code_reserv = reservations.code_reserv','left'); // left join

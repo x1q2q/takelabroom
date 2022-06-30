@@ -21,22 +21,36 @@
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-            <div class="avatar avatar-online">
-                <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+            <div class="avatar avatar-md bg-white rounded-circle p-1">
+                <?php if($userProfile['thumb_user'] != '' && $userProfile['thumb_user'] != null){ ?>
+                    <img src="<?= site_url('assets/img/uploads/users/'.$userProfile['thumb_user']); ?>" 
+                        alt="user-avatar" class="d-block rounded-circle img-fluid">        
+                <?php }else{ ?>
+                    <img src="<?= site_url('assets/img/avatars/user1.jpg'); ?>" 
+                        alt="user-avatar" class="d-block rounded-circle img-fluid">
+                <?php } ?>
             </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
             <li>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="<?= site_url('member/my-profile'); ?>">
                 <div class="d-flex">
                     <div class="flex-shrink-0 me-3">
-                    <div class="avatar avatar-online">
-                        <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                    <div class="avatar avatar-md">
+                        <?php if($userProfile['thumb_user'] != '' && $userProfile['thumb_user'] != null){ ?>
+                            <img src="<?= site_url('assets/img/uploads/users/'.$userProfile['thumb_user']); ?>" 
+                                alt="user-avatar" class="d-block rounded-circle img-fluid">        
+                        <?php }else{ ?>
+                            <img src="<?= site_url('assets/img/avatars/user1.jpg'); ?>" 
+                                alt="user-avatar" class="d-block rounded-circle img-fluid">
+                        <?php } ?>
                     </div>
                     </div>
                     <div class="flex-grow-1">
-                    <span class="fw-semibold d-block">John Doe</span>
-                    <small class="text-muted">Admin</small>
+                    <span class="fw-semibold d-block">
+                        <?= $userProfile['username']; ?>
+                    </span>
+                    <small class="text-muted">Member</small>
                     </div>
                 </div>
                 </a>
@@ -45,9 +59,9 @@
                 <div class="dropdown-divider"></div>
             </li>
             <li>
-                <a class="dropdown-item" href="auth-login-basic.html">
-                <i class="bx bx-power-off me-2"></i>
-                <span class="align-middle">Log Out</span>
+                <a class="dropdown-item" href="<?= site_url('member/logout'); ?>">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span class="align-middle">Log Out</span>
                 </a>
             </li>
             </ul>

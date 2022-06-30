@@ -247,24 +247,9 @@
 <?= $this->endSection('content'); ?>
 
 <?= $this->section('extrascript'); ?>
-<?= script_tag('assets/vendor/libs/datatables/datatables.min.js'); ?>
+    <?= script_tag('assets/vendor/libs/datatables/datatables.min.js'); ?>
     <?= script_tag('assets/js/ui-modals.js'); ?>
     <?= script_tag('assets/vendor/libs/timepicker/jquery.timepicker.min.js'); ?>
-    
-    <?php if(session()->has('error')): ?>
-        <script type="text/javascript">
-            var msg = "<?= session("error"); ?>";
-            showToast('danger','Peringatan',msg,'#toast-alert');
-        </script>
-    <?php endif; ?>
-
-    <?php if(session()->has('success')): ?>
-        <script type="text/javascript">
-            var msg = "<?= session("success"); ?>";
-            showToast('success','Sukses',msg,'#toast-alert');
-        </script>
-    <?php endif; ?>
-
     <script type="text/javascript">
         var tokenHash = $('meta[name="<?= csrf_token() ?>"]').attr('content');
         $(document).ready(function() {
@@ -513,7 +498,7 @@
             $('#modal-chstatus').modal('show');
             $('#modal-chstatus').find('.modal-title').html(`Batalkan Reservasi`);
                 $('#modal-chstatus .modal-footer').find('button#btn-save').html(
-                    `Ya, Batalkan <span class="tf-icons bx bx-refresh"></span>`);
+                    `Ya, Batalkan <span class="tf-icons bx bxs-minus-circle"></span>`);
                 $('#modal-chstatus .modal-body').find('#text-info').html(
                     `<p>Yakin untuk membatalakan reservasi <b>${codereserv}</b> (?) </p>
                     <i>*membatalkan reservasi akan mengubah status reservasi menjadi 'cancelled'</i>`);
@@ -567,4 +552,10 @@
             });
         }
     </script>
+    <?php if(session()->has('success')): ?>
+        <script type="text/javascript">
+            var msg = "<?= session('success'); ?>";
+            showToast('success','Sukses',msg,'#toast-alert');
+        </script>
+    <?php endif; ?>
 <?= $this->endSection('extrascript'); ?>

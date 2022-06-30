@@ -4,21 +4,27 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\ReservationModel;
+use App\Models\AdminModel;
 use Config\Services;
 
 class ReservasiController extends BaseController
 {
     public $datatable;
     public $req;
+    public $adminid;
+    public $adminModel;
     public function __construct()
     {
         $this->datatable = new ReservationModel();
         $this->req = Services::request();
+        $this->adminid = session()->get('id_admin'); 
+        $this->adminModel = new AdminModel();
         helper('html');
     }
     public function index()
     {
-        return view('admin/reservation_all');
+        $data['adminProfile'] = $this->adminModel->where('id_admin',$this->adminid)->first();
+        return view('admin/reservation_all', $data);
     }
     public function getData(){        
         if ($this->req->isAJAX()) {
@@ -70,7 +76,8 @@ class ReservasiController extends BaseController
         }
     }
     public function scheduleReserv(){
-        return view('admin/reservation_schedule');
+        $data['adminProfile'] = $this->adminModel->where('id_admin',$this->adminid)->first();
+        return view('admin/reservation_schedule',$data);
     }
     public function changeStatus(){
         if ($this->req->isAJAX()) {
@@ -85,6 +92,21 @@ class ReservasiController extends BaseController
             }else{
                 $result = ['status' => 500, 'data' => [],'message' => 'Reservasi gagal diganti status'];
             }
+            return json_encode($result);
+        }
+    }
+    public function getSchedule(){
+        if ($this->req->isAJAX()) {
+            $this->datatable->initDatatables($this->req);
+            $data = $this->datatable->getDatatables();
+            $result  = array_map (function($value){
+                return [
+                    'title' => $value->full_name,
+                    'start' => $value->time_start,
+                    'url'   => site_url('admin/all-reservations/detail/').$value->id_reserv,
+                    'status'=> $value->status_reserv
+                ];
+                }, $data);
             return json_encode($result);
         }
     }

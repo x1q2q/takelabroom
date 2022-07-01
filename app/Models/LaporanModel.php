@@ -7,15 +7,14 @@ use CodeIgniter\HTTP\RequestInterface;
 
 class LaporanModel extends Model
 {
-    protected $table            = 'categories';
-    protected $primaryKey       = 'id_category';
+    protected $table            = 'orders';
+    protected $primaryKey       = 'id_order';
     protected $useAutoIncrement = true;
-    protected $allowedFields    = ['name_category', 'slug', 
-        'thumb_category','desc_category'];
+    protected $allowedFields    = ['code_reserv','status_order','total_payment','thumb_order'];
 
-    protected $column_order = ['id_category', 'name_category', 'desc_category'];
-    protected $column_search = ['name_category','desc_category'];
-    protected $order = ['id_category' => 'DESC'];
+    protected $column_order = ['id_order','total_payment','status_order'];
+    protected $column_search = ['status_order','total_payment'];
+    protected $order = ['id_order' => 'DESC'];
     protected $request;
     protected $db;
     protected $dt;
@@ -30,7 +29,14 @@ class LaporanModel extends Model
     public function initDatatables(RequestInterface $request){
         $this->connectDB();
         $this->request = $request;
-        $this->dt = $this->db->table($this->table);
+        array_push($this->column_search,'orders.code_reserv');
+        $builder = $this->db->table($this->table);
+            $builder->join('reservations','reservations.code_reserv = orders.code_reserv');
+            $builder->join('labrooms', 'labrooms.id_lab = reservations.lab_id');
+            $builder->join('users', 'users.id_user = reservations.user_id');
+            $strSelect = 'reservations.*, labrooms.*, users.username, users.full_name,users.type_user, orders.*';
+            $builder->select($strSelect);
+        $this->dt = $builder;
     }
     private function getDatatablesQuery()
     {
@@ -77,9 +83,9 @@ class LaporanModel extends Model
         $tbl_storage = $this->db->table($this->table);
         return $tbl_storage->countAllResults();
     }
-    public function getWhere($field,$id){
-        $query = $this->db->table($this->table)->select($field)->where('id_category',$id);
-        $data = $query->get();
-        return $data->getResult();
+    public function getWhereDetail($id){
+        $query = $this->dt->where('id_order', $id);
+        $data = $query->get()->getResult();
+        return $data;
     }
 }

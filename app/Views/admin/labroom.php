@@ -40,11 +40,10 @@
         <thead>
             <tr>
             <th>No.</th>
-            <th style="width: 15%;">Kategori</th>
-            <th style="width: 15%;">Nama Lab</th>
+            <th style="width: 20%;">Kategori</th>
+            <th style="width: 20%;">Nama Lab</th>
             <th>Kapasitas</th>
             <th style="width: 20%;">Fasilitas</th>
-            <th>Riwayat</br> Pemakaian</th>
             <th style="width: 20%;">Aksi</th>
             </tr>
         </thead>
@@ -262,16 +261,6 @@
                         'data': 'list_facility',
                         'className': "text-center",
                         'orderable': false,
-                    },
-                    {
-                        'data': 'id_lab',
-                        'className': "text-center",
-                        'orderable': false,
-                        render: function (data, type, row, meta) {
-                            return `<button type="button" class="btn btn-sm btn-outline-secondary">
-                             Timeline
-                            </button>`;
-                        }
                     },
                     {
                         'data': 'id_lab',

@@ -62,12 +62,6 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember-me" name="remember_me"/>
-                    <label class="form-check-label" for="remember-me"> Remember Me </label>
-                    </div>
-                </div>
-                <div class="mb-3">
                     <button type="submit" class="btn btn-primary w-100" type="submit">
                         Sign in <span class="tf-icons bx bx-log-in-circle"></span>
                     </button>

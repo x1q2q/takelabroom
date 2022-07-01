@@ -6,8 +6,8 @@
         <div class="row align-items-center">
             <div class="col-md-6 text-md-start text-center py-6">
                 <h1 class="mb-4 fs-9 fw-bold">Sintara</h1>
-                <p class="mb-6 lead text-secondary">No matter succeed or fail, I'm proud of every animation I've ever made</p>
-                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="#manager" role="button">Get started</a></div>
+                <p class="mb-6 lead text-secondary">Tidak peduli berhasil atau gagal, saya bangga dengan setiap animasi yang pernah saya buat</p>
+                <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="#manager" role="button">Mulai</a></div>
             </div>
             <div class="col-md-6 text-end"><img class="pt-7 pt-md-0 img-fluid" src="<?= base_url('member-assets'); ?>/img/sintara/validation2.png" alt="" /></div>
         </div>
@@ -25,13 +25,13 @@
                 <center><img class="img-fluid" src="<?= base_url('member-assets'); ?>/img/sintara/c1.png" width="65%" alt="" /></center>
             </div>
             <div class="col-lg-6">
-                <h5 class="text-secondary">Easier decision making for</h5>
-                <p class="fs-7 fw-bold mb-2">Product In Labs</p>
+                <h5 class="text-secondary">Fitur 1</h5>
+                <p class="fs-7 fw-bold mb-2">Produk dalam Laboratorium</p>
                 <p class="mb-4 fw-medium text-secondary">
-                    This laboratory accommodates 20 to 30 students in one class, has tools such as
+                    Laboratorium ini menampung 20 hingga 30 siswa dalam satu kelas, memiliki alat-alat seperti:
                 </p>
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="<?= base_url('member-assets'); ?>/img/manager/tick.png" width="35" alt="tick" />
-                    <h3 class="fw-medium mb-0 text-secondary">30 Computer with original software</h3>
+                    <h3 class="fw-medium mb-0 text-secondary">30 Komputer dengan software original</h3>
                 </div>
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="<?= base_url('member-assets'); ?>/img/manager/tick.png" width="35" alt="tick" />
                     <h3 class="fw-medium mb-0 text-secondary">30 Headphone Razer Kraken</h3>
@@ -60,10 +60,10 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <h5 class="text-secondary">Easier decision making for</h5>
-                <p class="fs-7 fw-bold mb-2">Software Photo Video and Animation</p>
+                <h5 class="text-secondary">Fitur 2</h5>
+                <p class="fs-7 fw-bold mb-2">Software untuk Foto Video dan Animasi</p>
                 <p class="mb-4 fw-medium text-secondary">
-                    This laboratory has some great software such as
+                    Laboratorium ini memiliki beberapa perangkat lunak hebat seperti
                 </p>
                 <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="<?= base_url('member-assets'); ?>/img/manager/tick.png" width="35" alt="tick" />
                     <h3 class="fw-medium mb-0 text-secondary">Adobe Photoshop 2022</h3>

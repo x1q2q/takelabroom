@@ -83,8 +83,8 @@
               <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary d-grid w-100">
-            Registrasi
+          <button type="submit" class="btn btn-primary w-100">
+            Registrasi <span class="tf-icons bx bxs-send"></span>
           </button>
         </form>
 

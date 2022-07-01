@@ -127,6 +127,35 @@
         </div>
     </div>
 </div>
+<!-- modal-chstatus -->
+<div class="modal fade" id="modal-chstatus" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog sld-up modal-dialog-centered" role="document">
+    <form action="" method="POST" id="form-chstatus" class="modal-content" 
+        tipe="" enctype="multipart/form-data">
+        <input type="hidden" id="code_reserv"/>
+            <div class="modal-header border-bottom">
+                <h5 class="modal-title"></h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body p-3 pb-0">
+                <div id="text-info"></div>
+                <div id="form-group"></div>
+
+                <div class="modal-footer py-4 px-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-success" id="btn-save"></button>
+                </div>
+            </div>
+    </form>
+    </div>
+</div>
 <?= $this->include('admin/templates/modal_delete'); ?>
 <style type="text/css">
 </style>
@@ -218,9 +247,21 @@
                         'className':"text-center",
                         'orderable': false,
                         render: function(data, type, row, meta) {
-                            return `<button onclick="detailData('${data}')" type="button" class="btn rounded-pill
-                             btn-icon btn-primary" title="detail data">
-                              <span class="tf-icons bx bxs-detail"></span>
+                            var btnVerified = (row.is_activated == 0) ? 
+                                `<button onclick="changeStatus('${data}')" type="button" 
+                                data-bs-toggle="modal" data-bs-target="#modal-chstatus" 
+                                class="btn rounded-pill btn-icon btn-success" title="avtivate user">
+                                <span class="tf-icons bx bxs-user-check"></span>
+                            </button>` : 
+                                `<button disabled class="btn rounded-pill 
+                                    btn-icon btn-secondary disable">
+                                    <span class="tf-icons bx bxs-user-check"></span>
+                                    </button>`;
+                            return `
+                            ${btnVerified}
+                            <button onclick="detailData('${data}')" type="button" class="btn rounded-pill
+                             btn-icon btn-primary" title="detail data"> 
+                             <span class="tf-icons bx bxs-detail"></span>
                             </button>
                             <button onclick="hapusData('${data}')" type="button" class="btn rounded-pill btn-icon 
                             btn-danger" title="hapus data">
@@ -242,6 +283,32 @@
                 var page_length = userTable.page.info().length;
                 var total_pages = Math.ceil(total_records / page_length);
                 var current_page = userTable.page.info().page+1;
+            });
+
+            $('#form-chstatus').submit(function(e){
+                e.preventDefault();
+                let siteUrl = "<?= site_url('admin/list-members/change-status'); ?>";
+                let formData = new FormData(this);
+                $.ajax({
+                    type: $(this).attr('method'),
+                    url: siteUrl,
+                    data:formData,
+                    processData:false,
+                    contentType:false,
+                    success: function(response){ 
+                        var resp = JSON.parse(response);
+                        if(parseInt(resp.status) == 200){
+                            $('#modal-chstatus').modal('hide');
+                            userTable.draw();
+                            showToast('success','Sukses',resp.message,'#toast-alert');
+                        }else{
+                            showToast('warning','Peringatan',resp.message,'#toast-alert');
+                        }
+                    },error: function(){
+                        $('#modal-chstatus').modal('hide');
+                        showToast('danger','Peringatan','Gagal! Database server error','#toast-alert');
+                    }
+                });
             });
 
             $('#form-delete').submit(function(e){
@@ -294,6 +361,19 @@
             let urlDelete = "<?= site_url('admin/list-members/delete/:id'); ?>";
             $("#confirm-delete").modal('show');
             $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
+        }
+        function changeStatus(iduser){
+            $('#modal-chstatus').find('.modal-title').html(`Aktivasi Member`);
+            $('#modal-chstatus .modal-footer').find('button#btn-save').html(
+                `Aktivasi <span class="tf-icons bx bxs-check-circle"></span>`);
+            $('#modal-chstatus .modal-body').find('#text-info').html(
+                `<p>Yakin untuk mengaktivasi akun member? (?) </p>
+                <i>*mengaktifkan akun membuat akun bisa berfungsi sebagaimana mestinya</i>`);
+            $('#modal-chstatus .modal-body').find('#form-group').html(
+                `<div class="row">
+                    <input type='hidden' name="id_user" value="${iduser}">
+                </div>`
+            );
         }
     </script>
 <?= $this->endSection('extrascript'); ?>

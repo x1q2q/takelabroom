@@ -10,6 +10,8 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\AuthMember;
 use App\Filters\AuthAdmin;
+use App\Filters\AlreadyLoginAdmin;
+use App\Filters\AlreadyLoginMember;
 
 class Filters extends BaseConfig
 {
@@ -26,7 +28,9 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'authMember'    => AuthMember::class,
-        'authAdmin'    => AuthAdmin::class
+        'authAdmin'     => AuthAdmin::class,
+        'alLoginAdmin'  => AlreadyLoginAdmin::class,
+        'alLoginMember'  => AlreadyLoginMember::class
     ];
 
     /**

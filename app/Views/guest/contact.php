@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8 text-md-start text-center py-6">
-                <h1 class="mb-4 fs-9 fw-bold">S Labs</h1>
+                <h1 class="mb-4 fs-9 fw-bold">TakeLabroom</h1>
                 <p class="mb-6 lead text-secondary">Laboratorium yang digunakan untuk penelitian ilmiah bervariasi dalam bentuk karena persyaratan yang berbeda untuk spesialis di berbagai bidang sains dan teknik. Laboratorium animasi mungkin berisi komputer dan alat animasi canggih, sementara lab kimia mungkin memiliki peralatan kimia lengkap. dan laboratorium komputer dapat memiliki komputer di atas rata-rata untuk mendukung pembelajaran. S lab menggunakan laboratorium untuk memudahkan masyarakat dan membantu menambah pengetahuan baru tanpa harus mengeluarkan banyak biaya.</p>
                 <div><a class="btn btn-warning" href="<?= base_url('member/register'); ?>" role="button">DAFTAR</a></div>
             </div>

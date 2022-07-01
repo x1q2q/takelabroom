@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-6 text-md-start text-center py-6">
                 <h1 class="mb-4 fs-9 fw-bold">Sludge</h1>
-                <p class="mb-6 lead text-secondary">Ada sesuatu tentang kelas kimia<br class="d-none d-xl-block" />yang muncul pikiran di otak saya untuk mulai bekerja.</p>
+                <p class="mb-6 lead text-secondary">Ada sesuatu tentang kelas network<br class="d-none d-xl-block" />yang muncul pikiran di otak saya untuk mulai bekerja.</p>
                 <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="#manager" role="button">Mulai</a></div>
             </div>
             <div class="col-md-6 text-end"><img class="pt-7 pt-md-0 img-fluid" src="<?= base_url('member-assets'); ?>/img/sludge/manager1.png" alt="" /></div>

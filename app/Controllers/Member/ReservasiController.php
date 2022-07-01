@@ -232,7 +232,7 @@ class ReservasiController extends BaseController
                 $result = [
                     'status' => 500, 'data' => [],
                     'message' => 'Ruang Lab untuk tanggal '.$tglPakai.' antara jam ' . $waktuMulai . '-' . $waktuAkhir
-                    . ' sudah ada yang memesan. Silakan pilih waktu di luar jam tersebut'
+                    . ' sudah ada yang memesan. Silakan pilih lab lain atau waktu di luar jam tersebut'
                 ];
             } else { // if 
                 $values = [

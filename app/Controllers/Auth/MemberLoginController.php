@@ -47,14 +47,27 @@ class MemberLoginController extends BaseController
                 $pass = $userProfile['password'];
                 $authenticatePassword = password_verify($password, $pass);
                 if($authenticatePassword){
-                    $ses_data = [
-                        'id_user' => $userProfile['id_user'],
-                        'is_login_member' => TRUE
-                    ];
-                    $session->set($ses_data);
-                    $session->setFlashdata('success', 'Selamat datang kembali '.$userProfile['username']);
-                    $message = site_url('member');          
-                    $result = ['status' => 200, 'data' => $dataResponse,'message' => $message];
+                    if($userProfile['is_activated'] == 1){
+                        $rememberme = $this->request->getPost('remember_me');
+                        if(isset($rememberme)){
+                            $valCookie = $userProfile['id_user'];
+                            $duration = strtotime('+7 days');
+                            setcookie('id_user',$valCookie,$duration, "/");
+                        }else{
+                            $ses_data = [
+                                'id_user' => $userProfile['id_user'],
+                                'is_login_member' => TRUE
+                            ];
+                            $session->set($ses_data);
+                        }
+                        $session->setFlashdata('success', 'Selamat datang kembali '.$userProfile['username']);
+                        $message = site_url('member');          
+                        $result = ['status' => 200, 'data' => $dataResponse,'message' => $message];
+                    }else{
+                        $dataResponse = ['email' => 'Akun anda belum diaktivasi'];
+                        $result = ['status' => 500, 'data' => $dataResponse,
+                            'message' => 'Akun belum diaktivasi, silakan hubungi admin untuk mengaktivasi'];
+                    }
                 }else{
                     $dataResponse = ['password' => 'Password belum benar'];
                     $result = ['status' => 500, 'data' => $dataResponse,'message' => 'Gagal Login'];
@@ -69,9 +82,14 @@ class MemberLoginController extends BaseController
         return json_encode($result);
     }
     public function logout(){
+        // bagian session
         $session = \Config\Services::session();
         $session->remove('is_login_member');
         $session->remove('id_user');
+        // bagian cookie
+        $valCookie = "";
+        $duration = strtotime('-7 days');
+        setcookie('id_user',$valCookie,$duration, "/");
         return redirect()->to('member/login');
     }
 }

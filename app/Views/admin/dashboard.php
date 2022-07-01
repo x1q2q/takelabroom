@@ -14,31 +14,25 @@
           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body"></div>
-  </div>
+    </div>
     <div class="row">
     <div class="col-lg-8 mb-4 order-0">
         <div class="card">
         <div class="d-flex align-items-end row">
             <div class="col-sm-7">
             <div class="card-body">
-                <h5 class="card-title text-primary">Selamat sore admin🎉</h5>
+                <h5 class="card-title text-primary">Selamat datang <?= $adminProfile['full_name']; ?>! 🎉</h5>
                 <p class="mb-4">
-                You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
-                your profile.
+                Terdapat <span class="fw-bold"><?= $reservasiPending; ?></span> reservasi yang belum diverifikasi. 
+                Silakan check daftar reservasi di halaman semua reservasi.
                 </p>
-
-                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
+                <a href="<?= site_url('admin/all-reservations'); ?>" class="btn btn-sm btn-outline-primary">Cek Reservasi</a>
             </div>
             </div>
             <div class="col-sm-5 text-center text-sm-left">
             <div class="card-body pb-0 px-0 px-md-4">
-                <img
-                src="<?= base_url('assets/img/illustrations/man-with-laptop-light.png'); ?>"
-                height="140"
-                alt="View Badge User"
-                data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                data-app-light-img="illustrations/man-with-laptop-light.png"
-                />
+                <img src="<?= base_url('assets/img/illustrations/man-with-laptop-light.png'); ?>"
+                height="140">
             </div>
             </div>
         </div>
@@ -46,8 +40,53 @@
     </div>
     <div class="col-lg-4 col-md-4 order-1">
         <div class="row">
-        <div class="col-lg-6 col-md-12 col-6 mb-4">
-            <div class="card">
+            <div class="col-lg-6 col-md-12 col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <img src="<?= base_url('assets/img/icons/unicons/chart.png'); ?>" alt="Credit Card" class="rounded" />
+                        </div>
+                        </div>
+                        <span class="d-block mb-1">Total Labroom</span>
+                        <h3 class="card-title text-nowrap mb-2"><?= $total['labroom']; ?></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-6 mb-4">
+                <div class="card">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                        <div class="avatar flex-shrink-0">
+                            <img src="<?= base_url('assets/img/icons/unicons/cc-primary.png'); ?>" alt="Credit Card" class="rounded" />
+                        </div>                
+                    </div>
+                    <span class="fw-semibold d-block mb-1">Total Fasilitas</span>
+                    <h3 class="card-title mb-2"><?= $total['fasilitas']; ?></h3>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+      <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
+        <div class="card">
+        <div class="row row-bordered g-0">
+            <div class="col-md-8">
+                <h5 class="card-header m-0 me-2 pb-3">Reservasi (civitas/non-civitas)</h5>
+                <div id="series-chart" class="px-2"></div>
+            </div>
+            <div class="col-md-4">
+                <h5 class="card-header m-0 me-2 pb-3">Kategori Labroom</h5>
+                <div id="pie-chart"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--/ Total Revenue -->
+     <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+        <div class="row">
+        <div class="col-6 mb-4">
+        <div class="card">
             <div class="card-body">
                 <div class="card-title d-flex align-items-start justify-content-between">
                 <div class="avatar flex-shrink-0">
@@ -57,183 +96,34 @@
                     class="rounded"
                     />
                 </div>
-                <div class="dropdown">
-                    <button
-                    class="btn p-0"
-                    type="button"
-                    id="cardOpt3"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    >
-                    <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                    </div>
                 </div>
+                <span class="fw-semibold d-block mb-1">Total Member</span>
+                <h3 class="card-title mb-2"><?= $total['member']['all']; ?></h3>
+                <small class="text-success fw-semibold">
+                    (<?= $total['member']['activated']; ?> activated / 
+                    <?= $total['member']['not_activated']; ?> not-activated)  </small>
                 </div>
-                <span class="fw-semibold d-block mb-1">Profit</span>
-                <h3 class="card-title mb-2">$12,628</h3>
-                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
-            </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-12 col-6 mb-4">
-            <div class="card">
-            <div class="card-body">
-                <div class="card-title d-flex align-items-start justify-content-between">
-                <div class="avatar flex-shrink-0">
-                    <img
-                    src="<?= base_url('assets/img/icons/unicons/wallet-info.png'); ?>"
-                    alt="Credit Card"
-                    class="rounded"
-                    />
-                </div>
-                <div class="dropdown">
-                    <button
-                    class="btn p-0"
-                    type="button"
-                    id="cardOpt6"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    >
-                    <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                    </div>
-                </div>
-                </div>
-                <span>Sales</span>
-                <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
-            </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    <!-- Total Revenue -->
-    <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
-        <div class="card">
-        <div class="row row-bordered g-0">
-            <div class="col-md-8">
-            <h5 class="card-header m-0 me-2 pb-3">Total Revenue</h5>
-            <div id="totalRevenueChart" class="px-2"></div>
-            </div>
-            <div class="col-md-4">
-            <div class="card-body">
-                <div class="text-center">
-                <div class="dropdown">
-                    <button
-                    class="btn btn-sm btn-outline-primary dropdown-toggle"
-                    type="button"
-                    id="growthReportId"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    >
-                    2022
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="growthReportId">
-                    <a class="dropdown-item" href="javascript:void(0);">2021</a>
-                    <a class="dropdown-item" href="javascript:void(0);">2020</a>
-                    <a class="dropdown-item" href="javascript:void(0);">2019</a>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <div id="growthChart"></div>
-            <div class="text-center fw-semibold pt-3 mb-2">62% Company Growth</div>
-
-            <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                <div class="d-flex">
-                <div class="me-2">
-                    <span class="badge bg-label-primary p-2"><i class="bx bx-dollar text-primary"></i></span>
-                </div>
-                <div class="d-flex flex-column">
-                    <small>2022</small>
-                    <h6 class="mb-0">$32.5k</h6>
-                </div>
-                </div>
-                <div class="d-flex">
-                <div class="me-2">
-                    <span class="badge bg-label-info p-2"><i class="bx bx-wallet text-info"></i></span>
-                </div>
-                <div class="d-flex flex-column">
-                    <small>2021</small>
-                    <h6 class="mb-0">$41.2k</h6>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    <!--/ Total Revenue -->
-    <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
-        <div class="row">
-        <div class="col-6 mb-4">
-            <div class="card">
-            <div class="card-body">
-                <div class="card-title d-flex align-items-start justify-content-between">
-                <div class="avatar flex-shrink-0">
-                    <img src="<?= base_url('assets/img/icons/unicons/paypal.png'); ?>" alt="Credit Card" class="rounded" />
-                </div>
-                <div class="dropdown">
-                    <button
-                    class="btn p-0"
-                    type="button"
-                    id="cardOpt4"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    >
-                    <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                    </div>
-                </div>
-                </div>
-                <span class="d-block mb-1">Payments</span>
-                <h3 class="card-title text-nowrap mb-2">$2,456</h3>
-                <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
-            </div>
             </div>
         </div>
         <div class="col-6 mb-4">
             <div class="card">
-            <div class="card-body">
-                <div class="card-title d-flex align-items-start justify-content-between">
-                <div class="avatar flex-shrink-0">
-                    <img src="<?= base_url('assets/img/icons/unicons/cc-primary.png'); ?>" alt="Credit Card" class="rounded" />
-                </div>
-                <div class="dropdown">
-                    <button
-                    class="btn p-0"
-                    type="button"
-                    id="cardOpt1"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    >
-                    <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+                    <div class="avatar flex-shrink-0">
+                        <img
+                        src="<?= base_url('assets/img/icons/unicons/wallet-info.png'); ?>"
+                        alt="Credit Card"
+                        class="rounded"
+                        />
                     </div>
+                    </div>
+                    <span>Total Reservasi</span>
+                    <h3 class="card-title text-nowrap mb-2"><?= $total['reservasi']['all']; ?></h3>
+                    <small class="text-success fw-semibold">
+                        (<?= $total['reservasi']['civitas']; ?> civitas / 
+                        <?= $total['reservasi']['non_civitas']; ?> non-civitas)
+                    </small>
                 </div>
-                </div>
-                <span class="fw-semibold d-block mb-1">Transactions</span>
-                <h3 class="card-title mb-2">$14,857</h3>
-                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
-            </div>
             </div>
         </div>
         <div class="col-12 mb-4">
@@ -242,14 +132,11 @@
                 <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
                 <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                     <div class="card-title">
-                    <h5 class="text-nowrap mb-2">Profile Report</h5>
-                    <span class="badge bg-label-warning rounded-pill">Year 2021</span>
+                    <h5 class="text-nowrap mb-2">Total Keuntungan</h5>
+                    <span class="badge bg-label-warning rounded-pill"><?= $keuntungan['year']; ?></span>
                     </div>
                     <div class="mt-sm-auto">
-                    <small class="text-success text-nowrap fw-semibold"
-                        ><i class="bx bx-chevron-up"></i> 68.2%</small
-                    >
-                    <h3 class="mb-0">$84,686k</h3>
+                    <h3 class="mb-0"><?= $keuntungan['total']; ?></h3>
                     </div>
                 </div>
                 <div id="profileReportChart"></div>
@@ -259,13 +146,27 @@
         </div>
         </div>
     </div>
-</div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header">Semua Reservasi</h5>
+                <div class="card-body" id="column-chart">
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+        <div class="card">
+                <h5 class="card-header">Reservasi Berbayar</h5>
+                <div class="card-body" id="reversebar-chart"></div>
+            </div>
+        </div>
+    </div>
 </div>
 <?= $this->endSection('content'); ?>
 
 <?= $this->section('extrascript'); ?>
     <?= script_tag('assets/vendor/libs/apex-charts/apexcharts.js'); ?>
-    <?= script_tag('assets/js/dashboards-analytics.js'); ?>
     <?php if(session()->has('error')): ?>
         <script type="text/javascript">
             var msg = "<?= session("error"); ?>";
@@ -279,4 +180,247 @@
             showToast('success','Sukses',msg,'#toast-alert');
         </script>
     <?php endif; ?>
+    <script type="text/javascript">
+        var labroom = <?= $kategori; ?>;
+        var keuntungan = <?= $keuntungan['data']; ?>;
+        var reservasiPaided = <?= $orderReservasi; ?>;
+        var reservasiAll = <?= $allReservasi; ?>;
+        var reservasiKeunt = <?= $keuntunganReservasi; ?>;
+        function showPieChart(){
+            var options = {
+                series: labroom.jumlah,
+                labels: labroom.namelab,
+                chart: {
+                    height:400,
+                    type: 'donut',
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 400
+                    },
+                    legend: {
+                        show: true
+                    }
+                }}],
+                legend: {
+                    position: 'bottom',
+                    showForSingleSeries: false,
+                    offsetX: 0,
+                    offsetY: 0
+                }};
+
+            var chart = new ApexCharts(document.querySelector("#pie-chart"), options);
+            chart.render();
+        }
+        function showColumnChart(){
+            var options = {
+                series: [{
+                name: 'Finished',
+                    data: reservasiAll.finished
+                }, {
+                name: 'Verified',
+                    data: reservasiAll.verified
+                }, {
+                name: 'Pending',
+                    data: reservasiAll.pending
+                },{
+                name: 'Cancel',
+                    data: reservasiAll.cancell
+                }],
+                chart: {
+                type: 'bar',
+                height: 350
+                },
+                plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded'
+                },
+                },
+                dataLabels: {
+                enabled: false
+                },
+                stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+                },
+                xaxis: {
+                categories: reservasiAll.key
+                },
+                yaxis: {
+                title: {
+                    text: 'jml reservasi'
+                }
+                },
+                fill: {
+                opacity: 1
+                },
+                tooltip: {
+                y: {
+                    formatter: function (val) {
+                    return val + " reservasi"
+                    }
+                }
+                }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#column-chart"), options);
+                chart.render();
+        }
+        function showSeriesChart(){
+            var options = {
+                series: [{
+                name: reservasiKeunt.key1,
+                data: reservasiKeunt.val1
+                }, {
+                name: reservasiKeunt.key2,
+                data: reservasiKeunt.val2
+                }],
+                chart: {
+                height: 350,
+                type: 'area'
+                },
+                dataLabels: {
+                enabled: false
+                },
+                stroke: {
+                curve: 'smooth'
+                },
+                xaxis: {
+                type: 'datetime',
+                categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                },
+                tooltip: {
+                x: {
+                    format: 'dd/MM/yy HH:mm'
+                },
+                },
+                };
+
+                var chart = new ApexCharts(document.querySelector("#series-chart"), options);
+                chart.render();
+        }
+        function reverseBarChart(){
+            var options = {
+                series: [{
+                    data: reservasiPaided.value
+                }],
+                chart: {
+                type: 'bar',
+                height: 350
+                },
+                annotations: {
+                xaxis: [{
+                    x: 500,
+                    borderColor: '#00E396',
+                    label: {
+                    borderColor: '#00E396',
+                    style: {
+                        color: '#fff',
+                        background: '#00E396',
+                    },
+                    }
+                }],
+                },
+                plotOptions: {
+                bar: {
+                    horizontal: true,
+                }
+                },
+                dataLabels: {
+                enabled: true
+                },
+                xaxis: {
+                    categories: reservasiPaided.key,
+                },
+                grid: {
+                xaxis: {
+                    lines: {
+                    show: true
+                    }
+                }
+                },
+                yaxis: {
+                reversed: true,
+                axisTicks: {
+                    show: true
+                }
+                }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#reversebar-chart"), options);
+                chart.render();
+        }
+        function seriesReport(){
+            const profileReportChartEl = document.querySelector('#profileReportChart'),
+                profileReportChartConfig = {
+                chart: {
+                    height: 80,
+                    type: 'line',
+                    toolbar: {
+                    show: false
+                    },
+                    dropShadow: {
+                    enabled: true,
+                    top: 10,
+                    left: 5,
+                    blur: 3,
+                    color: config.colors.warning,
+                    opacity: 0.15
+                    },
+                    sparkline: {
+                    enabled: true
+                    }
+                },
+                grid: {
+                    show: false,
+                    padding: {
+                    right: 8
+                    }
+                },
+                colors: [config.colors.warning],
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    width: 5,
+                    curve: 'smooth'
+                },
+                series: [
+                    {
+                    data: keuntungan
+                    }
+                ],
+                xaxis: {
+                    show: false,
+                    lines: {
+                    show: false
+                    },
+                    labels: {
+                    show: false
+                    },
+                    axisBorder: {
+                    show: false
+                    }
+                },
+                yaxis: {
+                    show: false
+                }
+            };
+            const profileReportChart = new ApexCharts(profileReportChartEl, profileReportChartConfig);
+            profileReportChart.render();
+        }
+        showPieChart();
+        showColumnChart();
+        showSeriesChart();
+        reverseBarChart();
+        seriesReport();
+    </script>
 <?= $this->endSection('extrascript'); ?>

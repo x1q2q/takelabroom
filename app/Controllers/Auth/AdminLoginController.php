@@ -46,11 +46,18 @@ class AdminLoginController extends BaseController
                 $pass = $userProfile['password'];
                 $authenticatePassword = password_verify($password, $pass);
                 if($authenticatePassword){
-                    $ses_data = [
-                        'id_admin' => $userProfile['id_admin'],
-                        'is_login_admin' => TRUE
-                    ];
-                    $session->set($ses_data);
+                    $rememberme = $this->request->getPost('remember_me');
+                    if(isset($rememberme)){
+                        $valCookie = $userProfile['id_admin'];
+                        $duration = strtotime('+7 days');
+                        setcookie('id_admin',$valCookie,$duration, "/");
+                    }else{
+                        $ses_data = [
+                            'id_admin' => $userProfile['id_admin'],
+                            'is_login_admin' => TRUE
+                        ];
+                        $session->set($ses_data);
+                    }
                     $session->setFlashdata('success', 'Selamat datang kembali '.$userProfile['username']);
                     $message = site_url('admin');          
                     $result = ['status' => 200, 'data' => $dataResponse,'message' => $message];
@@ -68,9 +75,14 @@ class AdminLoginController extends BaseController
         return json_encode($result);
     }
     public function logout(){
+        // bagian session
         $session = \Config\Services::session();
         $session->remove('is_login_admin');
         $session->remove('id_admin');
+        // bagian cookie
+        $valCookie = "";
+        $duration = strtotime('-7 days');
+        setcookie('id_admin',$valCookie,$duration, "/");
         return redirect()->to('admin/login');
     }
 }

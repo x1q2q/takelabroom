@@ -59,4 +59,17 @@ class UserController extends BaseController
             return json_encode($result);
         }
     }
+    public function changeStatus(){
+        if ($this->req->isAJAX()) {
+            $id = $this->request->getPost('id_user');
+            $member = $this->datatable;
+            $values = ['is_activated' => 1];
+            if($member->update($id, $values)){
+                $result = ['status' => 200, 'data' => [],'message' => 'Data member berhasil diaktivasi'];
+            }else{
+                $result = ['status' => 500, 'data' => [],'message' => 'Data member gagal diaktivasi'];
+            }
+            return json_encode($result);
+        }
+    }
 }

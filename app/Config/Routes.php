@@ -32,10 +32,14 @@ $routes->get('/contact', 'GuestController::contact');
 $routes->get('/lab1', 'GuestController::lab1');
 $routes->get('/lab2', 'GuestController::lab2');
 $routes->get('/lab3', 'GuestController::lab3');
-$routes->get('/member/login', 'Auth/MemberLoginController::index');
-$routes->post('/member/dologin', 'Auth/MemberLoginController::doLogin');
-$routes->get('/admin/login', 'Auth/AdminLoginController::index');
-$routes->post('/admin/dologin', 'Auth/AdminLoginController::doLogin');
+
+
+$routes->get('/member/login', 'Auth/MemberLoginController::index',['filter' => 'alLoginMember']);
+$routes->post('/member/dologin', 'Auth/MemberLoginController::doLogin',['filter' => 'alLoginMember']);
+
+$routes->get('/admin/login', 'Auth/AdminLoginController::index',['filter' => 'alLoginAdmin']);
+$routes->post('/admin/dologin', 'Auth/AdminLoginController::doLogin',['filter' => 'alLoginAdmin']);
+
 $routes->get('/member/register', 'Auth/RegistrationController::index');
 $routes->post('/member/doregister', 'Auth/RegistrationController::doRegister');
 $routes->get('/member/forgot-password', 'Auth/RegistrationController::forgotPassword');
@@ -93,6 +97,7 @@ $routes->group('admin', ['filter' => 'authAdmin'], static function ($routes) {
     $routes->post('list-members/getdata', 'Admin/UserController::getData');
     $routes->get('list-members/delete/(:num)', 'Admin\UserController::deleteData/$1');
     $routes->get('list-members/detail/(:num)', 'Admin\UserController::detailData/$1');
+    $routes->post('list-members/change-status', 'Admin\UserController::changeStatus');
 
     $routes->get('all-reservations', 'Admin/ReservasiController::index');
     $routes->post('all-reservations/getdata', 'Admin/ReservasiController::getData');

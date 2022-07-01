@@ -7,7 +7,7 @@
                 <p class="fs-2 mb-lg-4">Quick Links</p>
                 <ul class="list-unstyled mb-0">
                     <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="contact.html#about">About us</a></li>
-                    <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="contact.html#contact">Contact</a></li>
+                    <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="<?= base_url('contact'); ?>">Contact</a></li>
                 </ul>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 order-4 order-md-4 order-lg-3">
@@ -21,11 +21,11 @@
             </div>
             <div class="col-lg-3 col-md-6 col-6 mb-4 mb-lg-0 order-2 order-md-2 order-lg-4">
                 <p class="fs-2 mb-lg-4">
-                    knowing you're always on the best energy deal.</p>
+                    mengetahui Anda selalu dalam kesepakatan energi terbaik.</p>
                 <form class="mb-3">
                     <input class="form-control" type="email" placeholder="Enter your phone Number" aria-label="phone" />
                 </form>
-                <button class="btn btn-warning fw-medium py-1">Sign up Now</button>
+                <button class="btn btn-warning fw-medium py-1" href="<?= base_url('member/register'); ?>">Sign up Now</button>
             </div>
         </div>
     </div>

@@ -17,6 +17,12 @@ class DashboardController extends BaseController
     }
     public function index()
     {
+        $total = [
+            'reservasi' => 5,
+            'fasilitas' => 55,
+            'labroom'   => 36
+        ];
+        $data['total'] = $total;
         $data['userProfile'] = $this->userModel->where('id_user',$this->userid)->first();
         return view('member/dashboard',$data);
     }

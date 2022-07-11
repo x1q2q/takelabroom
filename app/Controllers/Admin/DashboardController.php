@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\AdminModel;
+use App\Models\DashboardModel;
 
 class DashboardController extends BaseController
 {
@@ -17,22 +18,38 @@ class DashboardController extends BaseController
     }
     public function index()
     {
-        $reservPending = 24;
+        $reserv = new DashboardModel('reservations');
+        $facility = new DashboardModel('facilities');
+        $labroom = new DashboardModel('labrooms');
+        $member = new DashboardModel('users');
+        $reservPending = $reserv->nWhere(['status_reserv' => 'pending']);
+        // count kategori
+        // 
+        $category = new DashboardModel('categories');
+        $allCategory = $category->resWhere();
+        $jumlah = [];
+        $nameLab = [];
+        foreach($allCategory as $val){
+            array_push($nameLab,$val['name_category']);
+            array_push($jumlah,$labroom->nWhere(['category_id' => $val['id_category']]));
+        }
         $kategori = [
-            'jumlah' => [10,20,30],
-            'namelab' => ['software eng','multimedia','computer network']
+            'jumlah' => $jumlah,
+            'namelab' => $nameLab
         ];
+        $whereReservCivitas = ['type_user' => 'civitas','status_reserv !=' => 'cancelled'];
+        $whereReservNonCivitas = ['type_user' => 'non-civitas','status_reserv !=' => 'cancelled'];
         $total = [
             'member' => [
-                'activated'     => 20,
-                'not_activated' => 10,
-                'all'           => 30],
+                'activated'     => $member->nWhere(['is_activated' => 1]),
+                'not_activated' => $member->nWhere(['is_activated' => 0]),
+                'all'           => $member->nWhere()],
             'reservasi' => [
-                'civitas'     => 20,
-                'non_civitas' => 30,
-                'all'         => 50],
-            'fasilitas' => 55,
-            'labroom'   => 36
+                'civitas'     => $reserv->nWhere($whereReservCivitas,true),
+                'non_civitas' => $reserv->nWhere($whereReservNonCivitas,true),
+                'all'         => $reserv->nWhere(['status_reserv !=' => 'cancelled'])],
+            'fasilitas' => $facility->nWhere(),
+            'labroom'   => $labroom->nWhere()
         ];
         $keuntungan = [
             'year'  => '2022',

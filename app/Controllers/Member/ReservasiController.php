@@ -363,7 +363,8 @@ class ReservasiController extends BaseController
             $result = [];
             foreach($newData as $val){
                 $tglVal = new \DateTime($val['start']);
-                if($tglVal > $tglNow){
+                if($tglVal > $tglNow && ($val['status'] == 'pending' 
+                    || $val['status'] == 'verified')){
                     array_push($result,$val);
                 }
             }
